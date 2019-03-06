@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-/*
+/**
  * Project 테이블의 Domain 클래스
  *
  * @author Dakyung Ko, Jihye Kim

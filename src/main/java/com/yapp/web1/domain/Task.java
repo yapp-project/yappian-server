@@ -14,7 +14,7 @@ import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.util.*;
 
-/*
+/**
  * Task 테이블의 Domain 클래스
  *
  * @author Dakyung Ko, Jihye Kim

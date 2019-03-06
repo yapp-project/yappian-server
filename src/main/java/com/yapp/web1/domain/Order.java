@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-/*
+/**
  * Order 테이블(프로젝트 기수)의 Domain 클래스
  *
  * @author Dakyung Ko

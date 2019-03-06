@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-/*
+/**
  * User와 Order(기수)의 연관관계 테이블
  *
  * @author Dakyung Ko, Jihye Kim

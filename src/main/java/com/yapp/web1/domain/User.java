@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.*;
 
-/*
+/**
  * User 테이블의 Domain 클래스
  *
  * @author Dakyung Ko, Jihye Kim

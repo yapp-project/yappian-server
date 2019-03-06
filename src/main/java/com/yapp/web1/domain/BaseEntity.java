@@ -15,7 +15,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
-/*
+/**
  * Entity 클래스의 공통 분모를 모아둔 부모 클래스
  * (idx, 생성일, 수정일)
  *
