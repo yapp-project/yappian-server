@@ -19,6 +19,11 @@ notifications:
     recipients:
       - kdkyung57@gmail.com 
 
+before_deploy:
+  - zip -r web1 *
+  - mkdir -p deploy
+  - mv web1.zip deploy/web1.zip
+
 deploy:
   - provider: s3
     access_key_id: $AWS_ACCESS_KEY
@@ -27,6 +32,7 @@ deploy:
     region: ap-northeast-2
     skip_cleanup: true
     acl: public_read
+    local_dir: deploy
     wait-until-deployed: true
     on:
       repo: yapp-project/yappian-server
