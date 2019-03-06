@@ -1,5 +1,5 @@
 HELP.md
-.gradle
+/.gradle/
 /build/
 !gradle/wrapper/gradle-wrapper.jar
 
@@ -151,9 +151,6 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
-
-### Gradle ###
-.gradle
 
 # Ignore Gradle GUI config
 gradle-app.setting
