@@ -14,11 +14,6 @@ cache:
 
 script: "./gradlew clean build"
 
-notifications:
-  email:
-    recipients:
-      - kdkyung57@gmail.com 
-
 before_deploy:
   - zip -r web1 *
   - mkdir -p deploy
@@ -37,3 +32,22 @@ deploy:
     on:
       repo: yapp-project/yappian-server
       branch: master
+  
+  - provider: codedeploy
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: yappian
+    key: web1.zip
+    bundle_type: zip
+    application: yappian
+    deployment_group: yappian-group
+    region: ap-northeast-2
+    wait-until-deployed: true
+    on:
+      repo: yapp-project/yappian-server
+      branch: master
+
+notifications:
+  email:
+    recipients:
+      - kdkyung57@gmail.com 
