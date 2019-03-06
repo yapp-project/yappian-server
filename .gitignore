@@ -152,9 +152,6 @@ dist/
 nbdist/
 .nb-gradle/
 
-### Gradle ###
-.gradle
-
 # Ignore Gradle GUI config
 gradle-app.setting
 
