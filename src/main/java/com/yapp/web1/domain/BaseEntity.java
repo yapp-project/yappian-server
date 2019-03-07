@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
  * Entity 클래스의 공통 분모를 모아둔 부모 클래스
  * (idx, 생성일, 수정일)
  *
- * @author Dakyung Ko
+ * @author Dakyung Ko, JiHye Kim
  */
 
 @Getter
@@ -30,11 +30,13 @@ public class BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long idx;
 
-    @Column(name = "created_date", nullable = false, updatable = false)
+    /*
+    @Column(name = "created_date")//, nullable = false, updatable = false
     @CreatedDate
     protected LocalDateTime createDate;
 
     @Column(name = "modified_date")
     @LastModifiedDate
     protected LocalDateTime modifiedDate;
+    */
 }

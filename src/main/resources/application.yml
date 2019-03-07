@@ -1,7 +1,7 @@
 # main
 spring:
   profiles:
-    active: test # 기본 환경 선택
+    active: local # 기본 환경 선택
 
 
 # common setting
@@ -36,6 +36,19 @@ spring:
 spring:
   profiles: local
   profiles.include: common
+  datasource:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/yappian?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=UTC
+      username: user1
+      password: test123
+  jpa:
+      hibernate:
+        ddl-auto: update
+      properties:
+        hibernate:
+        dialect: org.hibernate.dialect.MySQL8InnoDBDialect
+        format_sql: true
+        show-sql: true
 
 #  datasource:
 #    hikari:
@@ -76,7 +89,7 @@ spring:
       enabled: true
       path: /h2/
       settings:
-        trace: true
+#        trace: true
         web-allow-others: true
 
   datasource:

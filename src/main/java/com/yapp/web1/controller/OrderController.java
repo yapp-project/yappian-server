@@ -4,12 +4,10 @@ import com.yapp.web1.domain.Orders;
 import com.yapp.web1.domain.Project;
 import com.yapp.web1.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +15,8 @@ import java.util.List;
 /**
  * Orders Controller
  *
- * @author Dakyung Ko
- * @since 0.0.2
+ * @author Dakyung Ko, JiHye Kim
+ * @since 0.0.3
  * @version 1.0
  */
 //@AllArgsConstructor
@@ -27,8 +25,7 @@ import java.util.List;
 @RestController
 public class OrderController {
 
-    private OrderService orderService;// = new OrderService;
-
+     @Autowired  OrderService orderService;// = new OrderService;
     /**
      * 기수 목록 리스트
      *
@@ -38,8 +35,7 @@ public class OrderController {
      */
     @GetMapping("/orders")
     public ResponseEntity<List<Orders>> getOrderList(){
-//        return orderService.findOrder();
-        List<Orders> orders = new ArrayList<>();
+        List<Orders> orders = orderService.findNumber();
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
@@ -57,4 +53,6 @@ public class OrderController {
         List<Project> projectList = new ArrayList<>();
         return new ResponseEntity<>(projectList, HttpStatus.OK);
     }
+
+
 }
