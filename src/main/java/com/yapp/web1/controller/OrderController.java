@@ -1,9 +1,9 @@
 package com.yapp.web1.controller;
 
-import com.yapp.web1.domain.Order;
+import com.yapp.web1.domain.ClubOrder;
 import com.yapp.web1.domain.Project;
 import com.yapp.web1.service.OrderService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,18 +15,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Order Controller
+ * ClubOrder Controller
  *
  * @author Dakyung Ko
  * @since 0.0.2
  * @version 1.0
  */
-@AllArgsConstructor
+//@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/v1/api")
 @RestController
 public class OrderController {
 
-    private OrderService orderService;
+    private OrderService orderService;// = new OrderService;
 
     /**
      * 기수 목록 리스트
@@ -36,10 +37,10 @@ public class OrderController {
      * @see /v1/api/orders
      */
     @GetMapping("/orders")
-    public ResponseEntity<List<Order>> getOrderList(){
+    public ResponseEntity<List<ClubOrder>> getOrderList(){
 //        return orderService.findOrder();
-        List<Order> orders = new ArrayList<>();
-        return new ResponseEntity<>(orders, HttpStatus.OK);
+        List<ClubOrder> clubOrders = new ArrayList<>();
+        return new ResponseEntity<>(clubOrders, HttpStatus.OK);
     }
 
     /**

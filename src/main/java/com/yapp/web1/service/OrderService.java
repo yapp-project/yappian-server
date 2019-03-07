@@ -12,7 +12,7 @@ public class OrderService {
 
     private OrderRepository orderRepository;
 
-//    public List<Order> findOrder(){
+//    public List<ClubOrder> findOrder(){
 //        return orderRepository.findByNum();
 //    }
 }

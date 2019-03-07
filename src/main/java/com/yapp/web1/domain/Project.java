@@ -7,7 +7,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * Project 테이블의 Domain 클래스
@@ -41,19 +48,19 @@ public class Project extends BaseEntity {
     private Long createUserIdx;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name="order_idx",
-            foreignKey = @ForeignKey(name="fk_project_order"),
+    @JoinColumn(name="club_order_idx",
+            foreignKey = @ForeignKey(name="fk_project_club_order"),
             nullable = false)
-    private Order order;
+    private ClubOrder clubOrder;
 
     // @OneToOne file_idx 완료시 이미지 여부 (에디터 사용에 따라 달라짐)
 
     @Builder
-    public Project(ProjectType type, String name, Long createUserIdx, Order order){
+    public Project(ProjectType type, String name, Long createUserIdx, ClubOrder clubOrder){
         this.type = type;
         this.name = name;
         this.createUserIdx = createUserIdx;
-        this.order = order;
+        this.clubOrder = clubOrder;
     }
 
     public Mark finishedProject(){

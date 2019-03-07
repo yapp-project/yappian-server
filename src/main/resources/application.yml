@@ -52,6 +52,7 @@ spring:
 #    show-sql: true
 #    hibernate:
 #      ddl-auto: update
+#      ddl-auto: create-drop
 #    generate-ddl: true
 #    properties:
 #      hibernate:
@@ -91,7 +92,7 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
     generate-ddl: true
     properties:
       hibernate:

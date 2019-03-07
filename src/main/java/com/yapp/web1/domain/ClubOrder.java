@@ -12,37 +12,37 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * Order 테이블(프로젝트 기수)의 Domain 클래스
+ * ClubOrder 테이블(프로젝트 기수)의 Domain 클래스
  *
  * @author Dakyung Ko
  */
 
 @Entity
-@Table(name="order")
-@AttributeOverride(name="idx", column=@Column(name="order_idx"))
+@Table(name="club_order")
+@AttributeOverride(name="idx", column=@Column(name="club_order_idx"))
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Order extends BaseEntity{
+public class ClubOrder extends BaseEntity{
 
     @Column(name="num", nullable=false, unique=true)
     Long num;
 
     @JsonIgnore
-    @OneToMany(mappedBy="order",
+    @OneToMany(mappedBy="clubOrder",
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             orphanRemoval = true)
     private Set<UserOrder> userOrders = new HashSet<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy="order",
+    @OneToMany(mappedBy="clubOrder",
             cascade = CascadeType.REMOVE,
             fetch = FetchType.LAZY,
             orphanRemoval = true)
     private Set<Project> projects = new HashSet<>();
 
     @Builder
-    public Order(Long num, Set<UserOrder> userOrders, Set<Project> projects){
+    public ClubOrder(Long num, Set<UserOrder> userOrders, Set<Project> projects){
         this.num = num;
 
         this.userOrders = Optional.ofNullable(userOrders).orElse(this.userOrders);
