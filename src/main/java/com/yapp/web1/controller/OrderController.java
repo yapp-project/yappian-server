@@ -26,7 +26,7 @@ import java.util.List;
 @RestController
 public class OrderController {
 
-    private final OrderService orderService;
+    private OrderService orderService;
 
     /**
      * 기수 목록 리스트

@@ -25,8 +25,8 @@ import java.util.List;
 @RestController
 public class UserController {
 
-    private final UserService userService;
-    private final User user;
+    private UserService userService;
+    private User user;
 
     /**
      * 즐겨찾는 프로젝트 목록 반환

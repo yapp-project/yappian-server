@@ -22,7 +22,7 @@ import javax.validation.Valid;
 @RestController
 public class ProjectController {
 
-    private final ProjectService projectService;
+    private ProjectService projectService;
 
     /**
      * 프로젝트 생성

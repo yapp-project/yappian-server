@@ -80,7 +80,7 @@ spring:
 
   datasource:
     hikari:
-      jdbc-url: jdbc:h2:mem:contact;DB_CLOSE_ON_EXIT=false;DB_CLOSE_DELAY=-1;MVCC=TRUE
+      jdbc-url: jdbc:h2:mem:yappian;DB_CLOSE_ON_EXIT=false;DB_CLOSE_DELAY=-1;MVCC=TRUE
       username: sa
       password:
       driver-class-name: org.h2.Driver
