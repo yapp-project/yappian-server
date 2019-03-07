@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 /**
- * User와 ClubOrder(기수)의 연관관계 테이블
+ * User와 Orders(기수)의 연관관계 테이블
  *
  * @author Dakyung Ko, Jihye Kim
  */
@@ -26,14 +26,14 @@ public class UserOrder extends BaseEntity{
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name="club_order_idx",
-            foreignKey = @ForeignKey(name="fk_user_order_club_order"),
+    @JoinColumn(name="orders_idx",
+            foreignKey = @ForeignKey(name="fk_user_order_orders"),
             nullable = false)
-    private ClubOrder clubOrder;
+    private Orders orders;
 
     @Builder
-    public UserOrder(User user, ClubOrder clubOrder){
+    public UserOrder(User user, Orders order){
         this.user = user;
-        this.clubOrder = clubOrder;
+        this.orders = orders;
     }
 }

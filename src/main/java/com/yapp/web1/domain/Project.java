@@ -35,7 +35,7 @@ public class Project extends BaseEntity {
     @Column(name="name", nullable = false)
     private String name;
 
-    @Column(name="check", nullable = false)
+    @Column(name="final_check", nullable = false)
     private Mark finalCheck = Mark.N; //
 
     @Column(name="description")
@@ -44,23 +44,23 @@ public class Project extends BaseEntity {
     @Column(name="url")
     private String productURL; //
 
-    @Column(name="create_user_idx",nullable = false, unique = true)
+    @Column(name="create_user_idx",nullable = false)
     private Long createUserIdx;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name="club_order_idx",
-            foreignKey = @ForeignKey(name="fk_project_club_order"),
+    @JoinColumn(name="orders_idx",
+            foreignKey = @ForeignKey(name="fk_project_orders"),
             nullable = false)
-    private ClubOrder clubOrder;
+    private Orders orders;
 
     // @OneToOne file_idx 완료시 이미지 여부 (에디터 사용에 따라 달라짐)
 
     @Builder
-    public Project(ProjectType type, String name, Long createUserIdx, ClubOrder clubOrder){
+    public Project(ProjectType type, String name, Long createUserIdx, Orders orders){
         this.type = type;
         this.name = name;
         this.createUserIdx = createUserIdx;
-        this.clubOrder = clubOrder;
+        this.orders = orders;
     }
 
     public Mark finishedProject(){

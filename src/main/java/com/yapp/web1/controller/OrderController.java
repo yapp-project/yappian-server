@@ -1,6 +1,6 @@
 package com.yapp.web1.controller;
 
-import com.yapp.web1.domain.ClubOrder;
+import com.yapp.web1.domain.Orders;
 import com.yapp.web1.domain.Project;
 import com.yapp.web1.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * ClubOrder Controller
+ * Orders Controller
  *
  * @author Dakyung Ko
  * @since 0.0.2
@@ -37,10 +37,10 @@ public class OrderController {
      * @see /v1/api/orders
      */
     @GetMapping("/orders")
-    public ResponseEntity<List<ClubOrder>> getOrderList(){
+    public ResponseEntity<List<Orders>> getOrderList(){
 //        return orderService.findOrder();
-        List<ClubOrder> clubOrders = new ArrayList<>();
-        return new ResponseEntity<>(clubOrders, HttpStatus.OK);
+        List<Orders> orders = new ArrayList<>();
+        return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
     /**
