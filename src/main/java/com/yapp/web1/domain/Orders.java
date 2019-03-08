@@ -41,7 +41,7 @@ public class Orders extends BaseEntity{
             orphanRemoval = true)
     private Set<Project> projects = new HashSet<>();
 
-    /*
+
     @Builder
     public Orders(Long number, Set<UserOrder> userOrders, Set<Project> projects){
         this.number = number;
@@ -49,5 +49,4 @@ public class Orders extends BaseEntity{
         this.userOrders = Optional.ofNullable(userOrders).orElse(this.userOrders);
         this.projects = Optional.ofNullable(projects).orElse(this.projects);
     }
-    */
 }
