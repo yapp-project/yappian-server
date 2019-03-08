@@ -18,6 +18,6 @@ public class OrderService {
    OrderRepository orderRepository;
 
     public List<Orders> findNumber(){
-        return orderRepository.findAll();
+        return orderRepository.findByOrderByNumberDesc();
     }
 }

@@ -36,7 +36,7 @@ public class OrderController {
     @GetMapping("/orders")
     public ResponseEntity<List<Orders>> getOrderList(){
         List<Orders> orders = orderService.findNumber();
-        return new ResponseEntity<>(orders, HttpStatus.OK);
+        return new ResponseEntity<>(orders, HttpStatus.OK);//200. (요청이 성공적으로 되었습니다.리소스를 불러와서 메시지 바디에 전송되었습니다.)
     }
 
     /**
