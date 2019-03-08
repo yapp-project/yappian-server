@@ -4,6 +4,7 @@ import com.yapp.web1.domain.Project;
 import com.yapp.web1.domain.User;
 import com.yapp.web1.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +26,8 @@ import java.util.List;
 @RestController
 public class UserController {
 
-    private UserService userService;
-    private User user;
+    @Autowired
+    UserService userService;
 
     /**
      * 즐겨찾는 프로젝트 목록 반환

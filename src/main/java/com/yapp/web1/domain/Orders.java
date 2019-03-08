@@ -1,10 +1,7 @@
 package com.yapp.web1.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -20,10 +17,11 @@ import java.util.Set;
 @Entity
 @Table(name="orders")
 @AttributeOverride(name="idx", column=@Column(name="orders_idx"))
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)//protected
 @Getter
 public class Orders extends BaseEntity{
 
+    @Setter
     @Column(name="number", nullable=false, unique=true)
     Long number;
 
@@ -36,7 +34,7 @@ public class Orders extends BaseEntity{
 
     @JsonIgnore
     @OneToMany(mappedBy="orders",
-            cascade = CascadeType.REMOVE,
+           // cascade = CascadeType.REMOVE
             fetch = FetchType.LAZY,
             orphanRemoval = true)
     private Set<Project> projects = new HashSet<>();
