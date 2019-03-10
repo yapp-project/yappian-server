@@ -1,5 +1,7 @@
 package com.yapp.web1.domain;
 
+import com.yapp.web1.converter.MarkAttributeConverter;
+import com.yapp.web1.converter.ProjectTypeAttributeConverter;
 import com.yapp.web1.domain.VO.Mark;
 import com.yapp.web1.domain.VO.ProjectType;
 import lombok.AccessLevel;
@@ -23,14 +25,14 @@ import javax.persistence.*;
 public class Project extends BaseEntity {
 
     @Column(name="type", nullable = false)
-    @Enumerated
+    @Convert(converter = ProjectTypeAttributeConverter.class)
     private ProjectType type;
 
     @Column(name="name", nullable = false)
     private String name;
 
     @Column(name="final_check", nullable = false)
-    @Enumerated
+    @Convert(converter = MarkAttributeConverter.class)
     private Mark finalCheck;
 
     @Column(name="description")

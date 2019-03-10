@@ -1,6 +1,9 @@
 package com.yapp.web1.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.yapp.web1.converter.MarkAttributeConverter;
+import com.yapp.web1.converter.TaskJobAttributeConverter;
+import com.yapp.web1.converter.TaskStatusAttributeConverter;
 import com.yapp.web1.domain.VO.Mark;
 import com.yapp.web1.domain.VO.TaskJob;
 import com.yapp.web1.domain.VO.TaskStatus;
@@ -31,9 +34,11 @@ public class Task extends BaseEntity {
     private String title;
 
     @Column(name="status", nullable = false)
+    @Convert(converter = TaskStatusAttributeConverter.class)
     private TaskStatus status = TaskStatus.DOING;
 
     @Column(name="job", nullable = false)
+    @Convert(converter = TaskJobAttributeConverter.class)
     private TaskJob job;
 
     @Column(name="start_date", nullable = false)
@@ -46,6 +51,7 @@ public class Task extends BaseEntity {
     private String contents;
 
     @Column(name="read_check", nullable = false)
+    @Convert(converter = MarkAttributeConverter.class)
     private Mark readCheck = Mark.N;
 
     @JsonIgnore
