@@ -50,7 +50,7 @@ public class Project extends BaseEntity {
             nullable = false)
     private Orders orders;
 
-    // @OneToOne file_idx 완료시 이미지 여부 (에디터 사용에 따라 달라짐)
+    // @OneToMany file_idx 완료시 이미지 여부 (에디터 사용에 따라 달라짐)
 
     @Builder
     public Project(ProjectType type, String name, Long createUserIdx, Orders orders){
