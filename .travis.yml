@@ -1,53 +1,47 @@
 language: java
 jdk:
-  - openjdk8
-
+- openjdk8
 branches:
   only:
-    - master
-
-# Travis CI Server Home
+  - master
 cache:
   directories:
-    - '$HOME/.m2/repository'
-    - '$HOME/.gradle'
-
+  - "$HOME/.m2/repository"
+  - "$HOME/.gradle"
 script: "./gradlew clean build"
-
 before_deploy:
-  - zip -r web1 *
-  - mkdir -p deploy
-  - mv web1.zip deploy/web1.zip
-
+- zip -r web1 *
+- mkdir -p deploy
+- mv web1.zip deploy/web1.zip
 deploy:
-  - provider: s3
-    access_key_id: $AWS_ACCESS_KEY
-    secret_access_key: $AWS_SECRET_KEY
-    bucket: yappian
-    region: ap-northeast-2
-    skip_cleanup: true
-    acl: public_read
-    local_dir: deploy
-    wait-until-deployed: true
-    on:
-      repo: yapp-project/yappian-server
-      branch: master
-  
-  - provider: codedeploy
-    access_key_id: $AWS_ACCESS_KEY
-    secret_access_key: $AWS_SECRET_KEY
-    bucket: yappian
-    key: web1.zip
-    bundle_type: zip
-    application: yappian
-    deployment_group: yappian-group
-    region: ap-northeast-2
-    wait-until-deployed: true
-    on:
-      repo: yapp-project/yappian-server
-      branch: master
-
+- provider: s3
+  access_key_id: "$AWS_ACCESS_KEY"
+  secret_access_key: "$AWS_SECRET_KEY"
+  bucket: yappian
+  region: ap-northeast-2
+  skip_cleanup: true
+  acl: public_read
+  local_dir: deploy
+  wait-until-deployed: true
+  on:
+    repo: yapp-project/yappian-server
+    branch: master
+- provider: codedeploy
+  access_key_id: "$AWS_ACCESS_KEY"
+  secret_access_key: "$AWS_SECRET_KEY"
+  bucket: yappian
+  key: web1.zip
+  bundle_type: zip
+  application: yappian
+  deployment_group: yappian-group
+  region: ap-northeast-2
+  wait-until-deployed: true
+  on:
+    repo: yapp-project/yappian-server
+    branch: master
 notifications:
   email:
     recipients:
-      - kdkyung57@gmail.com 
+    - kdkyung57@gmail.com
+  slack:
+    secure: LRRqS7FX8rnQf38P5jeHFlc3D3+ytLzlF7gri7w6tSEMiSz6ndcnqD48Jda5gJVgTeXCh9+dhz2r3gwjiZE4X7Gu1DFSPwi2bULFenoPobT54mjmhPQpBypSVzjjybf3a1lTI3ICmYgq5YpNquip+ae+kuO+Ikv0SpQM5y2Md6XBYU8bppb1WzGeB7PQ4bUPpp0MKgBitzmV3YLGzM31FWmuta9N/p4LUuK/7PKFOTe52n9bnPPiRWx0ueR34vuKR1h6IgbFAGKkp6N2sie4bI8CUMTvR7n9zG7WMJbjWx3zbA7uxywGgc247lTd12SBnboA7aTXWFSK5FpOPuN3GRyVYeXngGmVXZoJpclX1N0tVee+CST0FVYdB+Qz0Fd8rrOSlZwGhBE52AaY/JkQjo6aEHu399VAuofZMc18UTQB2ieY/nU0sSXWmIW+Vz76hbCrfta4MA0lexsI0ZO5I2FdpeiNdk1CqM+LRsOrL4bZyxLNoVIgzZcSKv24d0cf01d7Afphh3yJzqMC+6qWuFaO5Mcpfu6Y+dsUwO3XD2cD2SJsvFjeFFqc6q6qpx7m8ngpsDzq5/nhbfQBf4XnqklAEEjKJ3M3YQb8zVItI3pza0iOWO7OZfA9sS7WBHfLyT3NmY+r5mPo2ofDK4KEAUVaAC/FuYNvmFH1cjFl3Go=
