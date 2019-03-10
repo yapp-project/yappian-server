@@ -26,7 +26,6 @@ import java.util.List;
 public class UserController {
 
     private UserService userService;
-    private User user;
 
     /**
      * 즐겨찾는 프로젝트 목록 반환

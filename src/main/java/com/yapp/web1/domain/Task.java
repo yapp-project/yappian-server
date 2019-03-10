@@ -74,7 +74,7 @@ public class Task extends BaseEntity {
     public Task(String title, TaskStatus status, TaskJob job, LocalDate startDate, LocalDate endDate, String contents,
                 List<Comment> commentList, List<File> fileList, Set<User> managers){
         this.title = title;
-        this.status = status;
+        this.status = status; //
         this.job = job;
         this.startDate = startDate;
         this.endDate = endDate;

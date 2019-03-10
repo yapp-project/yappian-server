@@ -2,8 +2,8 @@ package com.yapp.web1.controller;
 
 import com.yapp.web1.domain.Orders;
 import com.yapp.web1.domain.Project;
-import com.yapp.web1.service.OrderService;
-import lombok.RequiredArgsConstructor;
+import com.yapp.web1.service.OrdersService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,13 +19,13 @@ import java.util.List;
  * @since 0.0.3
  * @version 1.0
  */
-//@AllArgsConstructor
-@RequiredArgsConstructor
+@AllArgsConstructor
 @RequestMapping("/v1/api")
 @RestController
-public class OrderController {
+public class OrdersController {
 
-     @Autowired  OrderService orderService;// = new OrderService;
+    @Autowired
+    OrdersService ordersService;// = new OrderService;
     /**
      * 기수 목록 리스트
      *
@@ -35,7 +35,7 @@ public class OrderController {
      */
     @GetMapping("/orders")
     public ResponseEntity<List<Orders>> getOrderList(){
-        List<Orders> orders = orderService.findNumber();
+        List<Orders> orders = ordersService.findNumber();
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 

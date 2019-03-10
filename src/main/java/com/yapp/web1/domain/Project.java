@@ -7,14 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Project 테이블의 Domain 클래스
@@ -30,19 +23,21 @@ import javax.persistence.Table;
 public class Project extends BaseEntity {
 
     @Column(name="type", nullable = false)
+    @Enumerated
     private ProjectType type;
 
     @Column(name="name", nullable = false)
     private String name;
 
     @Column(name="final_check", nullable = false)
-    private Mark finalCheck = Mark.N; //
+    @Enumerated
+    private Mark finalCheck;
 
     @Column(name="description")
-    private String description; //
+    private String description;
 
     @Column(name="url")
-    private String productURL; //
+    private String productURL;
 
     @Column(name="create_user_idx",nullable = false)
     private Long createUserIdx;
@@ -59,6 +54,7 @@ public class Project extends BaseEntity {
     public Project(ProjectType type, String name, Long createUserIdx, Orders orders){
         this.type = type;
         this.name = name;
+        this.finalCheck = Mark.N;
         this.createUserIdx = createUserIdx;
         this.orders = orders;
     }

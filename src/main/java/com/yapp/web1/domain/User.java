@@ -30,6 +30,7 @@ public class User extends BaseEntity {
     private String name;
 
     @Column(name="userRole", nullable=false)
+    @Enumerated
     private UserRole role = UserRole.USER;
 
     @JsonIgnore
