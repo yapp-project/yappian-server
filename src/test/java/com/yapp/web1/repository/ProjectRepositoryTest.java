@@ -19,7 +19,7 @@ public class ProjectRepositoryTest extends RepositoryTest {
     private OrdersRepository ordersRepository;
 
     @Test
-    public void BaseEntity테스트(){
+    public void Entity저장시_BaseEntity적용테스트(){
         // given
         LocalDateTime now = LocalDateTime.now();
 
