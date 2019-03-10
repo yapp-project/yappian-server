@@ -1,4 +1,4 @@
-package com.yapp.web1.repository;
+package com.yapp.web1.common;
 
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
@@ -6,6 +6,14 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+
+/**
+ * Repository Test
+ *
+ * @author Dakyung Ko
+ * @since 0.0.3
+ * @version 1.0
+ */
 
 @RunWith(SpringRunner.class)
 @DataJpaTest

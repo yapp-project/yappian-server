@@ -1,5 +1,6 @@
 package com.yapp.web1.repository;
 
+import com.yapp.web1.common.RepositoryTest;
 import com.yapp.web1.domain.Orders;
 import com.yapp.web1.domain.Project;
 import com.yapp.web1.domain.VO.ProjectType;
@@ -11,7 +12,7 @@ import java.util.List;
 
 import static junit.framework.TestCase.assertTrue;
 
-public class ProjectRepositoryTest extends RepositoryTest{
+public class ProjectRepositoryTest extends RepositoryTest {
     @Autowired
     private ProjectRepository projectRepository;
     @Autowired
