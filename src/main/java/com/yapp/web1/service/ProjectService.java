@@ -1,7 +1,6 @@
 package com.yapp.web1.service;
 
 import com.yapp.web1.domain.Project;
-
 import javax.servlet.http.HttpSession;
 
 /**
@@ -24,15 +23,12 @@ public interface ProjectService {
     Project createProject(Project project, HttpSession session);
 
     /**
-     * 프로젝트 참여
+     * 프로젝트 수정
      *
-     * @param idx 참여할 Project idx
-     * @param session 로그인 유저 session
-     * @return 참여한 Project 정보 - 추후 response dto로 변경(Project, Task)
-     *
-     * @exception Exception 같은 기수 다른 Project에 join된 경우 - 추후 수정
+     * @param idx 수정할 Project idx
+     * @param project 수정할 Project 정보 - 추후 dto로 변경(Orders, Project)
      */
-    Project joinProject(Long idx, HttpSession session);
+    boolean updateProject(Long idx, Project project);
 
     /**
      * 프로젝트 삭제
@@ -43,12 +39,4 @@ public interface ProjectService {
      * @exception Exception Project의 createUserIdx와 session userIdx 불일치 시 삭제 불가
      */
     boolean deleteProject(Long idx, HttpSession session);
-
-    /**
-     * 프로젝트 수정
-     *
-     * @param idx 수정할 Project idx
-     * @param project 수정할 Project 정보 - 추후 dto로 변경(Orders, Project)
-     */
-    boolean updateProject(Long idx, Project project);
 }

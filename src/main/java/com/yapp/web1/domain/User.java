@@ -52,11 +52,11 @@ public class User extends BaseEntity {
     @OneToMany(fetch=FetchType.LAZY,
             cascade = CascadeType.REMOVE,//ALL
             orphanRemoval = true)
-    @JoinTable(name="favorite",
+    @JoinTable(name="favorites",
             joinColumns = @JoinColumn(name="user_idx"),
             inverseJoinColumns = @JoinColumn(name="project_idx"))
     @OrderBy("project_idx desc")
-    private Set<Project> favorite = new HashSet<>();
+    private Set<Project> favorites = new HashSet<>();
 
     @OneToMany(fetch=FetchType.LAZY,
             cascade = CascadeType.PERSIST,
@@ -64,18 +64,18 @@ public class User extends BaseEntity {
     @JoinTable(name="joined_project",
             joinColumns = @JoinColumn(name="user_idx"),
             inverseJoinColumns = @JoinColumn(name="project_idx"))
-    private Set<Project> joinedProject = new HashSet<>();
+    private Set<Project> joinedProjects = new HashSet<>();
 
     @Builder
     public User(String email, String name,
-                Set<UserOrder> userOrders, List<Comment> commentList, Set<Project> favorite, Set<Project> joinedProject){
+                Set<UserOrder> userOrders, List<Comment> commentList, Set<Project> favorites, Set<Project> joinedProject){
         this.email = email;
         this.name = name;
 
         this.userOrders = Optional.ofNullable(userOrders).orElse(this.userOrders);
         this.commentList = Optional.ofNullable(commentList).orElse(this.commentList);
-        this.favorite = Optional.ofNullable(favorite).orElse(this.favorite);
-        this.joinedProject = Optional.ofNullable(joinedProject).orElse(this.joinedProject);
+        this.favorites = Optional.ofNullable(favorites).orElse(this.favorites);
+        this.joinedProjects = Optional.ofNullable(joinedProject).orElse(this.joinedProjects);
     }
 
 //    + hashcode/toString override

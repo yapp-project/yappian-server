@@ -1,16 +1,16 @@
 package com.yapp.web1.service.impl;
 
 import com.yapp.web1.domain.Project;
-import com.yapp.web1.repository.ProjectRepository;
-import com.yapp.web1.service.ProjectService;
+import com.yapp.web1.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
- * ProjectService 구현 클래스
+ * UserService 구현 클래스
  *
  * @author Dakyung Ko
  * @author Jihye Kim
@@ -20,22 +20,21 @@ import javax.servlet.http.HttpSession;
 @Service
 @Transactional
 @AllArgsConstructor
-public class ProjectServiceImpl implements ProjectService {
+public class UserServiceImpl implements UserService {
 
-    private final ProjectRepository projectRepository;
-
+    @Transactional(readOnly = true)
     @Override
-    public Project createProject(Project project, HttpSession session) {
+    public List<Project> getFavoriteProjects(HttpSession session) {
         return null;
     }
 
     @Override
-    public boolean deleteProject(Long idx, HttpSession session) {
+    public boolean setFavoriteProject(Long idx, HttpSession session) {
         return false;
     }
 
     @Override
-    public boolean updateProject(Long idx, Project project) {
-        return false;
+    public Project joinProject(Long idx, HttpSession session) {
+        return null;
     }
 }
