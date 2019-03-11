@@ -98,7 +98,7 @@ spring:
       username: sa
       password:
       driver-class-name: org.h2.Driver
-#    data: classpath:init.sql
+    data: classpath:init.sql
 
   jpa:
     database: h2
