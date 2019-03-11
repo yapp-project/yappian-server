@@ -25,6 +25,16 @@ public class ProjectController {
     private ProjectService projectService;
 
     /**
+     * 프로젝트 목록
+     *
+     * @exception Exception 이미 join된 유저 - 추후 수정
+     *
+     * @see /v1/api/project
+     */
+
+
+
+    /**
      * 프로젝트 생성
      *
      * @param project 생성할 프로젝트 데이터
