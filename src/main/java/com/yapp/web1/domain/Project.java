@@ -22,19 +22,17 @@ import javax.persistence.Table;
 @Entity
 @Table(name="project")
 @AttributeOverride(name="idx", column=@Column(name="project_idx"))
-@NoArgsConstructor(access = AccessLevel.PUBLIC)//protected
+@NoArgsConstructor(access = AccessLevel.PROTECTED)//protected
 @Getter
 public class Project extends BaseEntity {
 
-    @Setter
-    @Column(name="type")//nullable = false
+    @Column(name="type",nullable = false)//
     private ProjectType type;
 
-    @Setter
-    @Column(name="name")//nullable = false
+    @Column(name="name",nullable = false)//nullable = false
     private String name;
 
-    @Column(name="final_check")//nullable = false
+    @Column(name="final_check",nullable = false)//nullable = false
     private Mark finalCheck = Mark.N; //
 
     @Column(name="description")
@@ -43,25 +41,17 @@ public class Project extends BaseEntity {
     @Column(name="url")
     private String productURL; //
 
-    @Setter
-    @Column(name="create_user_idx")//nullable = false
+    @Column(name="create_user_idx",nullable = false)//nullable = false
     private Long createUserIdx;
 
-    @Setter
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name="orders_idx",
-            foreignKey = @ForeignKey(name="fk_project_orders"))//nullable = false
+            foreignKey = @ForeignKey(name="fk_project_orders"),nullable = false)//nullable = false
     private Orders orders;
 
     // @OneToOne file_idx 완료시 이미지 여부 (에디터 사용에 따라 달라짐)
 
-    /*
-    @Builder
-    public Project(){
-
-    }
-    */
-    @Builder
+     @Builder
     public Project(ProjectType type, String name, Long createUserIdx, Orders orders){
         this.type = type;
         this.name = name;
