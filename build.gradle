@@ -6,12 +6,14 @@ plugins {
 apply plugin: 'io.spring.dependency-management'
 
 group = 'com.yapp'
-version = '0.0.2'
+version = '0.0.3'
 sourceCompatibility = '1.8'
 
 repositories {
     mavenCentral()
 }
+
+ext['hibernate.version'] = '5.2.11.Final'
 
 dependencies {
     implementation ('org.springframework.boot:spring-boot-starter-actuator')
@@ -25,4 +27,6 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 //    testImplementation 'org.springframework.security:spring-security-test'
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.6.1'
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.6.1'
 }

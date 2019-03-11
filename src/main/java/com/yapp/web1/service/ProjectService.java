@@ -2,7 +2,6 @@ package com.yapp.web1.service;
 
 import com.yapp.web1.domain.Orders;
 import com.yapp.web1.domain.Project;
-import com.yapp.web1.repository.OrderRepository;
 import com.yapp.web1.repository.ProjectRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

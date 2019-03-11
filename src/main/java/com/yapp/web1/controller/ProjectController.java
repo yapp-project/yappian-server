@@ -2,7 +2,7 @@ package com.yapp.web1.controller;
 
 import com.yapp.web1.domain.Orders;
 import com.yapp.web1.domain.Project;
-import com.yapp.web1.service.OrderService;
+import com.yapp.web1.service.OrdersService;
 import com.yapp.web1.service.ProjectService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class ProjectController {
     ProjectService projectService;
 
     @Autowired
-    OrderService orderService;
+    OrdersService orderService;
 
     /**
      * 프로젝트 상세 페이지

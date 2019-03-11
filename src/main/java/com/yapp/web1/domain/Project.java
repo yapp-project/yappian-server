@@ -1,17 +1,12 @@
 package com.yapp.web1.domain;
 
+import com.yapp.web1.converter.MarkAttributeConverter;
+import com.yapp.web1.converter.ProjectTypeAttributeConverter;
 import com.yapp.web1.domain.VO.Mark;
 import com.yapp.web1.domain.VO.ProjectType;
 import lombok.*;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Project 테이블의 Domain 클래스
@@ -22,39 +17,43 @@ import javax.persistence.Table;
 @Entity
 @Table(name="project")
 @AttributeOverride(name="idx", column=@Column(name="project_idx"))
-@NoArgsConstructor(access = AccessLevel.PROTECTED)//protected
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Project extends BaseEntity {
 
-    @Column(name="type",nullable = false)//
+
+    @Column(name="type", nullable = false)
+    @Convert(converter = ProjectTypeAttributeConverter.class)
     private ProjectType type;
 
-    @Column(name="name",nullable = false)//nullable = false
+    @Column(name="name",nullable = false)
     private String name;
 
-    @Column(name="final_check",nullable = false)//nullable = false
-    private Mark finalCheck = Mark.N; //
+    @Column(name="final_check", nullable = false)
+    @Convert(converter = MarkAttributeConverter.class)
+    private Mark finalCheck;
 
     @Column(name="description")
-    private String description; //
+    private String description;
 
     @Column(name="url")
-    private String productURL; //
+    private String productURL;
 
-    @Column(name="create_user_idx",nullable = false)//nullable = false
+    @Column(name="create_user_idx",nullable = false)
     private Long createUserIdx;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name="orders_idx",
-            foreignKey = @ForeignKey(name="fk_project_orders"),nullable = false)//nullable = false
+            foreignKey = @ForeignKey(name="fk_project_orders"),nullable = false)
     private Orders orders;
 
-    // @OneToOne file_idx 완료시 이미지 여부 (에디터 사용에 따라 달라짐)
+    // @OneToMany file_idx 완료시 이미지 여부 (에디터 사용에 따라 달라짐)
 
      @Builder
     public Project(ProjectType type, String name, Long createUserIdx, Orders orders){
         this.type = type;
         this.name = name;
+        this.finalCheck = Mark.N;
         this.createUserIdx = createUserIdx;
         this.orders = orders;
     }

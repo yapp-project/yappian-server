@@ -1,6 +1,7 @@
 package com.yapp.web1.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.yapp.web1.converter.UserRoleAttributeConverter;
 import com.yapp.web1.domain.VO.UserRole;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -30,6 +31,7 @@ public class User extends BaseEntity {
     private String name;
 
     @Column(name="userRole", nullable=false)
+    @Convert(converter = UserRoleAttributeConverter.class)
     private UserRole role = UserRole.USER;
 
     @JsonIgnore
@@ -47,7 +49,6 @@ public class User extends BaseEntity {
     private List<Comment> commentList = new ArrayList<>();
 
 
-    //Join Table
     @OneToMany(fetch=FetchType.LAZY,
             cascade = CascadeType.REMOVE,//ALL
             orphanRemoval = true)
@@ -57,7 +58,6 @@ public class User extends BaseEntity {
     @OrderBy("project_idx desc")
     private Set<Project> favorite = new HashSet<>();
 
-    //Join Table
     @OneToMany(fetch=FetchType.LAZY,
             cascade = CascadeType.PERSIST,
             orphanRemoval = true)
@@ -78,10 +78,5 @@ public class User extends BaseEntity {
         this.joinedProject = Optional.ofNullable(joinedProject).orElse(this.joinedProject);
     }
 
-    //    @Override
-//    public String toString(){
-//
-//    }
-
-//    + hashcode override
+//    + hashcode/toString override
 }

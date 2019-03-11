@@ -1,7 +1,7 @@
 package com.yapp.web1.service;
 
 import com.yapp.web1.domain.Orders;
-import com.yapp.web1.repository.OrderRepository;
+import com.yapp.web1.repository.OrdersRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,12 +12,12 @@ import java.util.List;
 @Service
 @Transactional
 @AllArgsConstructor
-public class OrderService {
+public class OrdersService {
 
    @Autowired
-   OrderRepository orderRepository;
+   OrdersRepository ordersRepository;
 
     public List<Orders> findNumber(){
-        return orderRepository.findByOrderByNumberDesc();
+        return ordersRepository.findByOrderByNumberDesc();
     }
 }

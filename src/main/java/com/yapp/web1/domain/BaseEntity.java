@@ -32,13 +32,11 @@ public class BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long idx;
 
-    /*
-    @Column(name = "created_date")//, nullable = false, updatable = false
+    @Column(name = "created_date", nullable = false, updatable = false)
     @CreatedDate
     protected LocalDateTime createDate;
 
     @Column(name = "modified_date")
     @LastModifiedDate
     protected LocalDateTime modifiedDate;
-    */
 }

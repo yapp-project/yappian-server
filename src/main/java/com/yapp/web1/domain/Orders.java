@@ -22,7 +22,7 @@ import java.util.Set;
 public class Orders extends BaseEntity{
 
     @Column(name="number", nullable=false, unique=true)
-    Long number;
+    int number;
 
     @JsonIgnore
     @OneToMany(mappedBy="orders",
@@ -40,7 +40,7 @@ public class Orders extends BaseEntity{
 
 
     @Builder
-    public Orders(Long number, Set<UserOrder> userOrders, Set<Project> projects){
+    public Orders(int number, Set<UserOrder> userOrders, Set<Project> projects){
         this.number = number;
 
         this.userOrders = Optional.ofNullable(userOrders).orElse(this.userOrders);
