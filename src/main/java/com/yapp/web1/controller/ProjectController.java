@@ -1,7 +1,7 @@
 package com.yapp.web1.controller;
 
 import com.yapp.web1.domain.Project;
-import com.yapp.web1.service.ProjectService;
+import com.yapp.web1.service.impl.ProjectServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ import javax.validation.Valid;
 @RestController
 public class ProjectController {
 
-    private ProjectService projectService;
+    private ProjectServiceImpl projectServiceImpl;
 
     /**
      * 프로젝트 생성
