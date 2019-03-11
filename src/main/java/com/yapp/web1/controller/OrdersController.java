@@ -2,7 +2,7 @@ package com.yapp.web1.controller;
 
 import com.yapp.web1.domain.Orders;
 import com.yapp.web1.domain.Project;
-import com.yapp.web1.service.OrdersService;
+import com.yapp.web1.service.impl.OrdersServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +25,8 @@ import java.util.List;
 public class OrdersController {
 
     @Autowired
-    OrdersService ordersService;// = new OrderService;
+    OrdersServiceImpl ordersServiceImpl;
+
     /**
      * 기수 목록 리스트
      *
@@ -35,7 +36,7 @@ public class OrdersController {
      */
     @GetMapping("/orders")
     public ResponseEntity<List<Orders>> getOrderList(){
-        List<Orders> orders = ordersService.findNumber();
+        List<Orders> orders = ordersServiceImpl.getOrderList();
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
