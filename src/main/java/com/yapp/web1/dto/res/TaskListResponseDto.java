@@ -16,6 +16,7 @@ import java.util.List;
 @Getter
 public class TaskListResponseDto {
 
+    private Long taskIdx; // 테스크 idx
     private String task; // 테스크 제목
     private TaskJob taskJob; // 테스크 직군
     private List<User> userList; // 테스크 담당자
@@ -24,8 +25,9 @@ public class TaskListResponseDto {
     private TaskStatus taskStatus; // 테스크 진행상태
 
     @Builder
-    public TaskListResponseDto(String task, TaskJob taskJob, List<User> userList,
+    public TaskListResponseDto(Long taskIdx, String task, TaskJob taskJob, List<User> userList,
                                LocalDate startDate, LocalDate endDate, TaskStatus taskStatus){
+        this.taskIdx = taskIdx;
         this.task = task;
         this.taskJob = taskJob;
         this.userList = userList;

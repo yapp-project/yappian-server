@@ -1,6 +1,8 @@
 package com.yapp.web1.service.impl;
 
 import com.yapp.web1.domain.Project;
+import com.yapp.web1.dto.req.ProjectSaveRequestDto;
+import com.yapp.web1.dto.res.ProjectSaveResponseDto;
 import com.yapp.web1.repository.ProjectRepository;
 import com.yapp.web1.service.ProjectService;
 import lombok.AllArgsConstructor;
@@ -25,7 +27,7 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
 
     @Override
-    public Project createProject(Project project, HttpSession session) {
+    public ProjectSaveResponseDto createProject(ProjectSaveRequestDto project, HttpSession session) {
         return null;
     }
 
@@ -35,7 +37,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public boolean updateProject(Long idx, Project project) {
+    public boolean updateProject(Long idx, ProjectSaveRequestDto project) {
         return false;
     }
 }

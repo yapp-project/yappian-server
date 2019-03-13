@@ -12,16 +12,14 @@ import java.util.List;
  * @author JiHye Kim
  */
 @Getter
-public class OrderListResponseDto {
+public class OrdersResponseDto {
 
     private Long idx;
     private int number;
 
     @Builder
-    public OrderListResponseDto(Long idx, int number){
+    public OrdersResponseDto(Long idx, int number){
         this.idx = idx;
         this.number = number;
     }
-
-
 }

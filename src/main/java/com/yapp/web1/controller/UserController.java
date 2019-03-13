@@ -2,6 +2,7 @@ package com.yapp.web1.controller;
 
 import com.yapp.web1.domain.Project;
 import com.yapp.web1.domain.User;
+import com.yapp.web1.dto.res.ProjectListResponseDto;
 import com.yapp.web1.service.impl.UserServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,8 +19,8 @@ import java.util.List;
  *
  * @author Dakyung Ko
  * @author Jihye Kim
- * @since 0.0.2
- * @version 1.0
+ * @since 0.0.3
+ * @version 1.1
  */
 @AllArgsConstructor
 @RequestMapping("/v1/api")
@@ -37,9 +38,8 @@ public class UserController {
      * @see /v1/api/favorites
      */
     @GetMapping("/favorites")
-    public ResponseEntity<List<Project>> getFavoriteProjects(HttpSession session){
-        // 조인테이블..
-        List<Project> projectList = new ArrayList<>(); // 결과 예시, 추후 DTO로 변경해야 함
+    public ResponseEntity<List<ProjectListResponseDto>> getFavoriteProjects(HttpSession session){
+        List<ProjectListResponseDto> projectList = userServiceImpl.getFavoriteProjects(session);
         return new ResponseEntity<>(projectList, HttpStatus.OK);
     }
 
@@ -54,7 +54,7 @@ public class UserController {
      */
     @PutMapping("/favorite/{idx}")
     public ResponseEntity setFavoriteProject(@PathVariable final Long idx, HttpSession session){
-        // User Domain에서 추가
+        userServiceImpl.setFavoriteProject(idx, session);
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -67,10 +67,9 @@ public class UserController {
      *
      * @see /v1/api/join/{idx}
      */
-    //project join
     @PutMapping("/join/{idx}")
     public ResponseEntity joinProject(@PathVariable final Long idx, HttpSession session){
-        //조인테이블...
+        userServiceImpl.joinProject(idx, session);
         return new ResponseEntity(HttpStatus.OK);
     }
 }

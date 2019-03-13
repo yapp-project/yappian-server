@@ -1,6 +1,7 @@
 package com.yapp.web1.service.impl;
 
 import com.yapp.web1.domain.Project;
+import com.yapp.web1.dto.res.ProjectListResponseDto;
 import com.yapp.web1.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Project> getFavoriteProjects(HttpSession session) {
+    public List<ProjectListResponseDto> getFavoriteProjects(HttpSession session) {
         return null;
     }
 

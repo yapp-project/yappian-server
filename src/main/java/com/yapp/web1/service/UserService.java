@@ -1,6 +1,8 @@
 package com.yapp.web1.service;
 
 import com.yapp.web1.domain.Project;
+import com.yapp.web1.dto.res.ProjectListResponseDto;
+
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -19,7 +21,7 @@ public interface UserService {
      * @param session 로그인 유저 session
      * @return 즐겨찾기 Project list - 추후 dto로 수정 (Project, Orders, favorite, joined)
      */
-    List<Project> getFavoriteProjects(HttpSession session);
+    List<ProjectListResponseDto> getFavoriteProjects(HttpSession session);
 
     /**
      * 프로젝트 즐겨찾기 설정 및 해제

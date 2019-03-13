@@ -2,6 +2,8 @@ package com.yapp.web1.service;
 
 import com.yapp.web1.domain.Orders;
 import com.yapp.web1.domain.Project;
+import com.yapp.web1.dto.res.OrdersResponseDto;
+import com.yapp.web1.dto.res.ProjectListResponseDto;
 
 import java.util.List;
 
@@ -10,7 +12,7 @@ import java.util.List;
  *
  * @author Dakyung Ko
  * @since 0.0.3
- * @version 1.0
+ * @version 1.1
  */
 public interface OrderService {
     /**
@@ -18,7 +20,7 @@ public interface OrderService {
      *
      * @return 전체 기수 list
      */
-    List<Orders> getOrderList();
+    List<OrdersResponseDto> getOrderList();
 
     /**
      * 기수별 프로젝트 목록
@@ -26,5 +28,5 @@ public interface OrderService {
      * @param idx 조회할 Orders(기수)의 idx
      * @return 해당 기수의 프로젝트 list
      */
-    List<Project> getProjectListByOrder(Long idx);
+    List<ProjectListResponseDto> getProjectListByOrder(Long idx);
 }

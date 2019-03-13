@@ -2,6 +2,8 @@ package com.yapp.web1.service.impl;
 
 import com.yapp.web1.domain.Orders;
 import com.yapp.web1.domain.Project;
+import com.yapp.web1.dto.res.OrdersResponseDto;
+import com.yapp.web1.dto.res.ProjectListResponseDto;
 import com.yapp.web1.repository.OrdersRepository;
 import com.yapp.web1.service.OrderService;
 import lombok.AllArgsConstructor;
@@ -28,13 +30,13 @@ public class OrdersServiceImpl implements OrderService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Orders> getOrderList() {
+    public List<OrdersResponseDto> getOrderList() {
         return null;
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<Project> getProjectListByOrder(Long idx) {
+    public List<ProjectListResponseDto> getProjectListByOrder(Long idx) {
         return null;
     }
 }

@@ -1,15 +1,13 @@
 package com.yapp.web1.controller;
 
-import com.yapp.web1.domain.Orders;
-import com.yapp.web1.domain.Project;
+import com.yapp.web1.dto.res.OrdersResponseDto;
+import com.yapp.web1.dto.res.ProjectListResponseDto;
 import com.yapp.web1.service.impl.OrdersServiceImpl;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,15 +15,14 @@ import java.util.List;
  *
  * @author Dakyung Ko, JiHye Kim
  * @since 0.0.3
- * @version 1.0
+ * @version 1.1
  */
 @AllArgsConstructor
 @RequestMapping("/v1/api")
 @RestController
 public class OrdersController {
 
-    @Autowired
-    OrdersServiceImpl ordersServiceImpl;
+    private OrdersServiceImpl ordersServiceImpl;
 
     /**
      * 기수 목록 리스트
@@ -35,8 +32,8 @@ public class OrdersController {
      * @see /v1/api/orders
      */
     @GetMapping("/orders")
-    public ResponseEntity<List<Orders>> getOrderList(){
-        List<Orders> orders = ordersServiceImpl.getOrderList();
+    public ResponseEntity<List<OrdersResponseDto>> getOrderList(){
+        List<OrdersResponseDto> orders = ordersServiceImpl.getOrderList();
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
@@ -49,11 +46,8 @@ public class OrdersController {
      * @see /v1/api/order/{idx}
      */
     @GetMapping("/order/{idx}")
-    public ResponseEntity<List<Project>> getProjectListByOrder(@PathVariable final Long idx){
-//        return projectService.findProjectByOrder();
-        List<Project> projectList = new ArrayList<>();
+    public ResponseEntity<List<ProjectListResponseDto>> getProjectListByOrder(@PathVariable final Long idx){
+        List<ProjectListResponseDto> projectList = ordersServiceImpl.getProjectListByOrder(idx);
         return new ResponseEntity<>(projectList, HttpStatus.OK);
     }
-
-
 }
