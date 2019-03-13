@@ -1,6 +1,7 @@
 package com.yapp.web1.service.impl;
 
 import com.yapp.web1.domain.Project;
+import com.yapp.web1.domain.User;
 import com.yapp.web1.dto.res.ProjectListResponseDto;
 import com.yapp.web1.service.UserService;
 import lombok.AllArgsConstructor;
@@ -25,17 +26,17 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<ProjectListResponseDto> getFavoriteProjects(HttpSession session) {
+    public List<ProjectListResponseDto> getFavoriteProjects(User user) {
         return null;
     }
 
     @Override
-    public boolean setFavoriteProject(Long idx, HttpSession session) {
+    public boolean setFavoriteProject(Long idx, User user) {
         return false;
     }
 
     @Override
-    public Project joinProject(Long idx, HttpSession session) {
+    public Project joinProject(Long idx, User user) {
         return null;
     }
 }

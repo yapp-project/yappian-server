@@ -1,8 +1,12 @@
 package com.yapp.web1.service.impl;
 
 import com.yapp.web1.domain.Project;
-import com.yapp.web1.dto.req.ProjectSaveRequestDto;
-import com.yapp.web1.dto.res.ProjectSaveResponseDto;
+import com.yapp.web1.domain.User;
+import com.yapp.web1.domain.VO.Mark;
+import com.yapp.web1.dto.req.FinishProjectRequestDto;
+import com.yapp.web1.dto.req.ProjectRequestDto;
+import com.yapp.web1.dto.res.FinishProjectResponseDto;
+import com.yapp.web1.dto.res.ProjectResponseDto;
 import com.yapp.web1.repository.ProjectRepository;
 import com.yapp.web1.service.ProjectService;
 import lombok.AllArgsConstructor;
@@ -27,17 +31,48 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
 
     @Override
-    public ProjectSaveResponseDto createProject(ProjectSaveRequestDto project, HttpSession session) {
+    public ProjectResponseDto createProject(ProjectRequestDto dto, User user) {
         return null;
     }
 
     @Override
-    public boolean deleteProject(Long idx, HttpSession session) {
+    public boolean deleteProject(Long idx, User user) {
         return false;
     }
 
     @Override
-    public boolean updateProject(Long idx, ProjectSaveRequestDto project) {
-        return false;
+    public ProjectResponseDto updateProject(Long idx, ProjectRequestDto dto, User user) {
+        return null;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public ProjectResponseDto getProject(Long idx) {
+        return null;
+    }
+
+    @Override
+    public boolean setFinishedProject(Long idx, FinishProjectRequestDto dto) {
+        // 예시
+        Project findProject = findById(idx);
+
+        if(findProject.getFinalCheck() == Mark.Y) return false; // 추후 수정
+
+        findProject.updateProductURL(dto.getProductURL());
+        findProject.descriptProject(dto.getDescription());
+        findProject.finishedProject();
+        projectRepository.save(findProject);
+        return true;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public FinishProjectResponseDto getFinishedProject(Long idx) {
+        return null;
+    }
+
+    private Project findById(Long idx){
+        return projectRepository.findById(idx).orElseThrow(
+                ()-> new IllegalArgumentException("findById error : wrong id"));
     }
 }

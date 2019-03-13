@@ -1,8 +1,10 @@
 package com.yapp.web1.controller;
 
-import com.yapp.web1.domain.Project;
-import com.yapp.web1.dto.req.ProjectSaveRequestDto;
-import com.yapp.web1.dto.res.ProjectSaveResponseDto;
+import com.yapp.web1.domain.User;
+import com.yapp.web1.dto.req.FinishProjectRequestDto;
+import com.yapp.web1.dto.req.ProjectRequestDto;
+import com.yapp.web1.dto.res.FinishProjectResponseDto;
+import com.yapp.web1.dto.res.ProjectResponseDto;
 import com.yapp.web1.service.impl.ProjectServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.List;
 
 /**
  * Project Controller
@@ -19,7 +20,7 @@ import java.util.List;
  * @author Dakyung Ko
  * @author Jihye Kim
  * @since 0.0.3
- * @version 1.1
+ * @version 1.3
  */
 @AllArgsConstructor
 @RequestMapping("/v1/api")
@@ -32,14 +33,16 @@ public class ProjectController {
      * 프로젝트 생성
      *
      * @param project 생성할 프로젝트 데이터
+     * @param session 로그인 유저 정보
      * @return 생성한 프로젝트 데이터, 해당 프로젝트의 task 목록
+     *
      * @exception Exception 이미 join된 유저 - 추후 수정
      *
      * @see /v1/api/project
      */
     @PostMapping("/project")
-    public ResponseEntity<ProjectSaveResponseDto> createProject(@Valid @RequestBody final ProjectSaveRequestDto project, HttpSession session){
-        ProjectSaveResponseDto createProject = projectServiceImpl.createProject(project, session);
+    public ResponseEntity<ProjectResponseDto> createProject(@Valid @RequestBody final ProjectRequestDto project, HttpSession session){
+        ProjectResponseDto createProject = projectServiceImpl.createProject(project, null);
         return new ResponseEntity<>(createProject, HttpStatus.CREATED);
     }
 
@@ -48,27 +51,75 @@ public class ProjectController {
      *
      * @param idx 수정할 프로젝트 idx
      * @param project 수정할 프로젝트 데이터
+     * @param session 로그인 유저 session
+     * @return 수정한 프로젝트 데이터, 해당 프로젝트의 task 목록
+     *
      * @exception Exception Project.createUserIdx와 세션 User idx 불일치시 - 추후 수정
      *
      * @see /v1/api/project/{idx}
      */
     @PutMapping("/project/{idx}")
-    public ResponseEntity updateProject(@PathVariable final Long idx, @Valid @RequestBody final ProjectSaveRequestDto project){
-        projectServiceImpl.updateProject(idx, project);
-        return new ResponseEntity(HttpStatus.OK);
+    public ResponseEntity<ProjectResponseDto> updateProject(@PathVariable final Long idx, @Valid @RequestBody final ProjectRequestDto project, HttpSession session){
+        ProjectResponseDto updateProject = projectServiceImpl.updateProject(idx, project, null);
+        return new ResponseEntity<>(updateProject, HttpStatus.OK);
     }
 
     /**
      * 프로젝트 삭제
      *
      * @param idx 수정할 프로젝트 idx
+     * @param session 로그인 유저 session
      * @exception Exception Project.createUserIdx와 세션 User idx 불일치시 - 추후 수정
      *
      * @see /v1/api/project/{idx}
      */
-    @DeleteMapping("project/{idx}")
+    @DeleteMapping("/project/{idx}")
     public ResponseEntity deleteProject(@PathVariable final Long idx, HttpSession session){
-        projectServiceImpl.deleteProject(idx, session);
+        projectServiceImpl.deleteProject(idx, null);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    /**
+     * 프로젝트 상세
+     * : 프로젝트 정보 및 Task 목록
+     *
+     * @param idx 조회할 프로젝트 idx
+     * @exception Exception invalid idx - 추후 수정
+     *
+     * @see /v1/api/project/{idx}
+     */
+
+    @GetMapping("/project/{idx}")
+    public ResponseEntity<ProjectResponseDto> getProject(@PathVariable final Long idx){
+        ProjectResponseDto project = projectServiceImpl.getProject(idx);
+        return new ResponseEntity<>(project, HttpStatus.OK);
+    }
+
+    /**
+     * 프로젝트 완료 설정
+     *
+     * @param idx 완료할 프로젝트 idx
+     * @exception Exception 이미 완료된 경우, join한 유저가 아닌 경우
+     *
+     * @see /v1/api/project/{idx}/finish
+     */
+    @PutMapping("/project/{idx}/finish")
+    public ResponseEntity setFinishedProject(@PathVariable final Long idx, @Valid @RequestBody FinishProjectRequestDto project){
+        projectServiceImpl.setFinishedProject(idx, project);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    /**
+     * 프로젝트 완료 상세
+     *
+     * @param idx 조회할 프로젝트 idx
+     * @exception Exception 완료되지 않은 경우
+     *
+     * @see /v1/api/project/{idx}/finish
+     */
+    @GetMapping("/project/{idx}/finish")
+    public ResponseEntity<FinishProjectResponseDto> getFinishedProject(@PathVariable final Long idx) {
+        FinishProjectResponseDto project = projectServiceImpl.getFinishedProject(idx);
+        return new ResponseEntity<>(project, HttpStatus.OK);
     }
 }

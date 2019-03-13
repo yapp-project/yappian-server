@@ -1,11 +1,7 @@
 package com.yapp.web1.dto.res;
 
-
-import com.yapp.web1.domain.Orders;
 import lombok.Builder;
 import lombok.Getter;
-
-import java.util.List;
 
 /**
  * 기수 목록 Dto

@@ -20,7 +20,7 @@ import java.util.List;
  * @author Dakyung Ko
  * @author Jihye Kim
  * @since 0.0.3
- * @version 1.1
+ * @version 1.3
  */
 @AllArgsConstructor
 @RequestMapping("/v1/api")
@@ -39,7 +39,7 @@ public class UserController {
      */
     @GetMapping("/favorites")
     public ResponseEntity<List<ProjectListResponseDto>> getFavoriteProjects(HttpSession session){
-        List<ProjectListResponseDto> projectList = userServiceImpl.getFavoriteProjects(session);
+        List<ProjectListResponseDto> projectList = userServiceImpl.getFavoriteProjects(null);
         return new ResponseEntity<>(projectList, HttpStatus.OK);
     }
 
@@ -54,12 +54,12 @@ public class UserController {
      */
     @PutMapping("/favorite/{idx}")
     public ResponseEntity setFavoriteProject(@PathVariable final Long idx, HttpSession session){
-        userServiceImpl.setFavoriteProject(idx, session);
+        userServiceImpl.setFavoriteProject(idx, null);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     /**
-     * 프로젝트 참여
+     * 프로젝트 참여 및 참여 취소(나가기)
      *
      * @param idx 참여할 프로젝트 idx
      * @param session 로그인 유저 session
@@ -69,7 +69,8 @@ public class UserController {
      */
     @PutMapping("/join/{idx}")
     public ResponseEntity joinProject(@PathVariable final Long idx, HttpSession session){
-        userServiceImpl.joinProject(idx, session);
+        userServiceImpl.joinProject(idx, null);
         return new ResponseEntity(HttpStatus.OK);
     }
+
 }
