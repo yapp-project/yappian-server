@@ -53,6 +53,12 @@ public class Task extends BaseEntity {
     @Convert(converter = MarkAttributeConverter.class)
     private Mark readCheck = Mark.N;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "project_idx",
+            foreignKey = @ForeignKey(name="pk_task_project"),
+            nullable = false)
+    private Project project;
+
     @JsonIgnore
     @OneToMany(mappedBy = "task",
             cascade = CascadeType.ALL,
@@ -65,8 +71,6 @@ public class Task extends BaseEntity {
             fetch = FetchType.LAZY)
     private List<File> fileList = new ArrayList<>();
 
-
-    //Join Table
     @OneToMany(fetch=FetchType.EAGER,
             cascade = CascadeType.ALL,
             orphanRemoval = true)
@@ -77,13 +81,14 @@ public class Task extends BaseEntity {
 
     @Builder
     public Task(String title, TaskStatus status, TaskJob job, LocalDate startDate, LocalDate endDate, String contents,
-                List<Comment> commentList, List<File> fileList, Set<User> managers){
+                Project project, List<Comment> commentList, List<File> fileList, Set<User> managers){
         this.title = title;
         this.status = status; //
         this.job = job;
         this.startDate = startDate;
         this.endDate = endDate;
         this.contents = contents;
+        this.project = project;
 
         this.commentList = Optional.ofNullable(commentList).orElse(this.commentList);
         this.fileList = Optional.ofNullable(fileList).orElse(this.fileList);
