@@ -1,6 +1,6 @@
 ---
 name: Pull Request Template
-about: 
+about: pull request template
 title: ''
 labels: ''
 assignees: ''
@@ -14,4 +14,4 @@ assignees: ''
 * [ ] 없음
 
 ## 배포 일정
-* [ ] 없음 
+* [ ] 없음
