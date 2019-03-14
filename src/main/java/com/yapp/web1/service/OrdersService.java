@@ -1,23 +1,32 @@
 package com.yapp.web1.service;
 
 import com.yapp.web1.domain.Orders;
-import com.yapp.web1.repository.OrdersRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import com.yapp.web1.domain.Project;
+import com.yapp.web1.dto.res.OrdersResponseDto;
+import com.yapp.web1.dto.res.ProjectListResponseDto;
 
 import java.util.List;
 
-@Service
-@Transactional
-@AllArgsConstructor
-public class OrdersService {
+/**
+ * OrdersService Interface
+ *
+ * @author Dakyung Ko
+ * @since 0.0.3
+ * @version 1.1
+ */
+public interface OrdersService {
+    /**
+     * 기수 목록 반환
+     *
+     * @return 전체 기수 list
+     */
+    List<OrdersResponseDto> getOrderList();
 
-   @Autowired
-   OrdersRepository ordersRepository;
-
-    public List<Orders> findNumber(){
-        return ordersRepository.findByOrderByNumberDesc();
-    }
+    /**
+     * 기수별 프로젝트 목록
+     *
+     * @param idx 조회할 Orders(기수)의 idx
+     * @return 해당 기수의 프로젝트 list
+     */
+    List<ProjectListResponseDto> getProjectListByOrder(Long idx);
 }
