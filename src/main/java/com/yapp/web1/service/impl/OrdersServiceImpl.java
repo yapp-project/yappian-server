@@ -1,14 +1,20 @@
 package com.yapp.web1.service.impl;
 
+import com.yapp.web1.domain.Orders;
+import com.yapp.web1.domain.Project;
 import com.yapp.web1.dto.res.OrdersResponseDto;
 import com.yapp.web1.dto.res.ProjectListResponseDto;
 import com.yapp.web1.repository.OrdersRepository;
+import com.yapp.web1.repository.ProjectRepository;
 import com.yapp.web1.service.OrdersService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * OrdersService 구현 클래스
@@ -16,7 +22,7 @@ import java.util.List;
  * @author Dakyung Ko
  * @author Jihye Kim
  * @since 0.0.3
- * @version 1.0
+ * @version 1.1
  */
 @Service
 @Transactional
@@ -24,16 +30,28 @@ import java.util.List;
 public class OrdersServiceImpl implements OrdersService {
 
     private final OrdersRepository ordersRepository;
+    private final ProjectRepository projectRepository;
 
     @Transactional(readOnly = true)
     @Override
     public List<OrdersResponseDto> getOrderList() {
-        return null;
+       List<Orders> findOrders = ordersRepository.findByOrderByNumberDesc();
+       List<OrdersResponseDto> orderList = new ArrayList<>();
+       for(Orders orders : findOrders)
+           orderList.add(new OrdersResponseDto(orders));
+        return orderList;
     }
 
+    /*
+     favorite과 joined는 추후,,
+     */
     @Transactional(readOnly = true)
     @Override
-    public List<ProjectListResponseDto> getProjectListByOrder(Long idx) {
-        return null;
+    public List<ProjectListResponseDto> getProjectListByOrder(Long orderIdx) {
+        List<Project> findProjects = projectRepository.findAllByOrdersIdx(orderIdx);
+        List<ProjectListResponseDto> projectList = new ArrayList<>();
+        for(Project projects : findProjects)
+            projectList.add(new ProjectListResponseDto(projects));
+        return projectList;
     }
 }

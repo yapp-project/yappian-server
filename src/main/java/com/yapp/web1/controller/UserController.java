@@ -1,7 +1,7 @@
 package com.yapp.web1.controller;
 
 import com.yapp.web1.dto.res.ProjectListResponseDto;
-import com.yapp.web1.service.impl.UserServiceImpl;
+import com.yapp.web1.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +23,7 @@ import java.util.List;
 @RestController
 public class UserController {
 
-    private UserServiceImpl userServiceImpl;
+    private UserService userService;
 
 
     /**
@@ -36,7 +36,7 @@ public class UserController {
      */
     @GetMapping("/favorites")
     public ResponseEntity<List<ProjectListResponseDto>> getFavoriteProjects(HttpSession session){
-        List<ProjectListResponseDto> projectList = userServiceImpl.getFavoriteProjects(null);
+        List<ProjectListResponseDto> projectList = userService.getFavoriteProjects(null);
         return new ResponseEntity<>(projectList, HttpStatus.OK);
     }
 
@@ -51,7 +51,7 @@ public class UserController {
      */
     @PutMapping("/favorite/{idx}")
     public ResponseEntity setFavoriteProject(@PathVariable final Long idx, HttpSession session){
-        userServiceImpl.setFavoriteProject(idx, null);
+        userService.setFavoriteProject(idx, null);
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -66,7 +66,7 @@ public class UserController {
      */
     @PutMapping("/join/{idx}")
     public ResponseEntity joinProject(@PathVariable final Long idx, HttpSession session){
-        userServiceImpl.joinProject(idx, null);
+        userService.joinProject(idx, null);
         return new ResponseEntity(HttpStatus.OK);
     }
 

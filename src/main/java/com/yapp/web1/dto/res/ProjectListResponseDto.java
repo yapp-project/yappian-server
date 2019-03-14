@@ -1,5 +1,6 @@
 package com.yapp.web1.dto.res;
 
+import com.yapp.web1.domain.Project;
 import com.yapp.web1.domain.VO.Mark;
 import com.yapp.web1.domain.VO.ProjectType;
 import lombok.Builder;
@@ -23,14 +24,13 @@ public class ProjectListResponseDto {
     private Mark joined; // 조인여부
 
     @Builder
-    public ProjectListResponseDto(Long projectIdx, ProjectType projectType, String projectName, Mark finalCheck, Long createUserIdx,
-                                  int orderNumber, Mark favorite, Mark joined){
-        this.projectIdx = projectIdx;
-        this.projectType = projectType;
-        this.projectName = projectName;
-        this.finalCheck = finalCheck;
-        this.createUserIdx = createUserIdx;
-        this.orderNumber = orderNumber;
+    public ProjectListResponseDto(Project project){
+        this.projectIdx = project.getIdx();
+        this.projectType = project.getType();
+        this.projectName = project.getName();
+        this.finalCheck = project.getFinalCheck();
+        this.createUserIdx = project.getCreateUserIdx();
+        this.orderNumber = project.getOrders().getNumber();
         this.favorite = favorite;
         this.joined = joined;
     }

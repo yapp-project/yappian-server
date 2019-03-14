@@ -6,13 +6,15 @@ import com.yapp.web1.dto.res.OrdersResponseDto;
 import com.yapp.web1.dto.res.ProjectListResponseDto;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * OrdersService Interface
  *
  * @author Dakyung Ko
+ * @author JiHye Kim
  * @since 0.0.3
- * @version 1.1
+ * @version 1.2
  */
 public interface OrdersService {
     /**
@@ -28,5 +30,5 @@ public interface OrdersService {
      * @param idx 조회할 Orders(기수)의 idx
      * @return 해당 기수의 프로젝트 list
      */
-    List<ProjectListResponseDto> getProjectListByOrder(Long idx);
+    List<ProjectListResponseDto> getProjectListByOrder(Long orderIdx);
 }
