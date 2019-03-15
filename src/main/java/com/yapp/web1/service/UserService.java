@@ -4,7 +4,6 @@ import com.yapp.web1.domain.Project;
 import com.yapp.web1.domain.User;
 import com.yapp.web1.dto.res.ProjectListResponseDto;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**

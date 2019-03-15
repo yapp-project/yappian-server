@@ -1,7 +1,5 @@
 package com.yapp.web1.controller;
 
-import com.yapp.web1.domain.Project;
-import com.yapp.web1.domain.User;
 import com.yapp.web1.dto.res.ProjectListResponseDto;
 import com.yapp.web1.service.impl.UserServiceImpl;
 import lombok.AllArgsConstructor;
@@ -10,8 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

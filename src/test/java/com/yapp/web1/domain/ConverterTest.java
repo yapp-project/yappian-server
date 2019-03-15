@@ -1,10 +1,11 @@
 package com.yapp.web1.domain;
 
-
 import com.yapp.web1.common.RepositoryTest;
 import com.yapp.web1.domain.VO.ProjectType;
+import com.yapp.web1.repository.OrdersRepository;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -15,14 +16,16 @@ import java.util.List;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
-
 public class ConverterTest extends RepositoryTest {
     @PersistenceContext
     private EntityManager em;
 
+    @Autowired
+    private OrdersRepository ordersRepository;
+
     @Before
     public void setup(){
-        Orders orders = Orders.builder().number(14).build();
+        Orders orders = ordersRepository.findByNumber(14);
         em.persist(orders);
 
         Project project = Project.builder()

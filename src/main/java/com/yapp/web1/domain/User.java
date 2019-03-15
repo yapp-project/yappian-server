@@ -16,7 +16,6 @@ import java.util.*;
  *
  * @author Dakyung Ko, Jihye Kim
  */
-
 @Entity
 @Table(name="user")
 @AttributeOverride(name="idx", column=@Column(name="user_idx"))
@@ -30,7 +29,7 @@ public class User extends BaseEntity {
     @Column(name="name", nullable=false)
     private String name;
 
-    @Column(name="userRole", nullable=false)
+    @Column(name="user_role", nullable=false)
     @Convert(converter = UserRoleAttributeConverter.class)
     private UserRole role = UserRole.USER;
 

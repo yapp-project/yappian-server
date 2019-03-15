@@ -13,8 +13,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpSession;
-
 /**
  * ProjectService 구현 클래스
  *
@@ -59,7 +57,7 @@ public class ProjectServiceImpl implements ProjectService {
         if(findProject.getFinalCheck() == Mark.Y) return false; // 추후 수정
 
         findProject.updateProductURL(dto.getProductURL());
-        findProject.descriptProject(dto.getDescription());
+        findProject.describeProject(dto.getDescription());
         findProject.finishedProject();
         projectRepository.save(findProject);
         return true;

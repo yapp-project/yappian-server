@@ -6,8 +6,6 @@ import com.yapp.web1.dto.req.ProjectRequestDto;
 import com.yapp.web1.dto.res.FinishProjectResponseDto;
 import com.yapp.web1.dto.res.ProjectResponseDto;
 
-import javax.servlet.http.HttpSession;
-
 /**
  * ProjectService Interface
  *

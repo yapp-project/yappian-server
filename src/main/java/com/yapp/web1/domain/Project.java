@@ -77,7 +77,7 @@ public class Project extends BaseEntity {
         return this.finalCheck;
     }
 
-    public void descriptProject(String description){
+    public void describeProject(String description){
         this.description = description;
     }
 
