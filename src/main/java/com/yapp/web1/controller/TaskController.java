@@ -17,6 +17,7 @@ import java.util.List;
  * @since 0.0.2
  * @version 1.0
  */
+@CrossOrigin("*")
 @AllArgsConstructor
 @RequestMapping("/v1/api")
 @RestController

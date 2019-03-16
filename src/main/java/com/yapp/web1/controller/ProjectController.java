@@ -21,6 +21,7 @@ import javax.validation.Valid;
  * @since 0.0.3
  * @version 1.3
  */
+@CrossOrigin("*")
 @AllArgsConstructor
 @RequestMapping("/v1/api")
 @RestController
