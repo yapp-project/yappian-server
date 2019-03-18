@@ -20,6 +20,7 @@ import java.util.Set;
  * @since 0.0.3
  * @version 1.2
  */
+@CrossOrigin("*")
 @AllArgsConstructor
 @RequestMapping("/v1/api")
 @RestController

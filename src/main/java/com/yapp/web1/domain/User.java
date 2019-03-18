@@ -16,7 +16,6 @@ import java.util.*;
  *
  * @author Dakyung Ko, Jihye Kim
  */
-
 @Entity
 @Table(name="user")
 @AttributeOverride(name="idx", column=@Column(name="user_idx"))
@@ -30,7 +29,7 @@ public class User extends BaseEntity {
     @Column(name="name", nullable=false)
     private String name;
 
-    @Column(name="userRole", nullable=false)
+    @Column(name="user_role", nullable=false)
     @Convert(converter = UserRoleAttributeConverter.class)
     private UserRole role = UserRole.USER;
 
@@ -67,10 +66,11 @@ public class User extends BaseEntity {
     private Set<Project> joinedProjects = new HashSet<>();
 
     @Builder
-    public User(String email, String name,
+    public User(String email, String name, UserRole role,
                 Set<UserOrder> userOrders, List<Comment> commentList, Set<Project> favorites, Set<Project> joinedProject){
         this.email = email;
         this.name = name;
+        this.role = role;
 
         this.userOrders = Optional.ofNullable(userOrders).orElse(this.userOrders);
         this.commentList = Optional.ofNullable(commentList).orElse(this.commentList);

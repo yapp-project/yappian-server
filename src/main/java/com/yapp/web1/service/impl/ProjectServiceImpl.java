@@ -12,14 +12,11 @@ import com.yapp.web1.dto.res.ProjectResponseDto;
 import com.yapp.web1.repository.OrdersRepository;
 import com.yapp.web1.repository.ProjectRepository;
 import com.yapp.web1.repository.TaskRepository;
-import com.yapp.web1.repository.UserRepository;
 import com.yapp.web1.service.ProjectService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
 
 /**
  * ProjectService 구현 클래스
@@ -104,7 +101,7 @@ public class ProjectServiceImpl implements ProjectService {
         if(findProject.getFinalCheck() == Mark.Y) return false; // 추후 수정
 
         findProject.updateProductURL(dto.getProductURL());
-        findProject.descriptProject(dto.getDescription());
+        findProject.describeProject(dto.getDescription());
         findProject.finishedProject();
         projectRepository.save(findProject);
         return true;

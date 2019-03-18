@@ -4,7 +4,6 @@ import com.yapp.web1.domain.Project;
 import com.yapp.web1.domain.User;
 import com.yapp.web1.dto.res.ProjectListResponseDto;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -12,7 +11,7 @@ import java.util.List;
  *
  * @author Dakyung Ko
  * @since 0.0.3
- * @version 1.0
+ * @version 1.1
  */
 public interface UserService {
 
@@ -42,4 +41,11 @@ public interface UserService {
      * @exception Exception 같은 기수 다른 Project에 join된 경우 - 추후 수정
      */
     Project joinProject(Long idx, User user);
+
+    /**
+     * 임시 유저 데이터 반환
+     *
+     * @return User.idx==1인 유저 데이터 반환
+     */
+    User getCurrentUser();
 }

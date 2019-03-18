@@ -1,7 +1,6 @@
 package com.yapp.web1.controller;
 
 import com.yapp.web1.dto.res.OrdersResponseDto;
-
 import com.yapp.web1.dto.req.FinishProjectRequestDto;
 import com.yapp.web1.dto.req.ProjectRequestDto;
 import com.yapp.web1.dto.res.FinishProjectResponseDto;
@@ -12,7 +11,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
@@ -25,6 +23,7 @@ import java.util.List;
  * @since 0.0.3
  * @version 1.4
  */
+@CrossOrigin("*")
 @AllArgsConstructor
 @RequestMapping("/v1/api")
 @RestController

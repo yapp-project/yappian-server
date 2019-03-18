@@ -1,7 +1,5 @@
 package com.yapp.web1.service;
 
-import com.yapp.web1.domain.Orders;
-import com.yapp.web1.domain.Project;
 import com.yapp.web1.dto.res.OrdersResponseDto;
 import com.yapp.web1.dto.res.ProjectListResponseDto;
 
