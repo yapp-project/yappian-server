@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
@@ -19,12 +20,12 @@ import javax.validation.constraints.Size;
 @Setter
 @Getter
 public class ProjectRequestDto {
-    @NotBlank(message = "기수를 입력하세요.")
+    @NotNull(message = "기수를 입력하세요.")
     private Long ordersIdx; // 기수 idx
 
     private int orderNumber; // 기수 number
 
-    @NotBlank(message = "프로젝트 타입을 입력하세요")
+    @NotNull(message = "프로젝트 타입을 입력하세요")
     private ProjectType projectType; // 프로젝트 타입
 
     @NotBlank(message = "프로젝트 이름을 입력하세요")

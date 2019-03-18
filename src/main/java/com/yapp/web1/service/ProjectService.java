@@ -4,8 +4,10 @@ import com.yapp.web1.domain.User;
 import com.yapp.web1.dto.req.FinishProjectRequestDto;
 import com.yapp.web1.dto.req.ProjectRequestDto;
 import com.yapp.web1.dto.res.FinishProjectResponseDto;
+import com.yapp.web1.dto.res.OrdersResponseDto;
 import com.yapp.web1.dto.res.ProjectResponseDto;
-import com.yapp.web1.dto.res.ProjectSaveResponseDto;
+
+import java.util.List;
 
 /**
  * ProjectService Interface
@@ -16,12 +18,6 @@ import com.yapp.web1.dto.res.ProjectSaveResponseDto;
  * @version 1.2
  */
 public interface ProjectService {
-
-    /**
-     * 프로젝트 생성 get
-     * @see /v1/api/project
-     */
-    ProjectSaveResponseDto saveProject();
 
     /**
      * 프로젝트 생성 post
@@ -43,7 +39,7 @@ public interface ProjectService {
      *
      * @exception Exception Project의 createUserIdx와 session userIdx 불일치 시 삭제 불가
      */
-    ProjectResponseDto updateProject(Long idx, ProjectRequestDto dto, User user);
+    ProjectResponseDto updateProject(Long idx, ProjectRequestDto dto, Long userIdx);
 
     /**
      * 프로젝트 삭제

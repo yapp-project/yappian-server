@@ -1,11 +1,12 @@
 package com.yapp.web1.controller;
 
-import com.yapp.web1.dto.res.ProjectSaveResponseDto;
+import com.yapp.web1.dto.res.OrdersResponseDto;
 
 import com.yapp.web1.dto.req.FinishProjectRequestDto;
 import com.yapp.web1.dto.req.ProjectRequestDto;
 import com.yapp.web1.dto.res.FinishProjectResponseDto;
 import com.yapp.web1.dto.res.ProjectResponseDto;
+import com.yapp.web1.service.OrdersService;
 import com.yapp.web1.service.ProjectService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * Project Controller
@@ -29,15 +31,16 @@ import javax.validation.Valid;
 public class ProjectController {
 
     private ProjectService projectService;
+    private OrdersService ordersService;
 
     /**
-     * 프로젝트 생성 팝업 get
+     * 프로젝트 생성 팝업 get. 기수목록 필요.
      * @see /v1/api/project
      */
     @GetMapping("/project")
-    public ResponseEntity<ProjectSaveResponseDto> getCreateProject(){
-        ProjectSaveResponseDto saveProject = projectService.saveProject();
-        return new ResponseEntity<>(saveProject, HttpStatus.OK); //200.(요청이 성공적으로 되었습니다.리소스를 불러와서 메시지 바디에 전송되었습니다.)
+    public ResponseEntity<List<OrdersResponseDto>> getCreateProject(){
+        List<OrdersResponseDto> orderList = ordersService.getOrderList();
+        return new ResponseEntity<>(orderList, HttpStatus.OK); //200.(요청이 성공적으로 되었습니다.리소스를 불러와서 메시지 바디에 전송되었습니다.)
     }
 
 
@@ -50,7 +53,8 @@ public class ProjectController {
 
     @PostMapping("/project")
     public ResponseEntity<ProjectResponseDto> createProject(@Valid @RequestBody final ProjectRequestDto project, HttpSession session){
-        ProjectResponseDto createProject = projectService.createProject(project,Long.parseLong(session.getId()));
+         ProjectResponseDto createProject = projectService.createProject(project,1111L);
+        // ProjectResponseDto createProject = projectService.createProject(project,Long.parseLong(session.getId()));
         return new ResponseEntity<>(createProject, HttpStatus.CREATED);//201. (요청이 성공적이었으며 그 결과로 새로운 리소스가 생성)
 
     }
@@ -69,7 +73,7 @@ public class ProjectController {
      */
     @PutMapping("/project/{idx}")
     public ResponseEntity<ProjectResponseDto> updateProject(@PathVariable final Long idx, @Valid @RequestBody final ProjectRequestDto project, HttpSession session){
-        ProjectResponseDto updateProject = projectService.updateProject(idx, project, null);
+        ProjectResponseDto updateProject = projectService.updateProject(idx, project, 1111L);
         return new ResponseEntity<>(updateProject, HttpStatus.OK);
     }
 
