@@ -9,6 +9,7 @@ cache:
   - "$HOME/.m2/repository"
   - "$HOME/.gradle"
 script: "./gradlew clean build"
+
 before_deploy:
 - zip -r web1 *
 - mkdir -p deploy

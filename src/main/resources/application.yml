@@ -36,6 +36,19 @@ spring:
 spring:
   profiles: local
   profiles.include: common
+  datasource:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/yappian?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=UTC
+      username: user1
+      password: test123
+  jpa:
+      hibernate:
+        ddl-auto: update
+      properties:
+        hibernate:
+        dialect: org.hibernate.dialect.MySQL8InnoDBDialect
+        format_sql: true
+        show-sql: true
 
 #  datasource:
 #    hikari:
@@ -52,6 +65,7 @@ spring:
 #    show-sql: true
 #    hibernate:
 #      ddl-auto: update
+#      ddl-auto: create-drop
 #    generate-ddl: true
 #    properties:
 #      hibernate:
@@ -75,23 +89,23 @@ spring:
       enabled: true
       path: /h2/
       settings:
-        trace: true
+#        trace: true
         web-allow-others: true
 
   datasource:
     hikari:
-      jdbc-url: jdbc:h2:mem:contact;DB_CLOSE_ON_EXIT=false;DB_CLOSE_DELAY=-1;MVCC=TRUE
+      jdbc-url: jdbc:h2:mem:yappian;DB_CLOSE_ON_EXIT=false;DB_CLOSE_DELAY=-1;MVCC=TRUE
       username: sa
       password:
       driver-class-name: org.h2.Driver
-#    data: classpath:init.sql
+    data: classpath:init.sql
 
   jpa:
     database: h2
     database-platform: org.hibernate.dialect.H2Dialect
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
     generate-ddl: true
     properties:
       hibernate:

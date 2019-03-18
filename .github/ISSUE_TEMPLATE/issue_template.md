@@ -1,6 +1,6 @@
 ---
 name: Issue Template
-about: 
+about: issue template
 title: ''
 labels: ''
 assignees: ''
@@ -13,4 +13,4 @@ assignees: ''
 * [ ] 없음
 
 ## 일정 / 기타 문의
-* [ ] 없음 
+* [ ] 없음
