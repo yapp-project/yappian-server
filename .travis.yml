@@ -3,7 +3,7 @@ jdk:
 - openjdk8
 branches:
   only:
-  - master
+  - deploy
 cache:
   directories:
   - "$HOME/.m2/repository"
@@ -26,7 +26,7 @@ deploy:
   wait-until-deployed: true
   on:
     repo: yapp-project/yappian-server
-    branch: master
+    branch: deploy
 - provider: codedeploy
   access_key_id: "$AWS_ACCESS_KEY"
   secret_access_key: "$AWS_SECRET_KEY"
@@ -39,7 +39,7 @@ deploy:
   wait-until-deployed: true
   on:
     repo: yapp-project/yappian-server
-    branch: master
+    branch: deploy
 notifications:
   email:
     recipients:
