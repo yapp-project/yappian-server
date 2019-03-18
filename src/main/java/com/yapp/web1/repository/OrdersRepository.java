@@ -8,5 +8,5 @@ import java.util.List;
 public interface OrdersRepository extends JpaRepository<Orders,Long> {
 
     List<Orders> findByOrderByNumberDesc();
-
+    Orders findByNumber(int number);
 }
