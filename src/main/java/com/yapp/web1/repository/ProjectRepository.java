@@ -6,5 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ProjectRepository extends JpaRepository<Project,Long> {
-    public List<Project> findAllByOrdersIdx(Long orderIdx);
+    List<Project> findAllByOrdersIdx(Long orderIdx);
+    Project findByName(String name);
 }
