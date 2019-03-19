@@ -9,6 +9,7 @@ import com.yapp.web1.dto.req.FinishProjectRequestDto;
 import com.yapp.web1.dto.req.ProjectRequestDto;
 import com.yapp.web1.dto.res.FinishProjectResponseDto;
 import com.yapp.web1.dto.res.ProjectResponseDto;
+import com.yapp.web1.dto.res.TaskListResponseDto;
 import com.yapp.web1.repository.OrdersRepository;
 import com.yapp.web1.repository.ProjectRepository;
 import com.yapp.web1.repository.TaskRepository;
@@ -17,6 +18,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * ProjectService 구현 클래스
@@ -62,7 +65,11 @@ public class ProjectServiceImpl implements ProjectService {
         System.out.println("createUserIdx : " +createUserIdx);
 
         Orders order = ordersRepository.findById(dto.getOrdersIdx()).orElseThrow(()-> new EntityNotFoundException("기수 못찾음"));
-       // List<Task> taskList = taskRepository.findBy
+        List<Task> taskList = taskRepository.findByProjectIdx(idx);
+        List<TaskListResponseDto> taskListResponseDtos = new ArrayList<>();
+        for(Task tasks : taskList)
+            taskListResponseDtos.add(new TaskListResponseDto(tasks));
+
         if(createUserIdx==userIdx){
             //기수, 타입, 이름
             project.builder()
@@ -78,7 +85,7 @@ public class ProjectServiceImpl implements ProjectService {
         // 수정 후 바로 프로젝트 상세 정보를 보여주기 위함.
         ProjectResponseDto responseDto = ProjectResponseDto.builder()
                 .project(dto)
-                .taskList(null).build();
+                .taskList(taskListResponseDtos).build();
         return responseDto;
     }
 
@@ -90,7 +97,17 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional(readOnly = true)
     @Override
     public ProjectResponseDto getProject(Long idx) {
-        return null;
+        Project project = projectRepository.findById(idx).orElseThrow(()->new EntityNotFoundException("해당 프로젝트 없음"));
+        List<Task> taskList = taskRepository.findByProjectIdx(idx);
+        List<TaskListResponseDto> taskListResponseDtos = new ArrayList<>();
+        for(Task tasks : taskList)
+            taskListResponseDtos.add(new TaskListResponseDto(tasks));
+
+        ProjectResponseDto projectResponseDto
+        ProjectResponseDto responseDto = ProjectResponseDto.builder()
+                .project(project)
+                .taskList(taskListResponseDtos).build();
+        return responseDto;
     }
 
     @Override
