@@ -51,7 +51,7 @@ public class ProjectServiceImpl implements ProjectService {
 
         // 생성후 바로 프로젝트 상세 정보를 보여주기 위함.
         ProjectResponseDto responseDto = ProjectResponseDto.builder()
-                .project(dto)
+                .project(project)
                 .taskList(null).build();
         return responseDto;
     }
@@ -62,15 +62,13 @@ public class ProjectServiceImpl implements ProjectService {
         // projectIdx로 createUserIdx를 찾는다. 그리고 비교
         Project project = projectRepository.findById(idx).orElseThrow(()->new EntityNotFoundException("해당 프로젝트 없음"));
         Long createUserIdx = project.getCreateUserIdx();
-        System.out.println("createUserIdx : " +createUserIdx);
-
         Orders order = ordersRepository.findById(dto.getOrdersIdx()).orElseThrow(()-> new EntityNotFoundException("기수 못찾음"));
         List<Task> taskList = taskRepository.findByProjectIdx(idx);
         List<TaskListResponseDto> taskListResponseDtos = new ArrayList<>();
         for(Task tasks : taskList)
             taskListResponseDtos.add(new TaskListResponseDto(tasks));
 
-        if(createUserIdx==userIdx){
+        if(String.valueOf(createUserIdx).equals(String.valueOf(userIdx))){
             //기수, 타입, 이름
             project.builder()
                     .type(dto.getProjectType())
@@ -84,7 +82,7 @@ public class ProjectServiceImpl implements ProjectService {
 
         // 수정 후 바로 프로젝트 상세 정보를 보여주기 위함.
         ProjectResponseDto responseDto = ProjectResponseDto.builder()
-                .project(dto)
+                .project(project)
                 .taskList(taskListResponseDtos).build();
         return responseDto;
     }
@@ -103,7 +101,6 @@ public class ProjectServiceImpl implements ProjectService {
         for(Task tasks : taskList)
             taskListResponseDtos.add(new TaskListResponseDto(tasks));
 
-        ProjectResponseDto projectResponseDto
         ProjectResponseDto responseDto = ProjectResponseDto.builder()
                 .project(project)
                 .taskList(taskListResponseDtos).build();

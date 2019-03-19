@@ -72,7 +72,7 @@ public class ProjectController {
      */
     @PutMapping("/project/{idx}")
     public ResponseEntity<ProjectResponseDto> updateProject(@PathVariable final Long idx, @Valid @RequestBody final ProjectRequestDto project, HttpSession session){
-        ProjectResponseDto updateProject = projectService.updateProject(idx, project, 1111L);
+        ProjectResponseDto updateProject = projectService.updateProject(idx, project, 201632004L);
         return new ResponseEntity<>(updateProject, HttpStatus.OK);
     }
 
