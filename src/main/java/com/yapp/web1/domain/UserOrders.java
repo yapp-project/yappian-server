@@ -14,20 +14,21 @@ import javax.persistence.*;
  */
 
 @Entity
-@Table(name="user_order")
+@Table(name="user_orders")
+@AttributeOverride(name="idx", column=@Column(name="user_orders_idx"))
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class UserOrder extends BaseEntity{
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name="user_idx",
-            foreignKey = @ForeignKey(name="fk_user_order_user"),
+            foreignKey = @ForeignKey(name="fk_user_orders_user"),
             nullable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name="orders_idx",
-            foreignKey = @ForeignKey(name="fk_user_order_orders"),
+            foreignKey = @ForeignKey(name="fk_user_orders_orders"),
             nullable = false)
     private Orders orders;
 
