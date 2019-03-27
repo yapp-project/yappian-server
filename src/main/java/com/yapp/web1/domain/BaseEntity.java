@@ -22,7 +22,6 @@ import java.time.LocalDateTime;
  *
  * @author Dakyung Ko, JiHye Kim
  */
-
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
