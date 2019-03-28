@@ -13,13 +13,13 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Project 테이블의 Domain 클래스
  *
  * @author Dakyung Ko, Jihye Kim
  */
-
 @Entity
 @Table(name="project")
 @AttributeOverride(name="idx", column=@Column(name="project_idx"))
@@ -27,6 +27,7 @@ import java.util.List;
 @Getter
 public class Project extends BaseEntity {
 
+    /** Project Table Fields **/
     @Column(name="type", nullable = false)
     @Convert(converter = ProjectTypeAttributeConverter.class)
     private ProjectType type;
@@ -36,7 +37,7 @@ public class Project extends BaseEntity {
 
     @Column(name="final_check", nullable = false)
     @Convert(converter = MarkAttributeConverter.class)
-    private Mark finalCheck;
+    private Mark finalCheck = Mark.N;
 
     @Column(name="description")
     private String description;
@@ -47,12 +48,15 @@ public class Project extends BaseEntity {
     @Column(name="create_user_idx",nullable = false)
     private Long createUserIdx;
 
+    /** Relation Mapping **/
+    /** Project - Orders 양방향 매핑 **/
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name="orders_idx",
             foreignKey = @ForeignKey(name="fk_project_orders"),
             nullable = false)
     private Orders orders;
 
+    /** Project - Task 양방향 매핑 **/
     @JsonIgnore
     @OneToMany(mappedBy = "project",
             cascade = CascadeType.REMOVE,
@@ -60,16 +64,18 @@ public class Project extends BaseEntity {
             orphanRemoval = true)
     private List<Task> taskList = new ArrayList<>();
 
-    // @OneToMany file_idx 완료시 이미지 여부 (에디터 사용에 따라 달라짐)
+    // @OneToMany Project-File 연관관계, 완료시 이미지 여부 (에디터 사용에 따라 달라짐)
 
+    /** Method **/
     @Builder
-    public Project(ProjectType type, String name, Long createUserIdx, Orders orders, List<Task> taskList){
+    public Project(ProjectType type, String name, Long createUserIdx,
+                   Orders orders, List<Task> taskList){
         this.type = type;
         this.name = name;
-        this.finalCheck = Mark.N;
         this.createUserIdx = createUserIdx;
         this.orders = orders;
-        this.taskList = taskList;
+
+        this.taskList = Optional.ofNullable(taskList).orElse(this.taskList);
     }
 
     public Mark finishedProject(){

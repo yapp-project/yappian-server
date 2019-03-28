@@ -22,7 +22,7 @@ public class ProjectRequestDto {
     @NotBlank(message = "기수를 입력하세요.")
     private Long ordersIdx; // 기수 idx
 
-    private int orderNumber; // 기수 number
+//    private int orderNumber; // 기수 number
 
     @NotBlank(message = "프로젝트 타입을 입력하세요")
     private ProjectType projectType; // 프로젝트 타입

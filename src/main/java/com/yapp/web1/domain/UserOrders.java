@@ -12,27 +12,32 @@ import javax.persistence.*;
  *
  * @author Dakyung Ko, Jihye Kim
  */
-
 @Entity
-@Table(name="user_order")
+@Table(name="user_orders")
+@AttributeOverride(name="idx", column=@Column(name="user_orders_idx"))
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class UserOrder extends BaseEntity{
+public class UserOrders extends BaseEntity{
 
+    /** Relation Mapping **/
+    /** UserOrders - User 양방향 매핑 **/
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name="user_idx",
-            foreignKey = @ForeignKey(name="fk_user_order_user"),
+            foreignKey = @ForeignKey(name="fk_user_orders_user"),
             nullable = false)
     private User user;
 
+    /** UserOrders - Orders 양방향 매핑 **/
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name="orders_idx",
-            foreignKey = @ForeignKey(name="fk_user_order_orders"),
+            foreignKey = @ForeignKey(name="fk_user_orders_orders"),
             nullable = false)
     private Orders orders;
 
+
+    /** Method **/
     @Builder
-    public UserOrder(User user, Orders order){
+    public UserOrders(User user, Orders order){
         this.user = user;
         this.orders = orders;
     }

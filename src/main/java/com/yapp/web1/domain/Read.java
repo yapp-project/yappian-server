@@ -8,40 +8,35 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 /**
- * Comment 테이블의 Domain 클래스
+ * Read 테이블의 Domain 클래스
+ * Task 읽음 여부를 기록
  *
- * @author Dakyung Ko, Jihye Kim
+ * @author Dakyung Ko
  */
 @Entity
-@Table(name="comment")
-@AttributeOverride(name="idx", column=@Column(name="comment_idx"))
+@Table(name="read")
+@AttributeOverride(name="idx", column=@Column(name="read_idx"))
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Comment extends BaseEntity {
-
-    /** Comment Table Fields **/
-    @Column(name="contents", nullable = false)
-    private String contents;
-
+public class Read extends BaseEntity{
     /** Relation Mapping **/
-    /** Comment - Task 양방향 매핑 **/
+    /** Read - Task 양방향 매핑 **/
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name="task_idx",
-            foreignKey = @ForeignKey(name="fk_comment_task"),
+            foreignKey = @ForeignKey(name="fk_read_task"),
             nullable = false)
     private Task task;
 
-    /** Comment - User 양방향 매핑 **/
+    /** Read - User 양방향 매핑 **/
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name="user_idx",
-            foreignKey = @ForeignKey(name="fk_comment_user"),
+            foreignKey = @ForeignKey(name="fk_read_user"),
             nullable = false)
     private User user;
 
     /** Method **/
     @Builder
-    public Comment(String contents, Task task, User user){
-        this.contents = contents;
+    public Read(Task task, User user){
         this.task = task;
         this.user = user;
     }
