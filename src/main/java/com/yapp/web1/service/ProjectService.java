@@ -10,31 +10,33 @@ import com.yapp.web1.dto.res.ProjectResponseDto;
  * ProjectService Interface
  *
  * @author Dakyung Ko
+ * @author Jihye Kim
  * @since 0.0.3
- * @version 1.1
+ * @version 1.2
  */
 public interface ProjectService {
+
     /**
-     * 프로젝트 생성
+     * 프로젝트 생성 post
      *
      * @param dto 생성할 Project 정보
-     * @param user 로그인 유저
+     * @param userIdx 로그인 유저
      * @return 생성한 Project 정보
      *
      * @exception Exception 같은 기수 다른 Project에 join된 경우 - 추후 수정
      */
-    ProjectResponseDto createProject(ProjectRequestDto dto, User user);
+    ProjectResponseDto createProject(ProjectRequestDto dto, Long userIdx);
 
     /**
      * 프로젝트 수정
      *
      * @param idx 수정할 Project idx
      * @param dto 수정할 Project 정보
-     * @param user 로그인 유저
+     * @param userIdx 로그인 유저
      *
      * @exception Exception Project의 createUserIdx와 session userIdx 불일치 시 삭제 불가
      */
-    ProjectResponseDto updateProject(Long idx, ProjectRequestDto dto, User user);
+    ProjectResponseDto updateProject(Long idx, ProjectRequestDto dto, Long userIdx);
 
     /**
      * 프로젝트 삭제
@@ -73,4 +75,5 @@ public interface ProjectService {
      * @exception Exception 완료되지 않은 경우 조회 불가
      */
     FinishProjectResponseDto getFinishedProject(Long idx);
+
 }

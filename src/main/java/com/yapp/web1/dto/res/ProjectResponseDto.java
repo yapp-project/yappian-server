@@ -12,7 +12,6 @@ import java.util.List;
  * @author JiHye Kim
  * @author Dakyung Ko
  */
-
 @Getter
 public class ProjectResponseDto {
     private ProjectRequestDto project;// 프로젝트 생성시 데이터들의 객체
