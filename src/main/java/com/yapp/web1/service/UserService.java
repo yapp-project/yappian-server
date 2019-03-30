@@ -48,4 +48,6 @@ public interface UserService {
      * @return User.idx==1인 유저 데이터 반환
      */
     User getCurrentUser();
+
+    User findByIdx(Long idx);
 }
