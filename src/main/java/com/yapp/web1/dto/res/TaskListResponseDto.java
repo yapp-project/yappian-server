@@ -1,5 +1,6 @@
 package com.yapp.web1.dto.res;
 
+import com.yapp.web1.domain.Task;
 import com.yapp.web1.domain.VO.Mark;
 import com.yapp.web1.domain.VO.TaskJob;
 import com.yapp.web1.domain.VO.TaskStatus;
@@ -27,15 +28,14 @@ public class TaskListResponseDto {
     private Mark readCheck; // 테스크 읽음여부 체크
 
     @Builder
-    public TaskListResponseDto(Long taskIdx, String taskTitle, TaskJob taskJob, List<UserResponseDto> userList,
-                               LocalDate startDate, LocalDate endDate, TaskStatus taskStatus, Mark readCheck) {
-        this.taskIdx = taskIdx;
-        this.taskTitle = taskTitle;
-        this.taskJob = taskJob;
+    public TaskListResponseDto(Task task, List<UserResponseDto> userList) {
+        this.taskIdx = task.getIdx();
+        this.taskTitle = task.getTitle();
+        this.taskJob = task.getJob();
         this.userList = userList;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.taskStatus = taskStatus;
-        this.readCheck = readCheck;
+        this.startDate = task.getStartDate();
+        this.endDate = task.getEndDate();
+        this.taskStatus = task.getStatus();
+        this.readCheck = Mark.N; // 추후 수정해야함.
     }
 }

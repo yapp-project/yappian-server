@@ -28,7 +28,7 @@ public interface ProjectService {
      *
      * @exception Exception 같은 기수 다른 Project에 join된 경우 - 추후 수정
      */
-    ProjectResponseDto createProject(ProjectRequestDto dto, Long userIdx);
+    ProjectResponseDto createProject(ProjectRequestDto dto, Long userIdx);//실제로는 User user
 
     /**
      * 프로젝트 수정
@@ -39,7 +39,7 @@ public interface ProjectService {
      *
      * @exception Exception Project의 createUserIdx와 session userIdx 불일치 시 삭제 불가
      */
-    ProjectResponseDto updateProject(Long idx, ProjectRequestDto dto, Long userIdx);
+    ProjectResponseDto updateProject(Long idx, ProjectRequestDto dto, Long userIdx);//실제로는 User user
 
     /**
      * 프로젝트 삭제
@@ -49,7 +49,7 @@ public interface ProjectService {
      *
      * @exception Exception Project의 createUserIdx와 session userIdx 불일치 시 삭제 불가
      */
-    boolean deleteProject(Long idx, User user);
+    boolean deleteProject(Long idx, Long userIdx);//실제로는 User user
 
     /**
      * 프로젝트 조회

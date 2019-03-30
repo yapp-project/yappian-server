@@ -38,17 +38,6 @@ public class ProjectController {
     private UserService userService;
 
     /**
-     * 프로젝트 생성 팝업 get. 기수목록 필요.
-     * @see /v1/api/project
-     */
-    @GetMapping("/project")
-    public ResponseEntity<List<OrdersResponseDto>> getCreateProject(){
-        List<OrdersResponseDto> orderList = ordersService.getOrderList();
-        return new ResponseEntity<>(orderList, HttpStatus.OK); //200.(요청이 성공적으로 되었습니다.리소스를 불러와서 메시지 바디에 전송되었습니다.)
-    }
-
-
-    /**
      * 프로젝트 생성 팝업 post
      * @exception Exception 이미 join된 유저 - 추후 수정
      * @return 생성한 프로젝트 데이터, 해당 프로젝트의 task 목록
@@ -95,7 +84,7 @@ public class ProjectController {
      */
     @PutMapping("/project/{idx}")
     public ResponseEntity<ProjectResponseDto> updateProject(@PathVariable final Long idx, @Valid @RequestBody final ProjectRequestDto project, HttpSession session){
-        ProjectResponseDto updateProject = projectService.updateProject(idx, project, 201632004L);
+        ProjectResponseDto updateProject = projectService.updateProject(idx, project, 201632004L); // 테스트 확인하려고.원래 User user
         return new ResponseEntity<>(updateProject, HttpStatus.OK);
     }
 
@@ -110,7 +99,7 @@ public class ProjectController {
      */
     @DeleteMapping("/project/{idx}")
     public ResponseEntity deleteProject(@PathVariable final Long idx, HttpSession session){
-        projectService.deleteProject(idx, null);
+        projectService.deleteProject(idx, 201632021L);//테스트 확인하려고.원래 User user
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 

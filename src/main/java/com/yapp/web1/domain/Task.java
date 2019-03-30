@@ -86,12 +86,12 @@ public class Task extends BaseEntity {
     @JoinTable(name="work",
             joinColumns = @JoinColumn(name="task_idx"),
             inverseJoinColumns = @JoinColumn(name="user_idx"))
-    private Set<User> works = new HashSet<>();
+    private List<User> works = new ArrayList<>();
 
     /** Method **/
     @Builder
     public Task(String title, TaskStatus status, TaskJob job, LocalDate startDate, LocalDate endDate, String contents,
-                Project project, List<Read> readList, List<Comment> commentList, List<File> fileList, Set<User> works){
+                Project project, List<Read> readList, List<Comment> commentList, List<File> fileList, List<User> works){
         this.title = title;
         this.status = status;
         this.job = job;
