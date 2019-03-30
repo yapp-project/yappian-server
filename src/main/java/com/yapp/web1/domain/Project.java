@@ -5,10 +5,7 @@ import com.yapp.web1.converter.MarkAttributeConverter;
 import com.yapp.web1.converter.ProjectTypeAttributeConverter;
 import com.yapp.web1.domain.VO.Mark;
 import com.yapp.web1.domain.VO.ProjectType;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -26,13 +23,12 @@ import java.util.Optional;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Project extends BaseEntity {
-
     /** Project Table Fields **/
     @Column(name="type", nullable = false)
     @Convert(converter = ProjectTypeAttributeConverter.class)
     private ProjectType type;
 
-    @Column(name="name", nullable = false)
+    @Column(name="name",nullable = false)
     private String name;
 
     @Column(name="final_check", nullable = false)
@@ -52,8 +48,7 @@ public class Project extends BaseEntity {
     /** Project - Orders 양방향 매핑 **/
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name="orders_idx",
-            foreignKey = @ForeignKey(name="fk_project_orders"),
-            nullable = false)
+            foreignKey = @ForeignKey(name="fk_project_orders"),nullable = false)
     private Orders orders;
 
     /** Project - Task 양방향 매핑 **/
@@ -68,10 +63,13 @@ public class Project extends BaseEntity {
 
     /** Method **/
     @Builder
-    public Project(ProjectType type, String name, Long createUserIdx,
-                   Orders orders, List<Task> taskList){
+    public Project(ProjectType type, String name, Mark finalCheck, String description, String productURL,
+                   Long createUserIdx, Orders orders, List<Task> taskList){
         this.type = type;
         this.name = name;
+        this.finalCheck = finalCheck;
+        this.description = description;
+        this.productURL = productURL;
         this.createUserIdx = createUserIdx;
         this.orders = orders;
 

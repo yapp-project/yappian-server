@@ -4,15 +4,17 @@ import com.yapp.web1.dto.res.OrdersResponseDto;
 import com.yapp.web1.dto.res.ProjectListResponseDto;
 
 import java.util.List;
+import java.util.Set;
 
 /**
- * OrderService Interface
+ * OrdersService Interface
  *
  * @author Dakyung Ko
+ * @author JiHye Kim
  * @since 0.0.3
- * @version 1.1
+ * @version 1.2
  */
-public interface OrderService {
+public interface OrdersService {
     /**
      * 기수 목록 반환
      *

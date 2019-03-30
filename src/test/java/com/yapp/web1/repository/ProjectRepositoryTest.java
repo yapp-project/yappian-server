@@ -39,11 +39,10 @@ public class ProjectRepositoryTest extends RepositoryTest {
         projectRepository.save(project);
 
         // when
-        List<Project> projectList = projectRepository.findAll();
+        Project findProject = projectRepository.findByName("프로젝트팀");
 
         // then
-        Project savedProject = projectList.get(0);
-        assertTrue(savedProject.getCreateDate().isAfter(now));
-        assertTrue(savedProject.getModifiedDate().isAfter(now));
+        assertTrue(findProject.getCreateDate().isAfter(now));
+        assertTrue(findProject.getModifiedDate().isAfter(now));
     }
 }

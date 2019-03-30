@@ -1,17 +1,23 @@
 package com.yapp.web1.controller;
 
+import com.yapp.web1.domain.User;
+import com.yapp.web1.dto.res.OrdersResponseDto;
 import com.yapp.web1.dto.req.FinishProjectRequestDto;
 import com.yapp.web1.dto.req.ProjectRequestDto;
 import com.yapp.web1.dto.res.FinishProjectResponseDto;
 import com.yapp.web1.dto.res.ProjectResponseDto;
-import com.yapp.web1.service.impl.ProjectServiceImpl;
+import com.yapp.web1.dto.res.UserResponseDto;
+import com.yapp.web1.service.OrdersService;
+import com.yapp.web1.service.ProjectService;
+import com.yapp.web1.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Project Controller
@@ -19,7 +25,7 @@ import javax.validation.Valid;
  * @author Dakyung Ko
  * @author Jihye Kim
  * @since 0.0.3
- * @version 1.3
+ * @version 1.4
  */
 @CrossOrigin("*")
 @AllArgsConstructor
@@ -27,8 +33,37 @@ import javax.validation.Valid;
 @RestController
 public class ProjectController {
 
-    private ProjectServiceImpl projectServiceImpl;
+    private ProjectService projectService;
+    private OrdersService ordersService;
+    private UserService userService;
 
+    /**
+     * 프로젝트 생성 팝업 get. 기수목록 필요.
+     * @see /v1/api/project
+     */
+    @GetMapping("/project")
+    public ResponseEntity<List<OrdersResponseDto>> getCreateProject(){
+        List<OrdersResponseDto> orderList = ordersService.getOrderList();
+        return new ResponseEntity<>(orderList, HttpStatus.OK); //200.(요청이 성공적으로 되었습니다.리소스를 불러와서 메시지 바디에 전송되었습니다.)
+    }
+
+
+    /**
+     * 프로젝트 생성 팝업 post
+     * @exception Exception 이미 join된 유저 - 추후 수정
+     * @return 생성한 프로젝트 데이터, 해당 프로젝트의 task 목록
+     * @see /v1/api/project
+     */
+    @PostMapping("/project")
+    public ResponseEntity<ProjectResponseDto> createProject(@Valid @RequestBody final ProjectRequestDto project, HttpSession session){
+        User user = userService.getCurrentUser();
+        ProjectResponseDto createProject = projectService.createProject(project,user.getIdx());
+        // ProjectResponseDto createProject = projectService.createProject(project,Long.parseLong(session.getId()));
+        return new ResponseEntity<>(createProject, HttpStatus.CREATED);//201. (요청이 성공적이었으며 그 결과로 새로운 리소스가 생성)
+
+    }
+
+    /*확인 필요*/
     /**
      * 프로젝트 생성
      *
@@ -40,11 +75,11 @@ public class ProjectController {
      *
      * @see /v1/api/project
      */
-    @PostMapping("/project")
+    /*@PostMapping("/project")
     public ResponseEntity<ProjectResponseDto> createProject(@Valid @RequestBody final ProjectRequestDto project, HttpSession session){
         ProjectResponseDto createProject = projectServiceImpl.createProject(project, null);
         return new ResponseEntity<>(createProject, HttpStatus.CREATED);
-    }
+    }*/
 
     /**
      * 프로젝트 수정
@@ -60,7 +95,7 @@ public class ProjectController {
      */
     @PutMapping("/project/{idx}")
     public ResponseEntity<ProjectResponseDto> updateProject(@PathVariable final Long idx, @Valid @RequestBody final ProjectRequestDto project, HttpSession session){
-        ProjectResponseDto updateProject = projectServiceImpl.updateProject(idx, project, null);
+        ProjectResponseDto updateProject = projectService.updateProject(idx, project, 1111L);
         return new ResponseEntity<>(updateProject, HttpStatus.OK);
     }
 
@@ -75,7 +110,7 @@ public class ProjectController {
      */
     @DeleteMapping("/project/{idx}")
     public ResponseEntity deleteProject(@PathVariable final Long idx, HttpSession session){
-        projectServiceImpl.deleteProject(idx, null);
+        projectService.deleteProject(idx, null);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
@@ -91,7 +126,7 @@ public class ProjectController {
 
     @GetMapping("/project/{idx}")
     public ResponseEntity<ProjectResponseDto> getProject(@PathVariable final Long idx){
-        ProjectResponseDto project = projectServiceImpl.getProject(idx);
+        ProjectResponseDto project = projectService.getProject(idx);
         return new ResponseEntity<>(project, HttpStatus.OK);
     }
 
@@ -105,7 +140,7 @@ public class ProjectController {
      */
     @PutMapping("/project/{idx}/finish")
     public ResponseEntity setFinishedProject(@PathVariable final Long idx, @Valid @RequestBody FinishProjectRequestDto project){
-        projectServiceImpl.setFinishedProject(idx, project);
+        projectService.setFinishedProject(idx, project);
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -119,7 +154,20 @@ public class ProjectController {
      */
     @GetMapping("/project/{idx}/finish")
     public ResponseEntity<FinishProjectResponseDto> getFinishedProject(@PathVariable final Long idx) {
-        FinishProjectResponseDto project = projectServiceImpl.getFinishedProject(idx);
+        FinishProjectResponseDto project = projectService.getFinishedProject(idx);
         return new ResponseEntity<>(project, HttpStatus.OK);
+    }
+
+    /**
+     * 프로젝트에 속한 유저 목록 조회
+     *
+     * @param idx 조회할 프로젝트 idx
+     *
+     * @see /v1/api/project/{idx}/users
+     */
+    @GetMapping("/project/{idx}/users")
+    public ResponseEntity<List<UserResponseDto>> getUserListInProject(@PathVariable final Long idx) {
+        List<UserResponseDto> userList = new ArrayList<>();
+        return new ResponseEntity<>(userList, HttpStatus.OK);
     }
 }

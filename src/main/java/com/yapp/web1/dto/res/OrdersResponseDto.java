@@ -1,5 +1,6 @@
 package com.yapp.web1.dto.res;
 
+import com.yapp.web1.domain.Orders;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -14,8 +15,8 @@ public class OrdersResponseDto {
     private int number;
 
     @Builder
-    public OrdersResponseDto(Long idx, int number){
-        this.idx = idx;
-        this.number = number;
+    public OrdersResponseDto(Orders orders){
+        this.idx = orders.getIdx();
+        this.number = orders.getNumber();
     }
 }
