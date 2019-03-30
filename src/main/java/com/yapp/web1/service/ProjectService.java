@@ -20,7 +20,7 @@ import java.util.List;
 public interface ProjectService {
 
     /**
-     * 프로젝트 생성 post
+     * 프로젝트 생성
      *
      * @param dto 생성할 Project 정보
      * @param userIdx 로그인 유저

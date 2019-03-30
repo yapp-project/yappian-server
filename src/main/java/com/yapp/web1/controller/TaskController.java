@@ -3,6 +3,7 @@ package com.yapp.web1.controller;
 import com.yapp.web1.dto.req.TaskRequestDto;
 import com.yapp.web1.dto.res.NoticeListResponseDto;
 import com.yapp.web1.dto.res.TaskResponseDto;
+import com.yapp.web1.service.TaskService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,8 @@ import java.util.List;
 @RequestMapping("/v1/api")
 @RestController
 public class TaskController {
+
+    private final TaskService taskService;
 
     /**
      * 소속 중인 프로젝트의 읽지 않은 새로운 Task 목록
@@ -78,7 +81,8 @@ public class TaskController {
      */
     @GetMapping("/task/{idx}")
     public ResponseEntity<TaskResponseDto> getTask(@PathVariable final Long idx){
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        TaskResponseDto dto = taskService.getTask(idx);
+        return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
     /**
@@ -94,7 +98,7 @@ public class TaskController {
      * @see /v1/api/task/{idx}
      */
     @PutMapping("/task/{idx}")
-    public ResponseEntity<TaskResponseDto> editTask(@PathVariable final Long idx, @Valid @RequestBody final TaskUpdateRequestDto task, HttpSession session) {
+    public ResponseEntity<TaskResponseDto> editTask(@PathVariable final Long idx, @Valid @RequestBody final TaskRequestDto task, HttpSession session) {
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
