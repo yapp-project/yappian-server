@@ -13,24 +13,27 @@ import java.util.Set;
  *
  * @author Dakyung Ko, JiHye Kim
  */
-
 @Entity
 @Table(name="orders")
 @AttributeOverride(name="idx", column=@Column(name="orders_idx"))
-@NoArgsConstructor(access = AccessLevel.PROTECTED)//protected
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Orders extends BaseEntity{
 
+    /** Orders Table Fields **/
     @Column(name="number", nullable=false, unique=true)
     int number;
 
+    /** Relation Mapping **/
+    /** Orders - UserOrders 양방향 매핑 **/
     @JsonIgnore
     @OneToMany(mappedBy="orders",
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             orphanRemoval = true)
-    private Set<UserOrder> userOrders = new HashSet<>();
+    private Set<UserOrders> userOrders = new HashSet<>();
 
+    /** Orders - Project 양방향 매핑 **/
     @JsonIgnore
     @OneToMany(mappedBy="orders",
             cascade = CascadeType.REMOVE,
@@ -39,8 +42,9 @@ public class Orders extends BaseEntity{
     private Set<Project> projects = new HashSet<>();
 
 
+    /** Method **/
     @Builder
-    public Orders(int number, Set<UserOrder> userOrders, Set<Project> projects){
+    public Orders(int number, Set<UserOrders> userOrders, Set<Project> projects){
         this.number = number;
 
         this.userOrders = Optional.ofNullable(userOrders).orElse(this.userOrders);

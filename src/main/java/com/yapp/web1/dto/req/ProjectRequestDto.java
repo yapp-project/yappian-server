@@ -12,6 +12,7 @@ import javax.validation.constraints.Size;
 
 /**
  * 프로젝트 생성/수정 시 RequestDto
+ *
  * @author JiHye Kim
  * @author Dakyung Ko
  */
@@ -22,8 +23,6 @@ import javax.validation.constraints.Size;
 public class ProjectRequestDto {
     @NotNull(message = "기수를 입력하세요.")
     private Long ordersIdx; // 기수 idx
-
-    private int orderNumber; // 기수 number
 
     @NotNull(message = "프로젝트 타입을 입력하세요")
     private ProjectType projectType; // 프로젝트 타입

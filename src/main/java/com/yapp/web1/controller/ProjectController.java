@@ -1,18 +1,22 @@
 package com.yapp.web1.controller;
 
+import com.yapp.web1.domain.User;
 import com.yapp.web1.dto.res.OrdersResponseDto;
 import com.yapp.web1.dto.req.FinishProjectRequestDto;
 import com.yapp.web1.dto.req.ProjectRequestDto;
 import com.yapp.web1.dto.res.FinishProjectResponseDto;
 import com.yapp.web1.dto.res.ProjectResponseDto;
+import com.yapp.web1.dto.res.UserResponseDto;
 import com.yapp.web1.service.OrdersService;
 import com.yapp.web1.service.ProjectService;
+import com.yapp.web1.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,6 +35,7 @@ public class ProjectController {
 
     private ProjectService projectService;
     private OrdersService ordersService;
+    private UserService userService;
 
     /**
      * 프로젝트 생성 팝업 get. 기수목록 필요.
@@ -49,14 +54,32 @@ public class ProjectController {
      * @return 생성한 프로젝트 데이터, 해당 프로젝트의 task 목록
      * @see /v1/api/project
      */
-
     @PostMapping("/project")
     public ResponseEntity<ProjectResponseDto> createProject(@Valid @RequestBody final ProjectRequestDto project, HttpSession session){
-         ProjectResponseDto createProject = projectService.createProject(project,1111L);
+        User user = userService.getCurrentUser();
+        ProjectResponseDto createProject = projectService.createProject(project,user.getIdx());
         // ProjectResponseDto createProject = projectService.createProject(project,Long.parseLong(session.getId()));
         return new ResponseEntity<>(createProject, HttpStatus.CREATED);//201. (요청이 성공적이었으며 그 결과로 새로운 리소스가 생성)
 
     }
+
+    /*확인 필요*/
+    /**
+     * 프로젝트 생성
+     *
+     * @param project 생성할 프로젝트 데이터
+     * @param session 로그인 유저 정보
+     * @return 생성한 프로젝트 데이터, 해당 프로젝트의 task 목록
+     *
+     * @exception Exception 이미 join된 유저 - 추후 수정
+     *
+     * @see /v1/api/project
+     */
+    /*@PostMapping("/project")
+    public ResponseEntity<ProjectResponseDto> createProject(@Valid @RequestBody final ProjectRequestDto project, HttpSession session){
+        ProjectResponseDto createProject = projectServiceImpl.createProject(project, null);
+        return new ResponseEntity<>(createProject, HttpStatus.CREATED);
+    }*/
 
     /**
      * 프로젝트 수정
@@ -133,5 +156,18 @@ public class ProjectController {
     public ResponseEntity<FinishProjectResponseDto> getFinishedProject(@PathVariable final Long idx) {
         FinishProjectResponseDto project = projectService.getFinishedProject(idx);
         return new ResponseEntity<>(project, HttpStatus.OK);
+    }
+
+    /**
+     * 프로젝트에 속한 유저 목록 조회
+     *
+     * @param idx 조회할 프로젝트 idx
+     *
+     * @see /v1/api/project/{idx}/users
+     */
+    @GetMapping("/project/{idx}/users")
+    public ResponseEntity<List<UserResponseDto>> getUserListInProject(@PathVariable final Long idx) {
+        List<UserResponseDto> userList = new ArrayList<>();
+        return new ResponseEntity<>(userList, HttpStatus.OK);
     }
 }
