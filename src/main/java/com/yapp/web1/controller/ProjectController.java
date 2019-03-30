@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,7 +22,7 @@ import java.util.List;
  * @author Dakyung Ko
  * @author Jihye Kim
  * @since 0.0.3
- * @version 1.4
+ * @version 1.5
  */
 @CrossOrigin("*")
 @AllArgsConstructor
@@ -50,9 +49,7 @@ public class ProjectController {
         User user = userService.getCurrentUser();
         ProjectResponseDto createProject = projectService.createProject(project,user.getIdx());
         return new ResponseEntity<>(createProject, HttpStatus.CREATED);//201. (요청이 성공적이었으며 그 결과로 새로운 리소스가 생성)
-
     }
-
 
     /**
      * 프로젝트 수정
@@ -61,8 +58,6 @@ public class ProjectController {
      * @param project 수정할 프로젝트 데이터
      * @param session 로그인 유저 session
      * @return 수정한 프로젝트 데이터, 해당 프로젝트의 task 목록
-     *
-     * @exception Exception Project.createUserIdx와 세션 User idx 불일치시 - 추후 수정
      *
      * @see /v1/api/project/{idx}
      */
@@ -77,7 +72,6 @@ public class ProjectController {
      *
      * @param idx 수정할 프로젝트 idx
      * @param session 로그인 유저 session
-     * @exception Exception Project.createUserIdx와 세션 User idx 불일치시 - 추후 수정
      *
      * @see /v1/api/project/{idx}
      */
@@ -140,7 +134,8 @@ public class ProjectController {
      */
     @GetMapping("/project/{idx}/users")
     public ResponseEntity<List<UserResponseDto>> getUserListInProject(@PathVariable final Long idx) {
-        List<UserResponseDto> userList = new ArrayList<>();
+        List<UserResponseDto> userList = projectService.getUserListInProject(idx);
         return new ResponseEntity<>(userList, HttpStatus.OK);
     }
+
 }

@@ -94,7 +94,7 @@ public class TaskController {
      * @see /v1/api/task/{idx}
      */
     @PutMapping("/task/{idx}")
-    public ResponseEntity<TaskResponseDto> editTask(@PathVariable final Long idx, @Valid @RequestBody final TaskUpdateRequestDto task, HttpSession session) {
+    public ResponseEntity<TaskResponseDto> editTask(@PathVariable final Long idx, @Valid @RequestBody final TaskRequestDto task, HttpSession session) {
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
