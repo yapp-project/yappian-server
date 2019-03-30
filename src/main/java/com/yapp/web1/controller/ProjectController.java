@@ -1,13 +1,11 @@
 package com.yapp.web1.controller;
 
 import com.yapp.web1.domain.User;
-import com.yapp.web1.dto.res.OrdersResponseDto;
 import com.yapp.web1.dto.req.FinishProjectRequestDto;
 import com.yapp.web1.dto.req.ProjectRequestDto;
 import com.yapp.web1.dto.res.FinishProjectResponseDto;
 import com.yapp.web1.dto.res.ProjectResponseDto;
 import com.yapp.web1.dto.res.UserResponseDto;
-import com.yapp.web1.service.OrdersService;
 import com.yapp.web1.service.ProjectService;
 import com.yapp.web1.service.UserService;
 import lombok.AllArgsConstructor;
@@ -34,25 +32,8 @@ import java.util.List;
 public class ProjectController {
 
     private ProjectService projectService;
-    private OrdersService ordersService;
     private UserService userService;
 
-    /**
-     * 프로젝트 생성 팝업 post
-     * @exception Exception 이미 join된 유저 - 추후 수정
-     * @return 생성한 프로젝트 데이터, 해당 프로젝트의 task 목록
-     * @see /v1/api/project
-     */
-    @PostMapping("/project")
-    public ResponseEntity<ProjectResponseDto> createProject(@Valid @RequestBody final ProjectRequestDto project, HttpSession session){
-        User user = userService.getCurrentUser();
-        ProjectResponseDto createProject = projectService.createProject(project,user.getIdx());
-        // ProjectResponseDto createProject = projectService.createProject(project,Long.parseLong(session.getId()));
-        return new ResponseEntity<>(createProject, HttpStatus.CREATED);//201. (요청이 성공적이었으며 그 결과로 새로운 리소스가 생성)
-
-    }
-
-    /*확인 필요*/
     /**
      * 프로젝트 생성
      *
@@ -64,11 +45,14 @@ public class ProjectController {
      *
      * @see /v1/api/project
      */
-    /*@PostMapping("/project")
+    @PostMapping("/project")
     public ResponseEntity<ProjectResponseDto> createProject(@Valid @RequestBody final ProjectRequestDto project, HttpSession session){
-        ProjectResponseDto createProject = projectServiceImpl.createProject(project, null);
-        return new ResponseEntity<>(createProject, HttpStatus.CREATED);
-    }*/
+        User user = userService.getCurrentUser();
+        ProjectResponseDto createProject = projectService.createProject(project,user.getIdx());
+        return new ResponseEntity<>(createProject, HttpStatus.CREATED);//201. (요청이 성공적이었으며 그 결과로 새로운 리소스가 생성)
+
+    }
+
 
     /**
      * 프로젝트 수정
