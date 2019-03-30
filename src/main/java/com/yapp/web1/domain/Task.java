@@ -80,9 +80,8 @@ public class Task extends BaseEntity {
 
     /** Relation Mapping - Join Table **/
     /** Task - User 단방향 매핑 **/
-    @OneToMany(fetch=FetchType.EAGER,
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
+    @ManyToMany(fetch=FetchType.LAZY,
+            cascade = CascadeType.PERSIST)
     @JoinTable(name="work",
             joinColumns = @JoinColumn(name="task_idx"),
             inverseJoinColumns = @JoinColumn(name="user_idx"))
