@@ -8,9 +8,7 @@ import com.yapp.web1.domain.VO.ProjectType;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Project 테이블의 Domain 클래스
@@ -61,10 +59,18 @@ public class Project extends BaseEntity {
 
     // @OneToMany Project-File 연관관계, 완료시 이미지 여부 (에디터 사용에 따라 달라짐)
 
+    /** Relation Mapping - Join Table **/
+    /** Project - User 양방향 매핑 **/
+    @ManyToMany(mappedBy = "project",
+            cascade = CascadeType.PERSIST,
+            fetch = FetchType.LAZY)
+    private Set<User> userList = new HashSet<>();
+
+
     /** Method **/
     @Builder
     public Project(ProjectType type, String name, Mark finalCheck, String description, String productURL,
-                   Long createUserIdx, Orders orders, List<Task> taskList){
+                   Long createUserIdx, Orders orders, List<Task> taskList, Set<User> userList){
         this.type = type;
         this.name = name;
         this.finalCheck = finalCheck;
@@ -74,6 +80,7 @@ public class Project extends BaseEntity {
         this.orders = orders;
 
         this.taskList = Optional.ofNullable(taskList).orElse(this.taskList);
+        this.userList = Optional.ofNullable(userList).orElse(this.userList);
     }
 
     public Mark finishedProject(){

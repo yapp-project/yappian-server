@@ -41,6 +41,12 @@ public class ProjectServiceImpl implements ProjectService {
     private final OrdersRepository ordersRepository;
     private final TaskRepository taskRepository;
 
+    // project findById
+    private Project findById(Long idx){
+        return projectRepository.findById(idx).orElseThrow(() -> new EntityNotFoundException("해당 프로젝트 없음"));
+    }
+
+    // createProject
     @Override
     public ProjectResponseDto createProject(ProjectRequestDto dto, Long userIdx) { //실제로는 User user. 그리고 User.getIdx()해서 구현
         Orders order = ordersRepository.findById(dto.getOrdersIdx()).orElseThrow(() -> new EntityNotFoundException("기수 못찾음"));
@@ -90,7 +96,7 @@ public class ProjectServiceImpl implements ProjectService {
     public ProjectResponseDto updateProject(Long idx, ProjectRequestDto dto, Long userIdx)//실제로는 User user. 그리고 User.getIdx()해서 구현
     {
         // projectIdx로 createUserIdx를 찾는다. 그리고 비교
-        Project project = projectRepository.findById(idx).orElseThrow(() -> new EntityNotFoundException("해당 프로젝트 없음"));
+        Project project = findById(idx);
         Long createUserIdx = project.getCreateUserIdx();
         Orders order = ordersRepository.findById(dto.getOrdersIdx()).orElseThrow(() -> new EntityNotFoundException("기수 못찾음"));
 
@@ -118,7 +124,7 @@ public class ProjectServiceImpl implements ProjectService {
     public boolean deleteProject(Long idx, Long userIdx) //실제로는 User user. 그리고 User.getIdx()해서 구현
     {
         // projectIdx로 createUserIdx를 찾는다. 그리고 비교
-        Project project = projectRepository.findById(idx).orElseThrow(() -> new EntityNotFoundException("해당 프로젝트 없음"));
+        Project project = findById(idx);
         Long createUserIdx = project.getCreateUserIdx();
 
         // 수정 조건 : 프로젝트 생성자만 할 수 있다.
@@ -134,7 +140,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional(readOnly = true)
     @Override
     public ProjectResponseDto getProject(Long idx) {
-        Project project = projectRepository.findById(idx).orElseThrow(() -> new EntityNotFoundException("해당 프로젝트 없음"));
+        Project project = findById(idx);
 
         ProjectResponseDto responseDto = ProjectResponseDto.builder()
                 .project(project)
@@ -164,14 +170,9 @@ public class ProjectServiceImpl implements ProjectService {
         return null;
     }
 
-    private Project findById(Long idx) {
-        return projectRepository.findById(idx).orElseThrow(
-                () -> new IllegalArgumentException("findById error : wrong id"));
-    }
-
     @Transactional(readOnly = true)
     @Override
     public List<UserResponseDto> getUserListInProject(Long idx){
-
+        return null;
     }
 }
