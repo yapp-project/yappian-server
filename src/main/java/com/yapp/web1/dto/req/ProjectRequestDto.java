@@ -28,7 +28,7 @@ public class ProjectRequestDto {
     private ProjectType projectType; // 프로젝트 타입
 
     @NotBlank(message = "프로젝트 이름을 입력하세요")
-    @Size(min = 3, max=13)
+    @Size(max=13)
     private String projectName; // 프로젝트 이름
 
     @Builder

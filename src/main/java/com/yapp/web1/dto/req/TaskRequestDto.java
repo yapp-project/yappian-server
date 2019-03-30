@@ -25,7 +25,7 @@ import java.util.List;
 @Getter
 public class TaskRequestDto {
     @NotBlank(message = "테스크 제목을 입력하세요")
-    @Size(min = 3, max=17)
+    @Size(max=17)
     private String title; // 테스크 제목
     @NotNull
     private TaskStatus taskStatus; // 테스크 상태

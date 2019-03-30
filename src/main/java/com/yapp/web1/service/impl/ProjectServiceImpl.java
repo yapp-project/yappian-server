@@ -170,9 +170,11 @@ public class ProjectServiceImpl implements ProjectService {
         return null;
     }
 
+    // userList
     @Transactional(readOnly = true)
     @Override
     public List<UserResponseDto> getUserListInProject(Long idx){
-        return null;
+       return null;
+
     }
 }
