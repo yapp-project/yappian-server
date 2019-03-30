@@ -75,7 +75,7 @@ public class Task extends BaseEntity {
     /** Task - File 양방향 매핑 **/
     @JsonIgnore
     @OneToMany(mappedBy = "task",
-            fetch = FetchType.LAZY)
+            fetch = FetchType.LAZY) // Cascade, orphanRemoval 옵션 ㅊ
     private List<File> fileList = new ArrayList<>();
 
     /** Relation Mapping - Join Table **/

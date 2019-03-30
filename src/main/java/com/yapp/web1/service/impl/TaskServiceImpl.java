@@ -10,6 +10,7 @@ import com.yapp.web1.dto.res.TaskResponseDto;
 import com.yapp.web1.dto.res.UserResponseDto;
 import com.yapp.web1.repository.TaskRepository;
 import com.yapp.web1.service.TaskService;
+import com.yapp.web1.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * TaskService 구현 클래스
@@ -31,16 +33,18 @@ import java.util.List;
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
+    private final UserService userService;
 
     @Override
     public TaskResponseDto createTask(TaskRequestDto dto, User user) {
         return null;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public TaskResponseDto getTask(Long idx) {
         Task findTask = taskRepository.findById(idx)
-                .orElseThrow(()->new EntityNotFoundException("해당 프로젝트 없음"));
+                .orElseThrow(()->new EntityNotFoundException("해당 Task 없음"));
 
         List<User> works = findTask.getWorks();
         List<Comment> commentList = findTask.getCommentList();
@@ -107,9 +111,28 @@ public class TaskServiceImpl implements TaskService {
         return null;
     }
 
+    @Transactional
     @Override
     public boolean deleteTask(Long idx, User user) {
-        return false;
+        // Task idx check
+        Task findTask = taskRepository.findById(idx)
+                .orElseThrow(()->new EntityNotFoundException("해당 Task 없음"));
+
+        // 임시 로그인 User 데이터
+        user = userService.getCurrentUser();
+
+        // 로그인 User 데이터와 프로젝트에 Join한 User 데이터 check
+        Set<User> joinedUsers = findTask.getProject().getUserList();
+        System.out.println(joinedUsers.size());
+        if(!joinedUsers.contains(user)) return false; // 추후 Exception 처리
+
+        // 연관관계 삭제
+        findTask.getReadList().clear();
+        findTask.getWorks().clear();
+        findTask.getCommentList().clear();
+
+        taskRepository.deleteById(idx);
+        return true;
     }
 
     @Override

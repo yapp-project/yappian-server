@@ -115,6 +115,7 @@ public class TaskController {
      */
     @DeleteMapping("/task/{idx}")
     public ResponseEntity deleteTask(@PathVariable final Long idx, HttpSession session) {
+        if(!taskService.deleteTask(idx, null)) return new ResponseEntity(HttpStatus.NOT_FOUND); //  return false 시 Exception
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }
