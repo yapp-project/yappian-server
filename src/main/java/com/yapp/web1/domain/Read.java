@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 /**
  * Read 테이블의 Domain 클래스
- * Task 읽음 여부를 기록
+ * 읽은 Task 기록
  *
  * @author Dakyung Ko
  */
