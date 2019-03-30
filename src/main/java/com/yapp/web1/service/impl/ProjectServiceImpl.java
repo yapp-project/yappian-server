@@ -9,6 +9,7 @@ import com.yapp.web1.dto.req.FinishProjectRequestDto;
 import com.yapp.web1.dto.req.ProjectRequestDto;
 import com.yapp.web1.dto.res.FinishProjectResponseDto;
 import com.yapp.web1.dto.res.ProjectResponseDto;
+import com.yapp.web1.dto.res.TaskListResponseDto;
 import com.yapp.web1.repository.OrdersRepository;
 import com.yapp.web1.repository.ProjectRepository;
 import com.yapp.web1.repository.TaskRepository;
@@ -17,6 +18,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * ProjectService 구현 클래스
@@ -41,15 +44,18 @@ public class ProjectServiceImpl implements ProjectService {
         final Project project = Project.builder()
                 .type(dto.getProjectType())
                 .name(dto.getProjectName())
-                .orders(order)
-                .createUserIdx(userIdx).build();
+                .finalCheck(Mark.N)
+                .createUserIdx(userIdx)
+                .orders(order).build();
 
         projectRepository.save(project); // create
 
         // 생성후 바로 프로젝트 상세 정보를 보여주기 위함.
         ProjectResponseDto responseDto = ProjectResponseDto.builder()
-                .project(dto)
-                .taskList(null).build();
+                .orderNumber(order.getNumber())
+                .projectType(project.getType())
+                .projectName(project.getName())
+                .taskList(new ArrayList<>()).build(); // 생성할 때는 빈 Task 목록
         return responseDto;
     }
 
@@ -71,14 +77,27 @@ public class ProjectServiceImpl implements ProjectService {
                     .orders(order).build();
             projectRepository.save(project); // update
         }else{
-            System.out.println("생성자만 수정할 수 있음");
+            System.out.println("생성한 유저만 수정할 수 있음");
             return null; // 예외처리하기
         }
 
+        /*
+        List<Task> getTaskList = project.getTaskList();
+        List<TaskListResponseDto> taskList = new ArrayList<>();
+        for(Task task : getTaskList){
+            TaskListResponseDto.builder().taskIdx(task.getIdx())
+                    .taskTitle(task.getTitle())
+                    .taskJob(task.getJob())
+
+            taskList.add()
+        }*/
+
         // 수정 후 바로 프로젝트 상세 정보를 보여주기 위함.
         ProjectResponseDto responseDto = ProjectResponseDto.builder()
-                .project(dto)
-                .taskList(null).build();
+                .orderNumber(order.getNumber())
+                .projectType(project.getType())
+                .projectName(project.getName())
+                .taskList(null).build(); // 해당 프로젝트의 Task 목록 불러와야함
         return responseDto;
     }
 

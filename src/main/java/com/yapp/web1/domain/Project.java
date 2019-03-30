@@ -63,10 +63,13 @@ public class Project extends BaseEntity {
 
     /** Method **/
     @Builder
-    public Project(ProjectType type, String name, Long createUserIdx,
-                   Orders orders, List<Task> taskList){
+    public Project(ProjectType type, String name, Mark finalCheck, String description, String productURL,
+                   Long createUserIdx, Orders orders, List<Task> taskList){
         this.type = type;
         this.name = name;
+        this.finalCheck = finalCheck;
+        this.description = description;
+        this.productURL = productURL;
         this.createUserIdx = createUserIdx;
         this.orders = orders;
 
