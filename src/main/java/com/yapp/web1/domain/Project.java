@@ -61,7 +61,7 @@ public class Project extends BaseEntity {
 
     /** Relation Mapping - Join Table **/
     /** Project - User 양방향 매핑 **/
-    @ManyToMany(mappedBy = "project",
+    @ManyToMany(mappedBy = "joinedProjects",
             cascade = CascadeType.PERSIST,
             fetch = FetchType.LAZY)
     private Set<User> userList = new HashSet<>();
