@@ -62,7 +62,7 @@ public class User extends BaseEntity {
     /** Relation Mapping - Join Table **/
     /** User - Project 단방향 매핑 **/
     @OneToMany(fetch=FetchType.LAZY,
-            cascade = CascadeType.REMOVE,//ALL
+            cascade = CascadeType.ALL,
             orphanRemoval = true)
     @JoinTable(name="favorites",
             joinColumns = @JoinColumn(name="user_idx"),
@@ -70,10 +70,9 @@ public class User extends BaseEntity {
     @OrderBy("project_idx desc")
     private Set<Project> favorites = new HashSet<>();
 
-    /** User - Project 단방향 매핑 **/
-    @OneToMany(fetch=FetchType.LAZY,
-            cascade = CascadeType.PERSIST,
-            orphanRemoval = true)
+    /** User - Project 양방향 매핑 **/
+    @ManyToMany(fetch=FetchType.LAZY,
+            cascade = CascadeType.PERSIST)
     @JoinTable(name="joined",
             joinColumns = @JoinColumn(name="user_idx"),
             inverseJoinColumns = @JoinColumn(name="project_idx"))

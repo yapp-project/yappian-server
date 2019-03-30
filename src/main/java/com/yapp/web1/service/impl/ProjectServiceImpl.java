@@ -10,6 +10,7 @@ import com.yapp.web1.dto.req.ProjectRequestDto;
 import com.yapp.web1.dto.res.FinishProjectResponseDto;
 import com.yapp.web1.dto.res.ProjectResponseDto;
 import com.yapp.web1.dto.res.TaskListResponseDto;
+import com.yapp.web1.dto.res.UserResponseDto;
 import com.yapp.web1.repository.OrdersRepository;
 import com.yapp.web1.repository.ProjectRepository;
 import com.yapp.web1.repository.TaskRepository;
@@ -129,6 +130,11 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional(readOnly = true)
     @Override
     public FinishProjectResponseDto getFinishedProject(Long idx) {
+        return null;
+    }
+
+    @Override
+    public List<UserResponseDto> getUserListInProject(Long idx) {
         return null;
     }
 
