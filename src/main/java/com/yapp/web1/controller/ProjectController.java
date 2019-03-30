@@ -6,6 +6,7 @@ import com.yapp.web1.dto.req.FinishProjectRequestDto;
 import com.yapp.web1.dto.req.ProjectRequestDto;
 import com.yapp.web1.dto.res.FinishProjectResponseDto;
 import com.yapp.web1.dto.res.ProjectResponseDto;
+import com.yapp.web1.dto.res.UserResponseDto;
 import com.yapp.web1.service.OrdersService;
 import com.yapp.web1.service.ProjectService;
 import com.yapp.web1.service.UserService;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -154,5 +156,18 @@ public class ProjectController {
     public ResponseEntity<FinishProjectResponseDto> getFinishedProject(@PathVariable final Long idx) {
         FinishProjectResponseDto project = projectService.getFinishedProject(idx);
         return new ResponseEntity<>(project, HttpStatus.OK);
+    }
+
+    /**
+     * 프로젝트에 속한 유저 목록 조회
+     *
+     * @param idx 조회할 프로젝트 idx
+     *
+     * @see /v1/api/project/{idx}/users
+     */
+    @GetMapping("/project/{idx}/users")
+    public ResponseEntity<List<UserResponseDto>> getUserListInProject(@PathVariable final Long idx) {
+        List<UserResponseDto> userList = new ArrayList<>();
+        return new ResponseEntity<>(userList, HttpStatus.OK);
     }
 }

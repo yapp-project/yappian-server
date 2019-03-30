@@ -5,6 +5,9 @@ import com.yapp.web1.dto.req.FinishProjectRequestDto;
 import com.yapp.web1.dto.req.ProjectRequestDto;
 import com.yapp.web1.dto.res.FinishProjectResponseDto;
 import com.yapp.web1.dto.res.ProjectResponseDto;
+import com.yapp.web1.dto.res.UserResponseDto;
+
+import java.util.List;
 
 /**
  * ProjectService Interface
@@ -76,4 +79,10 @@ public interface ProjectService {
      */
     FinishProjectResponseDto getFinishedProject(Long idx);
 
+    /**
+     * 프로젝트에 속한 유저 목록 조회
+     *
+     * @param idx 조회할 Project idx
+     */
+    List<UserResponseDto> getUserListInProject(Long idx);
 }
