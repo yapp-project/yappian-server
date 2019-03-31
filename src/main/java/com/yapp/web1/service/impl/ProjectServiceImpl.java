@@ -14,15 +14,13 @@ import com.yapp.web1.dto.res.UserResponseDto;
 import com.yapp.web1.repository.OrdersRepository;
 import com.yapp.web1.repository.ProjectRepository;
 import com.yapp.web1.repository.TaskRepository;
-import com.yapp.web1.repository.UserRepository;
 import com.yapp.web1.service.ProjectService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * ProjectService 구현 클래스
@@ -30,7 +28,7 @@ import java.util.List;
  * @author Dakyung Ko
  * @author Jihye Kim
  * @version 1.2
- * @since 0.0.3
+ * @since 0.0.4
  */
 @Service
 @Transactional
@@ -174,7 +172,19 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional(readOnly = true)
     @Override
     public List<UserResponseDto> getUserListInProject(Long idx){
-       return null;
 
+        Project project = findById(idx);
+        Set<User> userSet = project.getUserList();
+
+        List<UserResponseDto> userList = new ArrayList<>();
+
+        User user;
+        Iterator<User> it = userSet.iterator();
+
+        while(it.hasNext()){
+            user = it.next();
+            userList.add(new UserResponseDto(user.getIdx(),user.getName()));
+        }
+        return userList;
     }
 }
