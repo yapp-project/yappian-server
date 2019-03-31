@@ -39,7 +39,6 @@ public class ProjectRepositoryTest extends RepositoryTest {
         projectRepository.save(project);
 
         // when
-//        List<Project> projectList = projectRepository.findAll();
         Project findProject = projectRepository.findByName("프로젝트팀");
 
         // then

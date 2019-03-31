@@ -54,4 +54,9 @@ public class UserServiceImpl implements UserService {
     public User getCurrentUser(){
         return testUser();
     }
+
+    @Override
+    public User findByIdx(Long idx) {
+        return null;
+    }
 }

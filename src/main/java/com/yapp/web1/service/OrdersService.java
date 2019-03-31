@@ -28,5 +28,5 @@ public interface OrdersService {
      * @param idx 조회할 Orders(기수)의 idx
      * @return 해당 기수의 프로젝트 list
      */
-    List<ProjectListResponseDto> getProjectListByOrder(Long orderIdx);
+    List<ProjectListResponseDto> getProjectListByOrder(Long idx);
 }
