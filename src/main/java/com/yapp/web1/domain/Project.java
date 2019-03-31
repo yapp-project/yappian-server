@@ -20,6 +20,7 @@ import java.util.*;
 @AttributeOverride(name="idx", column=@Column(name="project_idx"))
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+//@EqualsAndHashCode(of = {"idx", "name"}) // 잘 적용되나 확인해봐야 함
 public class Project extends BaseEntity {
     /** Project Table Fields **/
     @Column(name="type", nullable = false)
@@ -61,7 +62,7 @@ public class Project extends BaseEntity {
 
     /** Relation Mapping - Join Table **/
     /** Project - User 양방향 매핑 **/
-    @ManyToMany(mappedBy = "project",
+    @ManyToMany(mappedBy = "joinedProjects",
             cascade = CascadeType.PERSIST,
             fetch = FetchType.LAZY)
     private Set<User> userList = new HashSet<>();

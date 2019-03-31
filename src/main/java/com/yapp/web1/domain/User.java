@@ -3,10 +3,7 @@ package com.yapp.web1.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yapp.web1.converter.UserRoleAttributeConverter;
 import com.yapp.web1.domain.VO.UserRole;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.*;
@@ -21,6 +18,7 @@ import java.util.*;
 @AttributeOverride(name="idx", column=@Column(name="user_idx"))
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+//@EqualsAndHashCode(exclude = {"userOrders", "readList", "commentList", "favorites", "joinedProjects"})
 public class User extends BaseEntity {
 
     /** User Table Fields **/
@@ -94,5 +92,4 @@ public class User extends BaseEntity {
         this.joinedProjects = Optional.ofNullable(joinedProject).orElse(this.joinedProjects);
     }
 
-//    + hashcode/toString override
 }

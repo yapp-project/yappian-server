@@ -1,6 +1,8 @@
 package com.yapp.web1.dto.req;
 
 import com.yapp.web1.domain.File;
+import com.yapp.web1.domain.Project;
+import com.yapp.web1.domain.Task;
 import com.yapp.web1.domain.VO.TaskJob;
 import com.yapp.web1.domain.VO.TaskStatus;
 import lombok.Builder;
@@ -24,6 +26,8 @@ import java.util.List;
 @Setter
 @Getter
 public class TaskRequestDto {
+    private Long projectIdx; // 관계된 프로젝트 idx
+
     @NotBlank(message = "테스크 제목을 입력하세요")
     @Size(max=17)
     private String title; // 테스크 제목
@@ -42,8 +46,9 @@ public class TaskRequestDto {
 //    List<File> fileList; // 테스크 첨부파일 List, 추후 파일 수정
 
     @Builder
-    public TaskRequestDto(String title, TaskStatus taskStatus, TaskJob taskJob,
+    public TaskRequestDto(Long projectIdx, String title, TaskStatus taskStatus, TaskJob taskJob,
                           List<Long> userList, LocalDate startDate, LocalDate endDate, String contents, List<File> fileList){
+        this.projectIdx = projectIdx;
         this.title = title;
         this.taskStatus = taskStatus;
         this.taskJob = taskJob;
@@ -52,5 +57,16 @@ public class TaskRequestDto {
         this.endDate = endDate;
         this.contents = contents;
 //        this.fileList = fileList;
+    }
+
+    public Task toEntity(Project project){
+        return Task.builder().title(this.title)
+                .status(this.taskStatus)
+                .job(this.taskJob)
+                .startDate(this.startDate)
+                .endDate(this.endDate)
+                .contents(this.contents)
+                .project(project)
+                .build();
     }
 }
