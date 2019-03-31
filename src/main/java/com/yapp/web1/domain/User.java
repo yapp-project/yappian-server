@@ -18,7 +18,7 @@ import java.util.*;
 @AttributeOverride(name="idx", column=@Column(name="user_idx"))
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@EqualsAndHashCode(exclude = {"userOrders", "readList", "commentList", "favorites", "joinedProjects"})
+//@EqualsAndHashCode(exclude = {"userOrders", "readList", "commentList", "favorites", "joinedProjects"})
 public class User extends BaseEntity {
 
     /** User Table Fields **/

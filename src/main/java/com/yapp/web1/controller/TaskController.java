@@ -3,6 +3,7 @@ package com.yapp.web1.controller;
 import com.yapp.web1.dto.req.TaskRequestDto;
 import com.yapp.web1.dto.res.NoticeListResponseDto;
 import com.yapp.web1.dto.res.TaskResponseDto;
+import com.yapp.web1.repository.TaskRepository;
 import com.yapp.web1.service.TaskService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -68,7 +69,8 @@ public class TaskController {
      */
     @PostMapping("/task")
     public ResponseEntity<TaskResponseDto> createTask(@Valid @RequestBody final TaskRequestDto task, HttpSession session){
-        return new ResponseEntity<>(null, HttpStatus.CREATED);
+        TaskResponseDto dto = taskService.createTask(task, null);
+        return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
     /**

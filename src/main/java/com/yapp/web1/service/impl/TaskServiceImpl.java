@@ -47,7 +47,7 @@ public class TaskServiceImpl implements TaskService {
      * @return 찾은 Task
      * @exception EntityNotFoundException 찾는 Task가 없는 경우
      */
-    private Task findById(Long idx){
+    private Task findByIdx(Long idx){
         Task findTask = taskRepository.findById(idx)
                 .orElseThrow(()->new EntityNotFoundException("해당 Task 없음"));
         return findTask;
@@ -88,7 +88,7 @@ public class TaskServiceImpl implements TaskService {
                 .startDate(dto.getStartDate())
                 .endDate(dto.getEndDate())
                 .contents(dto.getContents())
-                .userList(userIdxToUser(userIdxList))// UserResponseDto List
+//                .userList(userIdxToUser(userIdxList))// UserResponseDto List
                 .comments(commentResponseDtoList) // 빈 commentResponseDtoList
                 .build();
     }
@@ -112,7 +112,7 @@ public class TaskServiceImpl implements TaskService {
     @Transactional(readOnly = true)
     @Override
     public TaskResponseDto getTask(Long idx) {
-        Task findTask = findById(idx);
+        Task findTask = findByIdx(idx);
 
         List<User> works = findTask.getWorks();
         List<Comment> commentList = findTask.getCommentList();
@@ -198,7 +198,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public boolean deleteTask(Long idx, User user) {
         // Task idx check
-        Task findTask = findById(idx);
+        Task findTask = findByIdx(idx);
 
         // 임시 로그인 User 데이터
         user = userService.getCurrentUser();
