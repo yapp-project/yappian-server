@@ -94,5 +94,5 @@ public class User extends BaseEntity {
         this.joinedProjects = Optional.ofNullable(joinedProject).orElse(this.joinedProjects);
     }
 
-//    + hashcode/toString override
+    //    + hashcode/toString override
 }

@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * ProjectService 구현 클래스
@@ -40,7 +41,7 @@ public class ProjectServiceImpl implements ProjectService {
     private final TaskRepository taskRepository;
 
     // project findById
-    private Project findById(Long idx){
+    private Project findById(Long idx) {
         return projectRepository.findById(idx).orElseThrow(() -> new EntityNotFoundException("해당 프로젝트 없음"));
     }
 
@@ -65,31 +66,37 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     // taskList와 각각의 userList GET
-    private List<TaskListResponseDto> getTaskUser(Long projectIdx){
-
+    private List<TaskListResponseDto> getTaskUser(Long projectIdx) {
+        System.out.println("getTaskUser 메소드");
         // 해당 프로젝트의 task 목록
         List<Task> taskList = taskRepository.findByProjectIdx(projectIdx);
-
-        // 해당 프로젝트의 task목록에서 각 task의 담당 user목록들을 저장
-        List<List<User>> users = new ArrayList<List<User>>();
-
-        for (int i = 0; i < taskList.size(); ++i) {
-            users.get(i).addAll(taskList.get(i).getWorks());
-        }
-
-        // user의 idx와 name만 출력하는 UserResponseDto list에 위에서 저장한 각 task의 userList에서 원하는 값들만 저장한다.
-        List<UserResponseDto> userList = new ArrayList<>();
-        for (int i = 0; i < users.size(); ++i) {
-            userList.add(new UserResponseDto(users.get(i).get(i).getIdx(), users.get(i).get(i).getName()));
+        /*
+        System.out.println(
+                "taskList" +
+                        taskList.stream()
+                                .map(Task::toString)
+                                .collect(Collectors.joining(", "))
+        );
+        */
+        List<List<UserResponseDto>> userList = new ArrayList<>();
+        List<UserResponseDto> userWork = new ArrayList<>();
+        for(int i=0; i<taskList.size(); ++i){
+            for(int j=0; j<taskList.get(i).getWorks().size(); ++j){
+                userWork.add(new UserResponseDto(taskList.get(i).getWorks().get(j).getIdx(), taskList.get(i).getWorks().get(j).getName()));
+            }
+            userList.add(userWork);
+            userWork = new ArrayList<>();
         }
 
         // 원하는 userList 정보들과 task 정보들이 저장된 taskListResponseDto
         List<TaskListResponseDto> taskListResponseDtos = new ArrayList<>();
-        for (Task tasks : taskList) {
-            taskListResponseDtos.add(new TaskListResponseDto(tasks, userList));
+        for(int i=0; i<taskList.size(); ++i){
+            taskListResponseDtos.add(new TaskListResponseDto(taskList.get(i),userList.get(i)));
         }
+
         return taskListResponseDtos;
     }
+
     @Override
     public ProjectResponseDto updateProject(Long idx, ProjectRequestDto dto, Long userIdx)//실제로는 User user. 그리고 User.getIdx()해서 구현
     {
@@ -101,11 +108,9 @@ public class ProjectServiceImpl implements ProjectService {
         // 수정 조건 : 프로젝트 생성자만 할 수 있다.
         if (String.valueOf(createUserIdx).equals(String.valueOf(userIdx))) {
             //기수, 타입, 이름
-            project.builder()
-                    .type(dto.getProjectType())
-                    .name(dto.getProjectName())
-                    .orders(order).build();
+            project.updateProject(dto.getProjectName(),dto.getProjectType(),order);
             projectRepository.save(project); // update
+            System.out.println("업데이트");
         } else {
             System.out.println("생성한 유저만 수정할 수 있음");
             return null; // 예외처리하기
@@ -171,7 +176,7 @@ public class ProjectServiceImpl implements ProjectService {
     // userList
     @Transactional(readOnly = true)
     @Override
-    public List<UserResponseDto> getUserListInProject(Long idx){
+    public List<UserResponseDto> getUserListInProject(Long idx) {
 
         Project project = findById(idx);
         Set<User> userSet = project.getUserList();
@@ -181,9 +186,10 @@ public class ProjectServiceImpl implements ProjectService {
         User user;
         Iterator<User> it = userSet.iterator();
 
-        while(it.hasNext()){
+        while (it.hasNext()) {
             user = it.next();
-            userList.add(new UserResponseDto(user.getIdx(),user.getName()));
+            System.out.println("야이야이야"+user.getIdx()+user.getName());
+            userList.add(new UserResponseDto(user.getIdx(), user.getName()));
         }
         return userList;
     }
