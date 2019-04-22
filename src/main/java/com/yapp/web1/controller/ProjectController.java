@@ -63,7 +63,7 @@ public class ProjectController {
      */
     @PutMapping("/project/{idx}")
     public ResponseEntity<ProjectResponseDto> updateProject(@PathVariable final Long idx, @Valid @RequestBody final ProjectRequestDto project, HttpSession session){
-        ProjectResponseDto updateProject = projectService.updateProject(idx, project, 201632004L); // 테스트 확인하려고.원래 User user
+        ProjectResponseDto updateProject = projectService.updateProject(idx, project, 201632025L); // 테스트 확인하려고.원래 User user
         return new ResponseEntity<>(updateProject, HttpStatus.OK);
     }
 
@@ -77,7 +77,7 @@ public class ProjectController {
      */
     @DeleteMapping("/project/{idx}")
     public ResponseEntity deleteProject(@PathVariable final Long idx, HttpSession session){
-        projectService.deleteProject(idx, 201632021L);//테스트 확인하려고.원래 User user
+        projectService.deleteProject(idx, 201632025L);//테스트 확인하려고.원래 User user
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 

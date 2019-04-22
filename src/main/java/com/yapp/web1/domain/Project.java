@@ -96,4 +96,11 @@ public class Project extends BaseEntity {
     public void updateProductURL(String productURL){
         this.productURL = productURL;
     }
+
+    //기수, 타입, 이름
+    public void updateProject(String name, ProjectType type, Orders orders){
+        this.name = name;
+        this.type = type;
+        this.orders = orders;
+    }
 }
