@@ -48,8 +48,19 @@ public class OrdersServiceImpl implements OrdersService {
     public List<ProjectListResponseDto> getProjectListByOrder(Long orderIdx) {
         List<Project> findProjects = projectRepository.findAllByOrdersIdx(orderIdx);
         List<ProjectListResponseDto> projectList = new ArrayList<>();
-        for(Project projects : findProjects)
-            projectList.add(new ProjectListResponseDto(projects));
+        for(Project project : findProjects) {
+            ProjectListResponseDto projectDto = ProjectListResponseDto.builder()
+                    .projectIdx(project.getIdx())
+                    .projectType(project.getType())
+                    .projectName(project.getName())
+                    .finalCheck(project.getFinalCheck())
+                    .createUserIdx(project.getCreateUserIdx())
+                    .orderNumber(project.getOrders().getNumber())
+                    .favorite(null) // 수정해야함
+                    .joined(null) // 수정해야함
+                    .build();
+            projectList.add(projectDto);
+        }
         return projectList;
     }
 }

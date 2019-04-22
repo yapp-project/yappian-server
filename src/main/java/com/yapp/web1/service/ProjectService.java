@@ -5,6 +5,9 @@ import com.yapp.web1.dto.req.FinishProjectRequestDto;
 import com.yapp.web1.dto.req.ProjectRequestDto;
 import com.yapp.web1.dto.res.FinishProjectResponseDto;
 import com.yapp.web1.dto.res.ProjectResponseDto;
+import com.yapp.web1.dto.res.UserResponseDto;
+
+import java.util.List;
 
 /**
  * ProjectService Interface
@@ -17,7 +20,7 @@ import com.yapp.web1.dto.res.ProjectResponseDto;
 public interface ProjectService {
 
     /**
-     * 프로젝트 생성 post
+     * 프로젝트 생성
      *
      * @param dto 생성할 Project 정보
      * @param userIdx 로그인 유저
@@ -25,7 +28,7 @@ public interface ProjectService {
      *
      * @exception Exception 같은 기수 다른 Project에 join된 경우 - 추후 수정
      */
-    ProjectResponseDto createProject(ProjectRequestDto dto, Long userIdx);
+    ProjectResponseDto createProject(ProjectRequestDto dto, Long userIdx);//실제로는 User user
 
     /**
      * 프로젝트 수정
@@ -36,7 +39,7 @@ public interface ProjectService {
      *
      * @exception Exception Project의 createUserIdx와 session userIdx 불일치 시 삭제 불가
      */
-    ProjectResponseDto updateProject(Long idx, ProjectRequestDto dto, Long userIdx);
+    ProjectResponseDto updateProject(Long idx, ProjectRequestDto dto, Long userIdx);//실제로는 User user
 
     /**
      * 프로젝트 삭제
@@ -46,7 +49,7 @@ public interface ProjectService {
      *
      * @exception Exception Project의 createUserIdx와 session userIdx 불일치 시 삭제 불가
      */
-    boolean deleteProject(Long idx, User user);
+    boolean deleteProject(Long idx, Long userIdx);//실제로는 User user
 
     /**
      * 프로젝트 조회
@@ -76,4 +79,10 @@ public interface ProjectService {
      */
     FinishProjectResponseDto getFinishedProject(Long idx);
 
+    /**
+     * 프로젝트에 속한 유저 목록 조회
+     *
+     * @param idx 조회할 Project idx
+     */
+    List<UserResponseDto> getUserListInProject(Long idx);
 }
