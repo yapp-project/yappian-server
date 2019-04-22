@@ -26,7 +26,6 @@ public class Url extends BaseEntity {
     @Column(name="title", nullable = false)
     private String title;
 
-    /** Url Table Fields **/
     @Column(name="contents", nullable = false)
     private String contents;
 
