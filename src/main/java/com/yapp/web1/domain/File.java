@@ -12,31 +12,32 @@ import javax.persistence.*;
  *
  * @author Dakyung Ko, Jihye Kim
  */
-
 @Entity
 @Table(name="file")
 @AttributeOverride(name="idx", column=@Column(name="file_idx"))
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class File extends BaseEntity {
+    /** File Table Fields **/
     @Column(name="file_url", nullable = false)
     private String fileURL;
 
     @Column(name="file_name", nullable = false)
     private String fileName;
 
-
+    /** Relation Mapping **/
+    /** File - Task 양방향 매핑 **/
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name="task_idx",
             foreignKey = @ForeignKey(name="fk_file_task"),
             nullable = false)
     private Task task;
 
+    /** Method **/
     @Builder
     public File(String fileURL, String fileName, Task task){
         this.fileURL = fileURL;
         this.fileName = fileName;
         this.task = task;
     }
-
 }
