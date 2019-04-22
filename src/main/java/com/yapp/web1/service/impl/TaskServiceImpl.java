@@ -1,8 +1,7 @@
 package com.yapp.web1.service.impl;
 
-import com.yapp.web1.domain.Comment;
 import com.yapp.web1.domain.Project;
-import com.yapp.web1.domain.Task;
+import com.yapp.web1.domain.Url;
 import com.yapp.web1.domain.User;
 import com.yapp.web1.dto.req.TaskRequestDto;
 import com.yapp.web1.dto.res.CommentResponseDto;
@@ -41,16 +40,16 @@ public class TaskServiceImpl implements TaskService {
     private final ReadService readService;
 
     /**
-     * 찾는 Task 있는지 check
+     * 찾는 Url 있는지 check
      *
-     * @param idx 찾으려는 Task idx
-     * @return 찾은 Task
+     * @param idx 찾으려는 Url idx
+     * @return 찾은 Url
      * @exception EntityNotFoundException 찾는 Task가 없는 경우
      */
-    private Task findByIdx(Long idx){
-        Task findTask = taskRepository.findById(idx)
-                .orElseThrow(()->new EntityNotFoundException("해당 Task 없음"));
-        return findTask;
+    private Url findByIdx(Long idx){
+        Url findUrl = taskRepository.findById(idx)
+                .orElseThrow(()->new EntityNotFoundException("해당 Url 없음"));
+        return findUrl;
     }
 
     @Transactional
@@ -66,14 +65,14 @@ public class TaskServiceImpl implements TaskService {
         Set<Project> projects = user.getJoinedProjects();
         if(!projects.contains(project)) return null; // Exception
 
-        // Task 저장
-        Task task = dto.toEntity(project);
-        task.getWorks().add(user);
-        //        task.getFileList().add();
-        Task savedTask = taskRepository.save(task);
+        // Url 저장
+        Url url = dto.toEntity(project);
+        url.getWorks().add(user);
+        //        url.getFileList().add();
+        Url savedUrl = taskRepository.save(url);
 
-        // 생성한 Task 읽음 처리
-        readService.readCheck(savedTask.getIdx(), user);
+        // 생성한 Url 읽음 처리
+        readService.readCheck(savedUrl.getIdx(), user);
 
         // dto에서 User Idx 목록
         List<Long> userIdxList = dto.getUserList();
@@ -83,7 +82,7 @@ public class TaskServiceImpl implements TaskService {
         // RequestDto를 ResponsDto로 변환
         return TaskResponseDto.builder()
                 .taskTitle(dto.getTitle())
-                .taskStatus(dto.getTaskStatus())
+                .taskStatus(dto.getUrlType())
                 .taskJob(dto.getTaskJob())
                 .startDate(dto.getStartDate())
                 .endDate(dto.getEndDate())
@@ -112,19 +111,19 @@ public class TaskServiceImpl implements TaskService {
     @Transactional(readOnly = true)
     @Override
     public TaskResponseDto getTask(Long idx) {
-        Task findTask = findByIdx(idx);
+        Url findUrl = findByIdx(idx);
 
-        List<User> works = findTask.getWorks();
-        List<Comment> commentList = findTask.getCommentList();
+        List<User> works = findUrl.getWorks();
+        List<Comment> commentList = findUrl.getCommentList();
 
         TaskResponseDto dto = TaskResponseDto.builder()
-                .taskTitle(findTask.getTitle())
-                .taskStatus(findTask.getStatus())
-                .taskJob(findTask.getJob())
+                .taskTitle(findUrl.getTitle())
+                .taskStatus(findUrl.getType())
+                .taskJob(findUrl.getJob())
                 .userList(getUserResponseDtoList(works)) // 담당자 유저 목록 조회
-                .startDate(findTask.getStartDate())
-                .endDate(findTask.getEndDate())
-                .contents(findTask.getContents())
+                .startDate(findUrl.getStartDate())
+                .endDate(findUrl.getEndDate())
+                .contents(findUrl.getContents())
                 .comments(getCommentResponseDtoList(commentList)) // comment 목록
                 .build();
         return dto;
@@ -182,13 +181,13 @@ public class TaskServiceImpl implements TaskService {
     /**
      * Task를 통해 User가 Project에 속해(join)있는지 check
      *
-     * @param findTask joined table 검색할 task 정보
+     * @param findUrl joined table 검색할 task 정보
      * @param currentUser project에 join되어있는지 확인할 User 정보
      *
      * @return check 여부
      */
-    private boolean joinProjectCheckByTask(Task findTask, User currentUser){
-        Set<User> joinedUsers = findTask.getProject().getUserList();
+    private boolean joinProjectCheckByTask(Url findUrl, User currentUser){
+        Set<User> joinedUsers = findUrl.getProject().getUserList();
         System.out.println(joinedUsers.size());
         if(!joinedUsers.contains(currentUser)) return false; // 추후 Exception 처리
         return true;
@@ -197,19 +196,19 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     @Override
     public boolean deleteTask(Long idx, User user) {
-        // Task idx check
-        Task findTask = findByIdx(idx);
+        // Url idx check
+        Url findUrl = findByIdx(idx);
 
         // 임시 로그인 User 데이터
         user = userService.getCurrentUser();
 
         // 로그인 User 데이터와 프로젝트에 Join한 User 데이터 check
-        if(!joinProjectCheckByTask(findTask, user)) return false;
+        if(!joinProjectCheckByTask(findUrl, user)) return false;
 
         // 연관관계 삭제
-        findTask.getReadList().clear();
-        findTask.getWorks().clear();
-        findTask.getCommentList().clear();
+        findUrl.getReadList().clear();
+        findUrl.getWorks().clear();
+        findUrl.getCommentList().clear();
 
         taskRepository.deleteById(idx);
         return true;

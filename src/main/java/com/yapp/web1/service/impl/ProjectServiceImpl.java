@@ -2,7 +2,7 @@ package com.yapp.web1.service.impl;
 
 import com.yapp.web1.domain.Orders;
 import com.yapp.web1.domain.Project;
-import com.yapp.web1.domain.Task;
+import com.yapp.web1.domain.Url;
 import com.yapp.web1.domain.User;
 import com.yapp.web1.domain.VO.Mark;
 import com.yapp.web1.dto.req.FinishProjectRequestDto;
@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * ProjectService 구현 클래스
@@ -61,7 +60,7 @@ public class ProjectServiceImpl implements ProjectService {
         // 생성후 바로 프로젝트 상세 정보를 보여주기 위함.
         ProjectResponseDto responseDto = ProjectResponseDto.builder()
                 .project(project)
-                .taskList(new ArrayList<>()).build(); // 생성할 때는 빈 Task 목록
+                .taskList(new ArrayList<>()).build(); // 생성할 때는 빈 Url 목록
         return responseDto;
     }
 
@@ -69,20 +68,20 @@ public class ProjectServiceImpl implements ProjectService {
     private List<TaskListResponseDto> getTaskUser(Long projectIdx) {
         System.out.println("getTaskUser 메소드");
         // 해당 프로젝트의 task 목록
-        List<Task> taskList = taskRepository.findByProjectIdx(projectIdx);
+        List<Url> urlList = taskRepository.findByProjectIdx(projectIdx);
         /*
         System.out.println(
-                "taskList" +
-                        taskList.stream()
-                                .map(Task::toString)
+                "urlList" +
+                        urlList.stream()
+                                .map(Url::toString)
                                 .collect(Collectors.joining(", "))
         );
         */
         List<List<UserResponseDto>> userList = new ArrayList<>();
         List<UserResponseDto> userWork = new ArrayList<>();
-        for(int i=0; i<taskList.size(); ++i){
-            for(int j=0; j<taskList.get(i).getWorks().size(); ++j){
-                userWork.add(new UserResponseDto(taskList.get(i).getWorks().get(j).getIdx(), taskList.get(i).getWorks().get(j).getName()));
+        for(int i = 0; i< urlList.size(); ++i){
+            for(int j = 0; j< urlList.get(i).getWorks().size(); ++j){
+                userWork.add(new UserResponseDto(urlList.get(i).getWorks().get(j).getIdx(), urlList.get(i).getWorks().get(j).getName()));
             }
             userList.add(userWork);
             userWork = new ArrayList<>();
@@ -90,8 +89,8 @@ public class ProjectServiceImpl implements ProjectService {
 
         // 원하는 userList 정보들과 task 정보들이 저장된 taskListResponseDto
         List<TaskListResponseDto> taskListResponseDtos = new ArrayList<>();
-        for(int i=0; i<taskList.size(); ++i){
-            taskListResponseDtos.add(new TaskListResponseDto(taskList.get(i),userList.get(i)));
+        for(int i = 0; i< urlList.size(); ++i){
+            taskListResponseDtos.add(new TaskListResponseDto(urlList.get(i),userList.get(i)));
         }
 
         return taskListResponseDtos;

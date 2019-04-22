@@ -2,7 +2,6 @@ package com.yapp.web1.dto.res;
 
 import com.yapp.web1.domain.VO.Mark;
 import com.yapp.web1.domain.VO.ProjectType;
-import com.yapp.web1.domain.VO.TaskJob;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -21,7 +20,7 @@ public class NoticeListResponseDto {
     private Long taskIdx; // 테스크 idx
     private TaskJob taskJob; // 테스크 직군
     private String taskTitle; // 테스크 제목
-    private Mark readCheck; // Task 읽음 여부
+    private Mark readCheck; // Url 읽음 여부
 
     @Builder
     public NoticeListResponseDto(int orderNumber, int projectName, ProjectType projectType,

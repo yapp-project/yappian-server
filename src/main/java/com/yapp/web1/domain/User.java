@@ -41,32 +41,7 @@ public class User extends BaseEntity {
             orphanRemoval = true)
     private Set<UserOrders> userOrders = new HashSet<>();
 
-    /** User - Read 양방향 매핑 **/
-    @JsonIgnore
-    @OneToMany(mappedBy = "user",
-            cascade = CascadeType.REMOVE,
-            fetch = FetchType.LAZY, // EAGER
-            orphanRemoval = true)
-    private List<Read> readList = new ArrayList<>();
-
-    /** User - Comment 양방향 매핑 **/
-    @JsonIgnore
-    @OneToMany(mappedBy = "user",
-            cascade = CascadeType.PERSIST,
-            fetch = FetchType.LAZY,
-            orphanRemoval = true)
-    private List<Comment> commentList = new ArrayList<>();
-
     /** Relation Mapping - Join Table **/
-    /** User - Project 단방향 매핑 **/
-    @OneToMany(fetch=FetchType.LAZY,
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    @JoinTable(name="favorites",
-            joinColumns = @JoinColumn(name="user_idx"),
-            inverseJoinColumns = @JoinColumn(name="project_idx"))
-    @OrderBy("project_idx desc")
-    private Set<Project> favorites = new HashSet<>();
 
     /** User - Project 양방향 매핑 **/
     @ManyToMany(fetch=FetchType.LAZY,
@@ -80,15 +55,12 @@ public class User extends BaseEntity {
     /** Method **/
     @Builder
     public User(String email, String name, UserRole role,
-                Set<UserOrders> userOrders, List<Read> readList, List<Comment> commentList, Set<Project> favorites, Set<Project> joinedProject){
+                Set<UserOrders> userOrders, Set<Project> joinedProject){
         this.email = email;
         this.name = name;
         this.role = role;
 
         this.userOrders = Optional.ofNullable(userOrders).orElse(this.userOrders);
-        this.readList = Optional.ofNullable(readList).orElse(this.readList);
-        this.commentList = Optional.ofNullable(commentList).orElse(this.commentList);
-        this.favorites = Optional.ofNullable(favorites).orElse(this.favorites);
         this.joinedProjects = Optional.ofNullable(joinedProject).orElse(this.joinedProjects);
     }
     

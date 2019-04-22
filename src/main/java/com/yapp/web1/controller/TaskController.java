@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Task Controller
+ * Url Controller
  *
  * @author Dakyung Ko
  * @since 0.0.3
@@ -31,10 +31,10 @@ public class TaskController {
     private final TaskService taskService;
 
     /**
-     * 소속 중인 프로젝트의 읽지 않은 새로운 Task 목록
+     * 소속 중인 프로젝트의 읽지 않은 새로운 Url 목록
      *
      * @param session 알림을 읽어올 로그인 유저 데이터
-     * @return 유저가 참여한 프로젝트의 읽지 않은 Task List
+     * @return 유저가 참여한 프로젝트의 읽지 않은 Url List
      *
      * @see /v1/api/notice/tasks
      */
@@ -48,12 +48,12 @@ public class TaskController {
      * 해당 프로젝트의 모든 task 목록
      *
      * @param idx 프로젝트 idx
-     * @return Task 목록
+     * @return Url 목록
      *
      * @see /v1/api/project/{idx}/tasks
      *//*
     @GetMapping("/project/{idx}/tasks") // API 디자인
-    public ResponseEntity<List<TaskListResponseDto>> getTaskList(@PathVariable final Long idx){
+    public ResponseEntity<List<TaskListResponseDto>> getUrlList(@PathVariable final Long idx){
         List<TaskListResponseDto> taskList = new ArrayList<>();
         return new ResponseEntity<>(taskList, HttpStatus.OK);
     }*/ // 현재는 getProject 기능과 중복. 추후 필요하면 추가
@@ -63,7 +63,7 @@ public class TaskController {
      *
      * @param task 생성할 task 정보
      * @param session 로그인 유저 정보
-     * @return 생성한 Task 정보
+     * @return 생성한 Url 정보
      *
      * @see /v1/api/task
      */
@@ -77,7 +77,7 @@ public class TaskController {
      * 테스크 상세
      *
      * @param idx 조회할 테스크 idx
-     * @return 조회한 Task 정보
+     * @return 조회한 Url 정보
      *
      * @see /v1/api/task/{idx}
      */
@@ -93,7 +93,7 @@ public class TaskController {
      * @param idx 수정할 테스크 idx
      * @param task 테스크 수정 정보
      * @param session 로그인 유저 정보
-     * @return 수정한 Task 정보
+     * @return 수정한 Url 정보
      *
      * @exception Exception User idx 불일치시 - 추후 수정
      *
