@@ -48,7 +48,7 @@ public class OrdersController {
      * @param session 로그인 유저 정보
      * @return 기수별 프로젝트 list
      *
-     * @exception Exception favorite과 joined는 userIdx가 필요할것같음. 일단 userIdx없이 프로젝트리스트를 뽑아오겠음.
+     * @exception Exception joined는 userIdx가 필요할것같음. 일단 userIdx없이 프로젝트리스트를 뽑아오겠음.
      * @see /v1/api/order/{idx}
      */
     @GetMapping("/order/{idx}")

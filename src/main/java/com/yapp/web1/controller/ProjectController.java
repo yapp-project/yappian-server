@@ -44,13 +44,14 @@ public class ProjectController {
      *
      * @see /v1/api/project
      */
+    /*
     @PostMapping("/project")
     public ResponseEntity<ProjectResponseDto> createProject(@Valid @RequestBody final ProjectRequestDto project, HttpSession session){
         User user = userService.getCurrentUser();
         ProjectResponseDto createProject = projectService.createProject(project,user.getIdx());
         return new ResponseEntity<>(createProject, HttpStatus.CREATED);//201. (요청이 성공적이었으며 그 결과로 새로운 리소스가 생성)
     }
-
+*/
     /**
      * 프로젝트 수정
      *
@@ -61,11 +62,13 @@ public class ProjectController {
      *
      * @see /v1/api/project/{idx}
      */
+    /*
     @PutMapping("/project/{idx}")
     public ResponseEntity<ProjectResponseDto> updateProject(@PathVariable final Long idx, @Valid @RequestBody final ProjectRequestDto project, HttpSession session){
         ProjectResponseDto updateProject = projectService.updateProject(idx, project, 201632025L); // 테스트 확인하려고.원래 User user
         return new ResponseEntity<>(updateProject, HttpStatus.OK);
     }
+    */
 
     /**
      * 프로젝트 삭제
@@ -84,19 +87,18 @@ public class ProjectController {
     /**
      * 프로젝트 상세
      * 프로젝트 정보 및 Url 목록
-     *
      * @param idx 조회할 프로젝트 idx
      * @exception Exception invalid idx - 추후 수정
      *
      * @see /v1/api/project/{idx}
      */
-
+/*
     @GetMapping("/project/{idx}")
     public ResponseEntity<ProjectResponseDto> getProject(@PathVariable final Long idx){
         ProjectResponseDto project = projectService.getProject(idx);
         return new ResponseEntity<>(project, HttpStatus.OK);
     }
-
+*/
     /**
      * 프로젝트 완료 설정
      *
