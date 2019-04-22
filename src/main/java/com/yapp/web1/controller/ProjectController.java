@@ -83,7 +83,7 @@ public class ProjectController {
 
     /**
      * 프로젝트 상세
-     * 프로젝트 정보 및 Task 목록
+     * 프로젝트 정보 및 Url 목록
      *
      * @param idx 조회할 프로젝트 idx
      * @exception Exception invalid idx - 추후 수정

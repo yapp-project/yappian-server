@@ -4,7 +4,7 @@ import com.yapp.web1.domain.User;
 
 /**
  * ReadService Interface
- * Task 읽음 관련 기능
+ * Url 읽음 관련 기능
  *
  * @author Dakyung Ko
  * @since 0.0.3
@@ -12,9 +12,9 @@ import com.yapp.web1.domain.User;
  */
 public interface ReadService {
     /**
-     * Task 읽음 처리
+     * Url 읽음 처리
      *
-     * @param idx 읽음 처리할 Task idx
+     * @param idx 읽음 처리할 Url idx
      * @param user 로그인 유저
      */
     boolean readCheck(Long idx, User user);

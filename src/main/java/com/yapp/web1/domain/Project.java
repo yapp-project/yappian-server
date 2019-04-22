@@ -27,12 +27,19 @@ public class Project extends BaseEntity {
     @Convert(converter = ProjectTypeAttributeConverter.class)
     private ProjectType type;
 
+    @Column(name="password",nullable = false)
+    private String password;
+
     @Column(name="name",nullable = false)
     private String name;
 
     @Column(name="final_check", nullable = false)
     @Convert(converter = MarkAttributeConverter.class)
     private Mark finalCheck = Mark.N;
+
+    @Column(name="release_check", nullable = false)
+    @Convert(converter = MarkAttributeConverter.class)
+    private Mark releaseCheck = Mark.N;
 
     @Column(name="description")
     private String description;
@@ -50,15 +57,13 @@ public class Project extends BaseEntity {
             foreignKey = @ForeignKey(name="fk_project_orders"),nullable = false)
     private Orders orders;
 
-    /** Project - Task 양방향 매핑 **/
+    /** Project - Url 양방향 매핑 **/
     @JsonIgnore
     @OneToMany(mappedBy = "project",
             cascade = CascadeType.REMOVE,
             fetch = FetchType.LAZY,
             orphanRemoval = true)
-    private List<Task> taskList = new ArrayList<>();
-
-    // @OneToMany Project-File 연관관계, 완료시 이미지 여부 (에디터 사용에 따라 달라짐)
+    private List<Url> urlList = new ArrayList<>();
 
     /** Relation Mapping - Join Table **/
     /** Project - User 양방향 매핑 **/
@@ -67,20 +72,27 @@ public class Project extends BaseEntity {
             fetch = FetchType.LAZY)
     private Set<User> userList = new HashSet<>();
 
+    /** Project - File 단방향 매핑 **/
+    @JsonIgnore
+    @OneToMany(mappedBy = "url",
+            fetch = FetchType.LAZY)
+    private List<File> fileList = new ArrayList<>();
 
     /** Method **/
     @Builder
-    public Project(ProjectType type, String name, Mark finalCheck, String description, String productURL,
-                   Long createUserIdx, Orders orders, List<Task> taskList, Set<User> userList){
+    public Project(ProjectType type, String name, String password, Mark finalCheck, Mark releaseCheck, String description,
+                   String productURL, Long createUserIdx, Orders orders, List<Url> urlList, Set<User> userList){
         this.type = type;
         this.name = name;
+        this.password = password;
         this.finalCheck = finalCheck;
+        this.releaseCheck = releaseCheck;
         this.description = description;
         this.productURL = productURL;
         this.createUserIdx = createUserIdx;
         this.orders = orders;
 
-        this.taskList = Optional.ofNullable(taskList).orElse(this.taskList);
+        this.urlList = Optional.ofNullable(urlList).orElse(this.urlList);
         this.userList = Optional.ofNullable(userList).orElse(this.userList);
     }
 

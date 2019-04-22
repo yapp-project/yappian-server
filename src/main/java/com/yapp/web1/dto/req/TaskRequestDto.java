@@ -2,9 +2,8 @@ package com.yapp.web1.dto.req;
 
 import com.yapp.web1.domain.File;
 import com.yapp.web1.domain.Project;
-import com.yapp.web1.domain.Task;
-import com.yapp.web1.domain.VO.TaskJob;
-import com.yapp.web1.domain.VO.TaskStatus;
+import com.yapp.web1.domain.Url;
+import com.yapp.web1.domain.VO.UrlType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,7 +31,7 @@ public class TaskRequestDto {
     @Size(max=17)
     private String title; // 테스크 제목
     @NotNull
-    private TaskStatus taskStatus; // 테스크 상태
+    private UrlType urlType; // 테스크 상태
     @NotNull
     private TaskJob taskJob; // 직군 선택
     @NotNull
@@ -46,11 +45,11 @@ public class TaskRequestDto {
 //    List<File> fileList; // 테스크 첨부파일 List, 추후 파일 수정
 
     @Builder
-    public TaskRequestDto(Long projectIdx, String title, TaskStatus taskStatus, TaskJob taskJob,
+    public TaskRequestDto(Long projectIdx, String title, UrlType urlType, TaskJob taskJob,
                           List<Long> userList, LocalDate startDate, LocalDate endDate, String contents, List<File> fileList){
         this.projectIdx = projectIdx;
         this.title = title;
-        this.taskStatus = taskStatus;
+        this.urlType = urlType;
         this.taskJob = taskJob;
         this.userList = userList;
         this.startDate = startDate;
@@ -59,9 +58,9 @@ public class TaskRequestDto {
 //        this.fileList = fileList;
     }
 
-    public Task toEntity(Project project){
-        return Task.builder().title(this.title)
-                .status(this.taskStatus)
+    public Url toEntity(Project project){
+        return Url.builder().title(this.title)
+                .status(this.urlType)
                 .job(this.taskJob)
                 .startDate(this.startDate)
                 .endDate(this.endDate)

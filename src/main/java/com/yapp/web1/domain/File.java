@@ -1,5 +1,9 @@
 package com.yapp.web1.domain;
 
+import com.yapp.web1.converter.FileTypeAttributeConverter;
+import com.yapp.web1.converter.MarkAttributeConverter;
+import com.yapp.web1.domain.VO.FileType;
+import com.yapp.web1.domain.VO.Mark;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,22 +26,23 @@ public class File extends BaseEntity {
     @Column(name="file_url", nullable = false)
     private String fileURL;
 
-    @Column(name="file_name", nullable = false)
-    private String fileName;
+    @Column(name="type", nullable = false)
+    @Convert(converter = FileTypeAttributeConverter.class)
+    private FileType type;
 
     /** Relation Mapping **/
-    /** File - Task 양방향 매핑 **/
+    /** File - Url 양방향 매핑 **/
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name="task_idx",
-            foreignKey = @ForeignKey(name="fk_file_task"),
+    @JoinColumn(name="url_idx",
+            foreignKey = @ForeignKey(name="fk_file_url"),
             nullable = false)
-    private Task task;
+    private Url url;
 
     /** Method **/
     @Builder
-    public File(String fileURL, String fileName, Task task){
+    public File(String fileURL, FileType type,  Url url){
         this.fileURL = fileURL;
-        this.fileName = fileName;
-        this.task = task;
+        this.type = type;
+        this.url = url;
     }
 }

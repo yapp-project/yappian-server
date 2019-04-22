@@ -20,9 +20,9 @@ import javax.servlet.http.HttpSession;
 @RestController
 public class ReadController {
     /**
-     * Task 읽음 처리
+     * Url 읽음 처리
      *
-     * @param idx 읽음 처리할 Task idx
+     * @param idx 읽음 처리할 Url idx
      * @param session 로그인 User session
      *
      * @see /v1/api/read/{idx}

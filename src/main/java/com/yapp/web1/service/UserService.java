@@ -36,7 +36,7 @@ public interface UserService {
      *
      * @param idx 참여할 Project idx
      * @param user 로그인 유저
-     * @return 참여한 Project 정보 - 추후 response dto로 변경(Project, Task)
+     * @return 참여한 Project 정보 - 추후 response dto로 변경(Project, Url)
      *
      * @exception Exception 같은 기수 다른 Project에 join된 경우 - 추후 수정
      */
