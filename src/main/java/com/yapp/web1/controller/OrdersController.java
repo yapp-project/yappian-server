@@ -45,12 +45,14 @@ public class OrdersController {
      * 기수별 프로젝트 목록
      *
      * @param idx 조회할 기수의 idx
+     * @param session 로그인 유저 정보
      * @return 기수별 프로젝트 list
+     *
      * @exception Exception favorite과 joined는 userIdx가 필요할것같음. 일단 userIdx없이 프로젝트리스트를 뽑아오겠음.
      * @see /v1/api/order/{idx}
      */
     @GetMapping("/order/{idx}")
-    public ResponseEntity<List<ProjectListResponseDto>> getProjectListByOrder(@PathVariable final Long idx){
+    public ResponseEntity<List<ProjectListResponseDto>> getProjectListByOrder(@PathVariable final Long idx, HttpSession session){
         List<ProjectListResponseDto> projectList = ordersService.getProjectListByOrder(idx);
         return new ResponseEntity<>(projectList, HttpStatus.OK);
     }
