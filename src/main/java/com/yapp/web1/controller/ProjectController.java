@@ -32,7 +32,6 @@ public class ProjectController {
 
     private ProjectService projectService;
     private UserService userService;
-
     /**
      * 프로젝트 생성
      *

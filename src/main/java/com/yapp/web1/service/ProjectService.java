@@ -1,5 +1,6 @@
 package com.yapp.web1.service;
 
+import com.yapp.web1.domain.Project;
 import com.yapp.web1.domain.User;
 import com.yapp.web1.dto.req.FinishProjectRequestDto;
 import com.yapp.web1.dto.req.ProjectRequestDto;
@@ -19,6 +20,13 @@ import java.util.List;
  */
 public interface ProjectService {
 
+    /**
+     * 프로젝트 찾기
+     * @param idx
+     * @return Project
+     */
+
+    Project findById(Long idx);
     /**
      * 프로젝트 생성
      *

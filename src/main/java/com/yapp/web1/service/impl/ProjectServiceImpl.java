@@ -41,7 +41,9 @@ public class ProjectServiceImpl implements ProjectService {
 
 
     // project findById
-    private Project findById(Long idx) {
+    @Transactional(readOnly = true)
+    @Override
+    public Project findById(Long idx) {
         return projectRepository.findById(idx).orElseThrow(() -> new EntityNotFoundException("해당 프로젝트 없음"));
     }
 /*
@@ -192,7 +194,6 @@ public class ProjectServiceImpl implements ProjectService {
 
         while (it.hasNext()) {
             user = it.next();
-            System.out.println("야이야이야"+user.getIdx()+user.getName());
             userList.add(new UserResponseDto(user.getIdx(), user.getName()));
         }
         return userList;

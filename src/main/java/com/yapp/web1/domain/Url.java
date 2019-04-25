@@ -23,13 +23,13 @@ import javax.persistence.*;
 public class Url extends BaseEntity {
 
     /** Url Table Fields **/
-    @Column(name="title", nullable = false)
+    @Column(name="title")
     private String title;
 
-    @Column(name="contents", nullable = false)
+    @Column(name="contents")
     private String contents;
 
-    @Column(name="type", nullable = false)
+    @Column(name="type")
     @Convert(converter = UrlTypeAttributeConverter.class)
     private UrlType type;
 
