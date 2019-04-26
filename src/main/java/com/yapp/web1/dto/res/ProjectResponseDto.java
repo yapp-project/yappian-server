@@ -1,7 +1,6 @@
 package com.yapp.web1.dto.res;
 
 import com.yapp.web1.domain.Project;
-import com.yapp.web1.domain.Url;
 import com.yapp.web1.domain.VO.ProjectType;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,10 +20,10 @@ public class ProjectResponseDto {
     private int orderNumber; // 기수
     private ProjectType projectType; // 프로젝트 타입
     private String projectName; // 프로젝트 이름
-    private List<Url> urlList; // Url 리스트
+    List<UrlResponseDto>  urlList; // Url 리스트
 
     @Builder
-    public ProjectResponseDto(Project project, List<Url> urlList){
+    public ProjectResponseDto(Project project,List<UrlResponseDto>  urlList){
         this.orderNumber = project.getOrders().getNumber();
         this.projectType = project.getType();
         this.projectName = project.getName();
