@@ -9,19 +9,15 @@ import javax.persistence.Converter;
 public class MarkAttributeConverter implements AttributeConverter<Mark, Integer> {
     @Override
     public Integer convertToDatabaseColumn(Mark attribute) {
-        switch (attribute){
-            case N: return 0;
-            case Y: return 1;
-        }
-        return -1;
+        if (attribute == null)
+            return null;
+        return (attribute == Mark.N ? 0 : 1);
     }
 
     @Override
     public Mark convertToEntityAttribute(Integer dbData) {
-        switch (dbData){
-            case 0: return Mark.N;
-            case 1: return Mark.Y;
-        }
-        return null;
+        if (dbData == null)
+            return null;
+        return (dbData == 0 ? Mark.N : Mark.Y);
     }
 }

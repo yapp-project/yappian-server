@@ -37,7 +37,7 @@ public class Project extends BaseEntity {
     @Convert(converter = MarkAttributeConverter.class)
     private Mark finalCheck = Mark.N;
 
-    @Column(name="release_check", nullable = false)
+    @Column(name="release_check")
     @Convert(converter = MarkAttributeConverter.class)
     private Mark releaseCheck = Mark.N;
 
@@ -54,7 +54,8 @@ public class Project extends BaseEntity {
     /** Project - Orders 양방향 매핑 **/
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name="orders_idx",
-            foreignKey = @ForeignKey(name="fk_project_orders"),nullable = false)
+            foreignKey = @ForeignKey(name="fk_project_orders"),
+            nullable = false)
     private Orders orders;
 
     /** Project - Url 양방향 매핑 **/
