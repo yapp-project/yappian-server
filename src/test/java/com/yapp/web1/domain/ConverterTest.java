@@ -1,6 +1,7 @@
 package com.yapp.web1.domain;
 
 import com.yapp.web1.common.RepositoryTest;
+import com.yapp.web1.domain.VO.Mark;
 import com.yapp.web1.domain.VO.ProjectType;
 import com.yapp.web1.repository.OrdersRepository;
 import org.junit.Before;
@@ -30,9 +31,13 @@ public class ConverterTest extends RepositoryTest {
 
         Project project = Project.builder()
                 .type(ProjectType.WEB)
+                .password("passwd")
                 .name("프로젝트팀")
+                .finalCheck(Mark.N)
+                .releaseCheck(Mark.N)
                 .createUserIdx(1L)
-                .orders(orders).build();
+                .orders(orders)
+                .build();
         em.persist(project);
         em.flush();
         em.clear();
