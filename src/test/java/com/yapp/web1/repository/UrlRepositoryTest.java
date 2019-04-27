@@ -20,7 +20,7 @@ import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class UrlRepositoryTest extends RepositoryTest {
+public class UrlRepositoryTest {
 
     @Autowired
     private UrlRepository urlRepository;

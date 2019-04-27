@@ -24,17 +24,17 @@ public class UrlController {
 
     /**
      * 해당 프로젝트의 URL 불러오기
-     * @param idx projectIdx
+     * @param projectIdx
      * @param session 로그인 유저 정보
      * @return 해당 프로젝트의 url List
      * @throws Exception join한 유저만 url 생성 가능
-     * @see /v1/api/{idx}/url
+     * @see /v1/api/project/{projectIdx}/url/list
      */
-    @GetMapping("{idx}/url")
-    public ApiResponse<?> getUrl(@PathVariable Long idx, HttpSession session) {
+    @GetMapping("/project/{projectIdx}/url/list")
+    public ApiResponse<?> getUrl(@PathVariable Long projectIdx, HttpSession session) {
         List<UrlResponseDto> urlResponseDto = null;
         try {
-            urlResponseDto = urlService.getUrl(idx);
+            urlResponseDto = urlService.getUrl(projectIdx);
             return ApiResponse.builder()
                     .status(HttpStatus.CREATED)
                     .message("Url 가져오기 성공")
@@ -51,18 +51,18 @@ public class UrlController {
 
     /**
      * URL 생성
-     * @param idx projectIdx
+     * @param projectIdx
      * @param url     생성할 Url 관련 데이터
      * @param session 로그인 유저 정보
      * @return  해당 프로젝트정보와 url List
      * @throws Exception join한 유저만 url 생성 가능
-     * @see /v1/api/{idx}/url
+     * @see /v1/api/project/{projectIdx}/url
      */
-    @PostMapping("{idx}/url")
-    public ApiResponse<?> createUrl(@PathVariable Long idx, @RequestBody UrlRequestDto url, HttpSession session) {
+    @PostMapping("project/{projectIdx}/url")
+    public ApiResponse<?> createUrl(@PathVariable Long projectIdx, @RequestBody UrlRequestDto url, HttpSession session) {
         ProjectResponseDto projectResponseDto = null;
         try {
-            projectResponseDto = urlService.createUrl(idx, url, 1L);// 1 : dummy data
+            projectResponseDto = urlService.createUrl(projectIdx, url, 1L);// 1 : dummy data
             return ApiResponse.builder()
                               .status(HttpStatus.CREATED)
                               .message("Url 생성 성공")
@@ -81,10 +81,10 @@ public class UrlController {
      * Url 삭제
      * @param idx - urlIdx
      * @param session
-     * @return
+     * @see /v1/api/project/{projectIdx}/url/{idx}
      */
 
-    @DeleteMapping("{projectIdx}/url/{idx}")
+    @DeleteMapping("project/{projectIdx}/url/{idx}")
     public ApiResponse deleteUrl(@PathVariable final Long projectIdx,@PathVariable final Long idx, HttpSession session) {
         try {
             urlService.deleteUrl(projectIdx, idx, 1L);// 1L : dummy data

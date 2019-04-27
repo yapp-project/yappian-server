@@ -30,7 +30,7 @@ public class UrlServiceImpl implements UrlService {
     private void checkNotFound(List<Url> urlList, Long urlIdx) {
         boolean check = false;
         for (Url url : urlList) {
-            if (String.valueOf(url.getIdx()).equals(String.valueOf(urlIdx))) {
+            if ((url.getIdx()).equals((urlIdx))) {
                 check = true;
             }
         }
@@ -43,7 +43,7 @@ public class UrlServiceImpl implements UrlService {
     private void checkUserPermission(List<UserResponseDto> userList, Long userIdx) {
         boolean check = false;
         for (UserResponseDto user : userList) {
-            if (String.valueOf(user.getUserIdx()).equals(String.valueOf(userIdx))) {
+            if ((user.getUserIdx()).equals((userIdx))) {
                 check = true;
             }
         }
