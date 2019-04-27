@@ -13,6 +13,7 @@ import com.yapp.web1.repository.UrlRepository;
 import com.yapp.web1.service.ProjectService;
 import com.yapp.web1.service.UrlService;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,8 +24,12 @@ import java.util.List;
 @Transactional
 @AllArgsConstructor
 public class UrlServiceImpl implements UrlService {
+
     private final ProjectService projectService;
+
     private final UrlRepository urlRepository;
+
+    private final ModelMapper modelMapper;
 
     // not found 검사
     private void checkNotFound(List<Url> urlList, Long urlIdx) {
@@ -67,18 +72,20 @@ public class UrlServiceImpl implements UrlService {
         return  urlResponseDtos;
     }
     @Override
-    public ProjectResponseDto createUrl(Long projectIdx, UrlRequestDto url, Long userIdx) throws UrlException {
+    public ProjectResponseDto createUrl(Long projectIdx, UrlRequestDto urlRequestDto, Long userIdx) throws UrlException {
 
         Project findProject = projectService.findById(projectIdx);
 
         checkUserPermission(projectService.getUserListInProject(projectIdx), userIdx);
 
-        Url setUrl = Url.builder()
-                .type(url.getType())
-                .title(url.getTitle())
-                .contents(url.getContents())
-                .project(findProject)
-                .build();
+//        Url setUrl = Url.builder()
+//                .type(urlRequestDto.getType())
+//                .title(urlRequestDto.getTitle())
+//                .contents(urlRequestDto.getContents())
+//                .project(findProject)
+//                .build();
+        // TODO modelMapper로 변경 확인 후 삭제
+        Url setUrl = modelMapper.map(urlRequestDto, Url.class);
 
         urlRepository.save(setUrl);
 

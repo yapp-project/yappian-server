@@ -38,12 +38,9 @@ public class UrlController {
     @GetMapping("/project/{projectIdx}/url/list")
     @ApiOperation(value = "각 프로젝트의 URL 목록 호출 (인증 필요 없음)")
     public ApiResponse<?> getUrl(
-            @PathVariable
-            @ApiParam(value = "조회할 Project idx", example = "1")
-                    Long projectIdx,
-            @ApiIgnore
-            HttpSession session) {
-        List<UrlResponseDto> urlResponseDto = null;
+            @PathVariable @ApiParam(value = "조회할 Project idx", example = "1") Long projectIdx,
+            @ApiIgnore HttpSession session) {
+        List<UrlResponseDto> urlResponseDto;
         try {
             urlResponseDto = urlService.getUrl(projectIdx);
             return ApiResponse.builder()
@@ -72,14 +69,11 @@ public class UrlController {
     @PostMapping("project/{projectIdx}/url")
     @ApiOperation(value = "새로운 URL 생성 (참여 유저 가능)")
     public ApiResponse<?> createUrl(
-            @PathVariable
-            @ApiParam(value = "URL 생성할 Project idx", example = "1")
-                    Long projectIdx,
-            @RequestBody
-                    UrlRequestDto url,
-            @ApiIgnore
-            HttpSession session) {
-        ProjectResponseDto projectResponseDto = null;
+            @PathVariable @ApiParam(value = "URL 생성할 Project idx", example = "1") Long projectIdx,
+            @RequestBody UrlRequestDto url,
+            @ApiIgnore HttpSession session) {
+
+        ProjectResponseDto projectResponseDto;
         try {
             projectResponseDto = urlService.createUrl(projectIdx, url, 1L);// 1 : dummy data
             return ApiResponse.builder()
