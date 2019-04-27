@@ -41,7 +41,7 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     /*
-     favorite과 joined는 추후,,
+     joined는 추후,,
      */
     @Transactional(readOnly = true)
     @Override

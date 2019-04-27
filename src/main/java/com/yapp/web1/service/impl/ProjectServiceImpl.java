@@ -2,18 +2,16 @@ package com.yapp.web1.service.impl;
 
 import com.yapp.web1.domain.Orders;
 import com.yapp.web1.domain.Project;
-import com.yapp.web1.domain.Task;
+import com.yapp.web1.domain.Url;
 import com.yapp.web1.domain.User;
 import com.yapp.web1.domain.VO.Mark;
 import com.yapp.web1.dto.req.FinishProjectRequestDto;
 import com.yapp.web1.dto.req.ProjectRequestDto;
 import com.yapp.web1.dto.res.FinishProjectResponseDto;
 import com.yapp.web1.dto.res.ProjectResponseDto;
-import com.yapp.web1.dto.res.TaskListResponseDto;
 import com.yapp.web1.dto.res.UserResponseDto;
 import com.yapp.web1.repository.OrdersRepository;
 import com.yapp.web1.repository.ProjectRepository;
-import com.yapp.web1.repository.TaskRepository;
 import com.yapp.web1.service.ProjectService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * ProjectService 구현 클래스
@@ -31,20 +28,25 @@ import java.util.stream.Collectors;
  * @version 1.2
  * @since 0.0.4
  */
+
 @Service
 @Transactional
 @AllArgsConstructor
+
 public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
     private final OrdersRepository ordersRepository;
-    private final TaskRepository taskRepository;
+  //  private final TaskRepository taskRepository;
+
 
     // project findById
-    private Project findById(Long idx) {
+    @Transactional(readOnly = true)
+    @Override
+    public Project findById(Long idx) {
         return projectRepository.findById(idx).orElseThrow(() -> new EntityNotFoundException("해당 프로젝트 없음"));
     }
-
+/*
     // createProject
     @Override
     public ProjectResponseDto createProject(ProjectRequestDto dto, Long userIdx) { //실제로는 User user. 그리고 User.getIdx()해서 구현
@@ -61,28 +63,30 @@ public class ProjectServiceImpl implements ProjectService {
         // 생성후 바로 프로젝트 상세 정보를 보여주기 위함.
         ProjectResponseDto responseDto = ProjectResponseDto.builder()
                 .project(project)
-                .taskList(new ArrayList<>()).build(); // 생성할 때는 빈 Task 목록
+                .taskList(new ArrayList<>()).build(); // 생성할 때는 빈 Url 목록
         return responseDto;
     }
-
+/*
     // taskList와 각각의 userList GET
     private List<TaskListResponseDto> getTaskUser(Long projectIdx) {
         System.out.println("getTaskUser 메소드");
         // 해당 프로젝트의 task 목록
-        List<Task> taskList = taskRepository.findByProjectIdx(projectIdx);
+        List<Url> urlList = taskRepository.findByProjectIdx(projectIdx);
         /*
         System.out.println(
-                "taskList" +
-                        taskList.stream()
-                                .map(Task::toString)
+                "urlList" +
+                        urlList.stream()
+                                .map(Url::toString)
                                 .collect(Collectors.joining(", "))
         );
         */
+
+        /*
         List<List<UserResponseDto>> userList = new ArrayList<>();
         List<UserResponseDto> userWork = new ArrayList<>();
-        for(int i=0; i<taskList.size(); ++i){
-            for(int j=0; j<taskList.get(i).getWorks().size(); ++j){
-                userWork.add(new UserResponseDto(taskList.get(i).getWorks().get(j).getIdx(), taskList.get(i).getWorks().get(j).getName()));
+        for(int i = 0; i< urlList.size(); ++i){
+            for(int j = 0; j< urlList.get(i).getWorks().size(); ++j){
+                userWork.add(new UserResponseDto(urlList.get(i).getWorks().get(j).getIdx(), urlList.get(i).getWorks().get(j).getName()));
             }
             userList.add(userWork);
             userWork = new ArrayList<>();
@@ -90,13 +94,14 @@ public class ProjectServiceImpl implements ProjectService {
 
         // 원하는 userList 정보들과 task 정보들이 저장된 taskListResponseDto
         List<TaskListResponseDto> taskListResponseDtos = new ArrayList<>();
-        for(int i=0; i<taskList.size(); ++i){
-            taskListResponseDtos.add(new TaskListResponseDto(taskList.get(i),userList.get(i)));
+        for(int i = 0; i< urlList.size(); ++i){
+            taskListResponseDtos.add(new TaskListResponseDto(urlList.get(i),userList.get(i)));
         }
 
         return taskListResponseDtos;
     }
-
+*/
+    /*
     @Override
     public ProjectResponseDto updateProject(Long idx, ProjectRequestDto dto, Long userIdx)//실제로는 User user. 그리고 User.getIdx()해서 구현
     {
@@ -122,7 +127,7 @@ public class ProjectServiceImpl implements ProjectService {
                 .taskList(getTaskUser(idx)).build();
         return responseDto;
     }
-
+*/
     @Override
     public boolean deleteProject(Long idx, Long userIdx) //실제로는 User user. 그리고 User.getIdx()해서 구현
     {
@@ -140,6 +145,7 @@ public class ProjectServiceImpl implements ProjectService {
         return false;
     }
 
+    /*
     @Transactional(readOnly = true)
     @Override
     public ProjectResponseDto getProject(Long idx) {
@@ -150,7 +156,7 @@ public class ProjectServiceImpl implements ProjectService {
                 .taskList(getTaskUser(idx)).build();
         return responseDto;
     }
-
+    */
     @Override
     public boolean setFinishedProject(Long idx, FinishProjectRequestDto dto) {
         // 예시
@@ -188,9 +194,9 @@ public class ProjectServiceImpl implements ProjectService {
 
         while (it.hasNext()) {
             user = it.next();
-            System.out.println("야이야이야"+user.getIdx()+user.getName());
             userList.add(new UserResponseDto(user.getIdx(), user.getName()));
         }
         return userList;
     }
+
 }

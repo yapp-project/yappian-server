@@ -1,5 +1,6 @@
 package com.yapp.web1.service;
 
+import com.yapp.web1.domain.Project;
 import com.yapp.web1.domain.User;
 import com.yapp.web1.dto.req.FinishProjectRequestDto;
 import com.yapp.web1.dto.req.ProjectRequestDto;
@@ -20,6 +21,13 @@ import java.util.List;
 public interface ProjectService {
 
     /**
+     * 프로젝트 찾기
+     * @param idx
+     * @return Project
+     */
+
+    Project findById(Long idx);
+    /**
      * 프로젝트 생성
      *
      * @param dto 생성할 Project 정보
@@ -28,7 +36,7 @@ public interface ProjectService {
      *
      * @exception Exception 같은 기수 다른 Project에 join된 경우 - 추후 수정
      */
-    ProjectResponseDto createProject(ProjectRequestDto dto, Long userIdx);//실제로는 User user
+    //ProjectResponseDto createProject(ProjectRequestDto dto, Long userIdx);//실제로는 User user
 
     /**
      * 프로젝트 수정
@@ -39,7 +47,7 @@ public interface ProjectService {
      *
      * @exception Exception Project의 createUserIdx와 session userIdx 불일치 시 삭제 불가
      */
-    ProjectResponseDto updateProject(Long idx, ProjectRequestDto dto, Long userIdx);//실제로는 User user
+  //  ProjectResponseDto updateProject(Long idx, ProjectRequestDto dto, Long userIdx);//실제로는 User user
 
     /**
      * 프로젝트 삭제
@@ -57,7 +65,7 @@ public interface ProjectService {
      * @param idx 조회할 Project idx
      * @exception Exception invalid idx
      */
-    ProjectResponseDto getProject(Long idx);
+    //ProjectResponseDto getProject(Long idx);
 
     /**
      * 프로젝트 완료 설정
