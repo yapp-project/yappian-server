@@ -31,10 +31,15 @@ public class ProjectRequestDto {
     @Size(max=9)
     private String projectName; // 프로젝트 이름
 
+    @NotNull(message = "비밀번호를 입력하세요")
+    @Size(min = 4, max = 4)
+    private String password; // 비밀번호
+
     @Builder
-    public ProjectRequestDto(Long ordersIdx, ProjectType projectType, String projectName){
+    public ProjectRequestDto(Long ordersIdx,String projectName, ProjectType projectType, String password){
         this.ordersIdx = ordersIdx;
         this.projectType = projectType;
         this.projectName = projectName;
+        this.password = password;
     }
 }

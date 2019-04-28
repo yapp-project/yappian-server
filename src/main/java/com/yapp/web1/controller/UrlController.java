@@ -4,8 +4,8 @@ import com.yapp.web1.dto.req.UrlRequestDto;
 import com.yapp.web1.dto.res.ApiResponse;
 import com.yapp.web1.dto.res.ProjectResponseDto;
 import com.yapp.web1.dto.res.UrlResponseDto;
-import com.yapp.web1.exception.Url.NoPermissionException;
-import com.yapp.web1.exception.Url.NotFoundException;
+import com.yapp.web1.exception.Common.NoPermissionException;
+import com.yapp.web1.exception.Common.NotFoundException;
 import com.yapp.web1.service.UrlService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -71,7 +71,7 @@ public class UrlController {
         } catch (NoPermissionException e) {
             return ApiResponse.builder()
                     .status(HttpStatus.FORBIDDEN)
-                    .message("유저 권한 없음")
+                    .message(e.getMessage())
                     .build();
         }
 
@@ -95,12 +95,12 @@ public class UrlController {
         } catch (NotFoundException e) {
             return ApiResponse.builder()
                     .status(HttpStatus.NOT_FOUND)
-                    .message("삭제 할 리소스 없음")
+                    .message(e.getMessage())
                     .build();
         } catch (NoPermissionException e) {
             return ApiResponse.builder()
                     .status(HttpStatus.FORBIDDEN)
-                    .message("유저 권한 없음")
+                    .message(e.getMessage())
                     .build();
         }
 

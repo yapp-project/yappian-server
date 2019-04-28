@@ -74,7 +74,7 @@ public class Project extends BaseEntity {
 
     /** Project - File 단방향 매핑 **/
     @JsonIgnore
-    @OneToMany(mappedBy = "url",
+    @OneToMany(mappedBy = "project",
             fetch = FetchType.LAZY)
     private List<File> fileList = new ArrayList<>();
 
@@ -109,10 +109,29 @@ public class Project extends BaseEntity {
         this.productURL = productURL;
     }
 
-    //기수, 타입, 이름
-    public void updateProject(String name, ProjectType type, Orders orders){
+    // setter - name
+    public void setName(String name){
         this.name = name;
+
+    }
+
+    // setter - type
+    public void setType(ProjectType type){
         this.type = type;
+    }
+
+    // setter - pasword
+    public void setPassword(String password){
+        this.password = password;
+    }
+
+    // setter - order
+    public void setOrders(Orders orders){
         this.orders = orders;
+    }
+
+    // setter - userList
+    public void setUserList(Set<User> userList){
+        this.userList = userList;
     }
 }

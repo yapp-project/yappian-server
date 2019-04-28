@@ -43,4 +43,9 @@ public interface UrlService {
      */
      void deleteUrl(Long projectIdx, final Long idx, Long userIdx );
 
+    /**
+     * 해당 프로젝트의 모든 url 삭제
+     */
+    void deleteAllUrl(Long projectIdx);
+
 }

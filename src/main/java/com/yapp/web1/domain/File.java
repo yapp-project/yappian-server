@@ -31,18 +31,18 @@ public class File extends BaseEntity {
     private FileType type;
 
     /** Relation Mapping **/
-    /** File - Url 양방향 매핑 **/
+    /** File - Project 단방향 매핑 **/
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name="url_idx",
-            foreignKey = @ForeignKey(name="fk_file_url"),
+    @JoinColumn(name="project_idx",
+            foreignKey = @ForeignKey(name="fk_file_project"),
             nullable = false)
-    private Url url;
+    private Project project;
 
     /** Method **/
     @Builder
-    public File(String fileURL, FileType type,  Url url){
+    public File(String fileURL, FileType type,  Project project){
         this.fileURL = fileURL;
         this.type = type;
-        this.url = url;
+        this.project = project;
     }
 }

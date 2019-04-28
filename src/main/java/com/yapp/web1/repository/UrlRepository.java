@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface UrlRepository extends JpaRepository<Url,Long> {
     List<Url> findByProjectIdx(Long idx);
+    void deleteByProjectIdx(Long projectIdx);
 }

@@ -1,4 +1,6 @@
-package com.yapp.web1.exception.Url;
+package com.yapp.web1.exception.Common;
+
+import com.yapp.web1.exception.Url.UrlException;
 
 /**
  * 리소스 없음 에러
