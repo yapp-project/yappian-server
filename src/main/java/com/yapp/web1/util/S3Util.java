@@ -8,9 +8,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import lombok.AllArgsConstructor;
 import lombok.Value;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
@@ -19,17 +17,16 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 @Component
-@AllArgsConstructor
 @PropertySource("classpath:application.yml")
 public class S3Util {
 
-  //  @Value("${aws.credentials.accessKey}")
+  //@Value("${aws.credentials.accessKey}")
     static private String accessKey="임시";
 
    // @Value("${aws.credentials.secretKey}")
     static private String secretKey="임시";
 
-   // @Value("${amazonProperties.bucketName}")
+   //@Value("${amazonProperties.bucketName}")
     private String bucketName="yappian";
 
     private AmazonS3 connection;

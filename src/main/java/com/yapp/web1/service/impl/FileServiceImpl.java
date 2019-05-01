@@ -8,7 +8,6 @@ import com.yapp.web1.service.CommonService;
 import com.yapp.web1.service.FileService;
 import com.yapp.web1.util.S3Util;
 import com.yapp.web1.util.UploadFileUtils;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,13 +18,11 @@ import java.util.List;
 
 
 @Service
-@AllArgsConstructor
 public class FileServiceImpl implements FileService {
 
-    @Autowired
-    S3Util s3Util;
-    private FileRepository fileRepository;
-    private CommonService commonService;
+    @Autowired S3Util s3Util;
+    @Autowired FileRepository fileRepository;
+    @Autowired private CommonService commonService;
 
     private String uploadPath = "Files";// s3 폴더명
 
