@@ -23,6 +23,10 @@ import javax.persistence.*;
 @Getter
 public class File extends BaseEntity {
     /** File Table Fields **/
+
+    @Column(name="name", nullable = false)
+    private String name;
+
     @Column(name="file_url", nullable = false)
     private String fileURL;
 
@@ -40,9 +44,16 @@ public class File extends BaseEntity {
 
     /** Method **/
     @Builder
-    public File(String fileURL, FileType type,  Project project){
+    public File(String name, String fileURL, FileType type,  Project project){
+        this.name = name;
         this.fileURL = fileURL;
         this.type = type;
         this.project = project;
+    }
+
+    // setter - fileUrl
+
+    public void setFileURL(String fileURL){
+        this.fileURL = fileURL;
     }
 }

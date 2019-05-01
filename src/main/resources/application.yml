@@ -83,6 +83,12 @@ spring:
 spring.profiles: test
 spring.profiles.include: common
 
+amazonProperties:
+  region: 리전
+  accessKey: 액세스키
+  secretKey: 보안액세스키
+  bucketName: "버킷이름"
+
 spring:
   h2:
     console:
@@ -111,11 +117,14 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
 
+
+
 logging:
   level:
     org.springframework.web.client: DEBUG
     org.hibernate.SQL: DEBUG
     org.hibernate.type: TRACE
+
 
 # production 환경
 ---
