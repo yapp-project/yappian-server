@@ -11,6 +11,7 @@ import com.yapp.web1.dto.res.ProjectResponseDto;
 import com.yapp.web1.dto.res.UserResponseDto;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -23,22 +24,6 @@ import java.util.List;
  * @version 1.2
  */
 public interface ProjectService {
-
-    /**
-     * 해당 엔티티 있는지 확인
-     * @param idx
-     * @return Project, Orders, User
-     */
-
-    Project findById(Long idx);
-    Orders findOrdersById(Long idx);
-    User findUserById(Long idx);
-
-
-    /**
-     * user 권한 검사
-     */
-    void checkUserPermission(List<UserResponseDto> userList, Long userIdx);
 
     /**
      * 프로젝트 생성
@@ -97,12 +82,12 @@ public interface ProjectService {
      * 프로젝트 완료 설정
      * 프로젝트 완료 정보 반영 후 finalCheck 변경해야 함 - finishedProject()
      *
-     * @param idx 완료할 Project idx
+     * @param projectIdx 완료할 Project idx
      * @param dto 프로젝트 완료 정보
      *
-     * @exception Exception 이미 완료된 경우
+     * @exception Exception noPermission, notFound
      */
-    boolean setFinishedProject(Long idx, FinishProjectRequestDto dto);
+    void setFinishedProject(Long projectIdx, MultipartFile[] multipartFiles, FinishProjectRequestDto dto, Long userIdx);
 
     /**
      * 프로젝트 완료 조회

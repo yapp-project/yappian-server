@@ -40,7 +40,6 @@ public class UrlServiceImpl implements UrlService {
 
     // urlResponseDto
     private List<UrlResponseDto> parseUrl(Long projectIdx) {
-
         List<Url> exUrlList = urlRepository.findByProjectIdx(projectIdx);
         List<UrlResponseDto> urlResponseDtos = new ArrayList<>();
         for (int i = 0; i < exUrlList.size(); ++i) {
@@ -50,7 +49,7 @@ public class UrlServiceImpl implements UrlService {
         return urlResponseDtos;
     }
 
-    //get Url
+    // get Url
     @Transactional(readOnly = true)
     @Override
     public List<UrlResponseDto> getUrl(Long projectIdx) {
@@ -100,6 +99,5 @@ public class UrlServiceImpl implements UrlService {
     public void deleteAllUrl(Long projectIdx) {
         urlRepository.deleteByProjectIdx(projectIdx);
     }
-
 
 }

@@ -1,16 +1,19 @@
 package com.yapp.web1.service.impl;
 
+import com.yapp.web1.domain.Orders;
 import com.yapp.web1.domain.Project;
 import com.yapp.web1.domain.User;
 import com.yapp.web1.dto.res.UserResponseDto;
 import com.yapp.web1.exception.Common.NoPermissionException;
+import com.yapp.web1.exception.Common.NotFoundException;
+import com.yapp.web1.repository.OrdersRepository;
 import com.yapp.web1.repository.ProjectRepository;
+import com.yapp.web1.repository.UserRepository;
 import com.yapp.web1.service.CommonService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -22,12 +25,28 @@ import java.util.Set;
 public class CommonServiceImpl implements CommonService {
 
     private final ProjectRepository projectRepository;
+    private final OrdersRepository ordersRepository;
+    private final UserRepository userRepository;
+
+    // Orders findByOrdersId
+    @Transactional(readOnly = true)
+    @Override
+    public Orders findOrdersById(Long idx){
+        return ordersRepository.findById(idx).orElseThrow(() -> new NotFoundException("해당 기수 없음"));
+    }
+
+    // User findByUserId
+    @Transactional(readOnly = true)
+    @Override
+    public User findUserById(Long idx){
+        return userRepository.findById(idx).orElseThrow(() -> new NotFoundException("해당 유저 없음"));
+    }
 
     // project findById
     @Transactional(readOnly = true)
     @Override
     public Project findById(Long idx) {
-        return projectRepository.findById(idx).orElseThrow(() -> new EntityNotFoundException("해당 프로젝트 없음"));
+        return projectRepository.findById(idx).orElseThrow(() -> new NotFoundException("해당 프로젝트 없음"));
     }
 
     // userList

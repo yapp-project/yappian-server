@@ -13,16 +13,15 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Project Controller
  *
- * @author Dakyung Ko
  * @author Jihye Kim
  * @version 1.5
  * @since 0.0.3
@@ -98,7 +97,6 @@ public class ProjectController {
                     .build();
         }
     }
-
 
     /**
      * 프로젝트 삭제
@@ -204,14 +202,30 @@ public class ProjectController {
     /**
      * 프로젝트 완료 설정
      *
-     * @param idx 완료할 프로젝트 idx
-     * @throws Exception 이미 완료된 경우, join한 유저가 아닌 경우
+     * @param projectIdx 완료할 프로젝트 idx
+     * @throws Exception join한 유저가 아닌 경우
      * @see /v1/api/project/{idx}/finish
      */
-    @PutMapping("/project/{idx}/finish")
-    public ResponseEntity setFinishedProject(@PathVariable final Long idx, @Valid @RequestBody FinishProjectRequestDto project) {
-        projectService.setFinishedProject(idx, project);
-        return new ResponseEntity(HttpStatus.OK);
+    @PutMapping("/project/{projectIdx}/finish")
+    public ApiResponse<?> setFinishedProject(@PathVariable final Long projectIdx, @RequestParam("files")MultipartFile[] multipartFiles,
+                                             @Valid @RequestBody FinishProjectRequestDto project) {
+       try{
+           projectService.setFinishedProject(projectIdx, multipartFiles, project, 1L);
+           return ApiResponse.builder()
+                   .status(HttpStatus.OK)
+                   .message("프로젝트 완료 설정 성공")
+                   .build();
+       }catch (NoPermissionException e){
+           return ApiResponse.builder()
+                   .status(HttpStatus.FORBIDDEN)
+                   .message(e.getMessage())
+                   .build();
+       }catch(NotFoundException e){
+           return ApiResponse.builder()
+                   .status(HttpStatus.NOT_FOUND)
+                   .message(e.getMessage())
+                   .build();
+       }
     }
 
     /**
