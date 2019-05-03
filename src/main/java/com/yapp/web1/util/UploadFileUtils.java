@@ -10,7 +10,7 @@ public class UploadFileUtils {
 
     //파일이름(파일경로+uid+파일명)생성 후 S3Util이용해 파일 업로드하는 메서드
     public static String uploadFile(String uploadPath, String originalName, byte[] byteData) throws Exception{
-        S3Util s3 = new S3Util();
+        //S3Util s3 = new S3Util();
 
         UUID uid = UUID.randomUUID();//랜덤의 uid생성
 

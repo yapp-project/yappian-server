@@ -84,10 +84,10 @@ spring.profiles: test
 spring.profiles.include: common
 
 amazonProperties:
-  region: 리전
-  accessKey: 액세스키
-  secretKey: 보안액세스키
-  bucketName: "버킷이름"
+  region: ap-northeast-2
+  accessKey: AKIAIXY6YJH2HJLSA7TA
+  secretKey: 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
+  bucket: yappian
 
 spring:
   h2:
