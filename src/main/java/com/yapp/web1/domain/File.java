@@ -51,9 +51,4 @@ public class File extends BaseEntity {
         this.project = project;
     }
 
-    // setter - fileUrl
-
-    public void setFileURL(String fileURL){
-        this.fileURL = fileURL;
-    }
 }

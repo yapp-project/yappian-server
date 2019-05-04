@@ -1,11 +1,13 @@
 package com.yapp.web1.service.impl;
 
+import com.yapp.web1.domain.File;
 import com.yapp.web1.domain.Orders;
 import com.yapp.web1.domain.Project;
 import com.yapp.web1.domain.User;
 import com.yapp.web1.dto.res.UserResponseDto;
 import com.yapp.web1.exception.Common.NoPermissionException;
 import com.yapp.web1.exception.Common.NotFoundException;
+import com.yapp.web1.repository.FileRepository;
 import com.yapp.web1.repository.OrdersRepository;
 import com.yapp.web1.repository.ProjectRepository;
 import com.yapp.web1.repository.UserRepository;
@@ -27,6 +29,14 @@ public class CommonServiceImpl implements CommonService {
     private final ProjectRepository projectRepository;
     private final OrdersRepository ordersRepository;
     private final UserRepository userRepository;
+    private final FileRepository fileRepository;
+
+    // File findByFileId
+    @Transactional(readOnly = true)
+    @Override
+    public File findFileById(Long idx){
+        return fileRepository.findById(idx).orElseThrow(() -> new NotFoundException("해당 파일 없음"));
+    }
 
     // Orders findByOrdersId
     @Transactional(readOnly = true)

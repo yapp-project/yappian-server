@@ -1,14 +1,13 @@
 package com.yapp.web1.service.impl;
 
+import com.yapp.web1.domain.File;
 import com.yapp.web1.domain.Project;
 import com.yapp.web1.domain.User;
 import com.yapp.web1.domain.VO.Mark;
 import com.yapp.web1.dto.req.FinishProjectRequestDto;
 import com.yapp.web1.dto.req.ProjectRequestDto;
-import com.yapp.web1.dto.res.FinishProjectResponseDto;
-import com.yapp.web1.dto.res.ProjectResponseDto;
-import com.yapp.web1.dto.res.UrlResponseDto;
-import com.yapp.web1.dto.res.UserResponseDto;
+import com.yapp.web1.dto.res.*;
+import com.yapp.web1.repository.FileRepository;
 import com.yapp.web1.repository.ProjectRepository;
 import com.yapp.web1.service.CommonService;
 import com.yapp.web1.service.FileService;
@@ -35,6 +34,7 @@ import java.util.*;
 public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
+    private final FileRepository fileRepository;
     private final UrlService urlService;
     private final FileService fileService;
     private final CommonService commonService;
@@ -159,17 +159,39 @@ public class ProjectServiceImpl implements ProjectService {
 
     // setFinishedProject
     @Override
-    public void setFinishedProject(Long projectIdx, MultipartFile[] multipartFiles, FinishProjectRequestDto dto, Long userIdx) {
-
+    public FinishProjectResponseDto setFinishedProject(Long projectIdx, MultipartFile[] multipartFiles, FinishProjectRequestDto dto, Long userIdx) {
+        System.out.println("projectImpl");
         Project project = commonService.findById(projectIdx);
 
         commonService.checkUserPermission(getUserListInProject(projectIdx), userIdx);
 
-        fileService.fileUpload(multipartFiles, projectIdx);
+        // 파일 업로드
+        List<FileUploadResponseDto> fileUploadResponseDtos = fileService.fileUpload(multipartFiles, projectIdx);
 
+        System.out.println("fileUpload 성공");
+        List<File> file = fileRepository.findByProjectIdx(projectIdx);
+
+        // set finishedProject
         project.setDescription(dto.getDescription());
         project.setFinalCheck(Mark.Y);
+        project.setFileList(file);
         projectRepository.save(project);
+
+        System.out.println("set finishedProject");
+        // res dto
+        FinishProjectResponseDto finishProjectResponseDtos = null;
+
+        finishProjectResponseDtos.builder()
+                .projectIdx(project.getIdx())
+                .ordersNumber(project.getOrders().getNumber())
+                .projectName(project.getName())
+                .projectType(project.getType())
+                .productURL(project.getProductURL())
+                .projectDescription(project.getDescription())
+                .fileList(fileUploadResponseDtos)
+                .build();
+
+        return finishProjectResponseDtos;
     }
 
     @Transactional(readOnly = true)

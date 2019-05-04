@@ -147,4 +147,7 @@ public class Project extends BaseEntity {
     public void setProductURL(String productURL) {
         this.productURL = productURL;
     }
+
+    // setter - fileList
+    public void setFileList(List<File> fileList){this.fileList = fileList;}
 }

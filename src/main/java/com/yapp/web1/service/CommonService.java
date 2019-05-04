@@ -1,5 +1,6 @@
 package com.yapp.web1.service;
 
+import com.yapp.web1.domain.File;
 import com.yapp.web1.domain.Orders;
 import com.yapp.web1.domain.Project;
 import com.yapp.web1.domain.User;
@@ -17,6 +18,7 @@ public interface CommonService {
     Project findById(Long idx);
     Orders findOrdersById(Long idx);
     User findUserById(Long idx);
+    File findFileById(Long idx);
 
     /**
      * 해당 프로젝트에 join된 userList

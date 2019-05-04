@@ -87,7 +87,7 @@ public interface ProjectService {
      *
      * @exception Exception noPermission, notFound
      */
-    void setFinishedProject(Long projectIdx, MultipartFile[] multipartFiles, FinishProjectRequestDto dto, Long userIdx);
+    FinishProjectResponseDto setFinishedProject(Long projectIdx, MultipartFile[] multipartFiles, FinishProjectRequestDto dto, Long userIdx);
 
     /**
      * 프로젝트 완료 조회

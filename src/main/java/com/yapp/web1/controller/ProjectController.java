@@ -161,7 +161,7 @@ public class ProjectController {
     public ApiResponse<?> joinProject(@PathVariable final Long projectIdx, HttpSession session) {
         try {
             // 추후 user.getIdx로 수정.
-            projectService.joinProject(projectIdx,1L);
+            projectService.joinProject(projectIdx, 1L);
 
             return ApiResponse.builder()
                     .status(HttpStatus.OK)
@@ -207,25 +207,27 @@ public class ProjectController {
      * @see /v1/api/project/{idx}/finish
      */
     @PutMapping("/project/{projectIdx}/finish")
-    public ApiResponse<?> setFinishedProject(@PathVariable final Long projectIdx, @RequestParam("files")MultipartFile[] multipartFiles,
+    public ApiResponse<?> setFinishedProject(@PathVariable final Long projectIdx, @RequestParam("files") MultipartFile[] multipartFiles,
                                              @Valid @RequestBody FinishProjectRequestDto project) {
-       try{
-           projectService.setFinishedProject(projectIdx, multipartFiles, project, 1L);
-           return ApiResponse.builder()
-                   .status(HttpStatus.OK)
-                   .message("프로젝트 완료 설정 성공")
-                   .build();
-       }catch (NoPermissionException e){
-           return ApiResponse.builder()
-                   .status(HttpStatus.FORBIDDEN)
-                   .message(e.getMessage())
-                   .build();
-       }catch(NotFoundException e){
-           return ApiResponse.builder()
-                   .status(HttpStatus.NOT_FOUND)
-                   .message(e.getMessage())
-                   .build();
-       }
+        FinishProjectResponseDto finishProjectResponseDto = null;
+        try {
+            finishProjectResponseDto = projectService.setFinishedProject(projectIdx, multipartFiles, project, 1L);
+            return ApiResponse.builder()
+                    .status(HttpStatus.OK)
+                    .message("프로젝트 완료 설정 성공")
+                    .data(finishProjectResponseDto)
+                    .build();
+        } catch (NoPermissionException e) {
+            return ApiResponse.builder()
+                    .status(HttpStatus.FORBIDDEN)
+                    .message(e.getMessage())
+                    .build();
+        } catch (NotFoundException e) {
+            return ApiResponse.builder()
+                    .status(HttpStatus.NOT_FOUND)
+                    .message(e.getMessage())
+                    .build();
+        }
     }
 
     /**

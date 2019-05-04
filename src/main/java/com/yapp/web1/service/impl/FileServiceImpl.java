@@ -4,6 +4,8 @@ import com.amazonaws.services.s3.model.PutObjectResult;
 import com.yapp.web1.domain.File;
 import com.yapp.web1.domain.Project;
 import com.yapp.web1.domain.VO.FileType;
+import com.yapp.web1.dto.res.FileUploadResponseDto;
+import com.yapp.web1.dto.res.FinishProjectResponseDto;
 import com.yapp.web1.repository.FileRepository;
 import com.yapp.web1.service.CommonService;
 import com.yapp.web1.service.FileService;
@@ -27,116 +29,109 @@ import java.util.UUID;
 @Service
 public class FileServiceImpl implements FileService {
 
-    @Autowired S3Util s3Util;
-    @Autowired FileRepository fileRepository;
-    @Autowired private CommonService commonService;
-    @Autowired S3Service s3Service;
+    @Autowired
+    S3Util s3Util;
+    @Autowired
+    FileRepository fileRepository;
+    @Autowired
+    private CommonService commonService;
+    @Autowired
+    S3Service s3Service;
 
+    String uploadPath = "Files";// s3 폴더명
 
-    private static String calcPath(String uploadePath){
+    private static String calcPath(String uploadePath) {
         Calendar cal = Calendar.getInstance();
 
-        String yearPath = java.io.File.separator+cal.get(Calendar.YEAR);
+        String yearPath = java.io.File.separator + cal.get(Calendar.YEAR);
 
-        String monthPath = yearPath + java.io.File.separator + new DecimalFormat("00").format(cal.get(Calendar.MONTH)+1);
+        String monthPath = yearPath + java.io.File.separator + new DecimalFormat("00").format(cal.get(Calendar.MONTH) + 1);
 
         makeDir(uploadePath, yearPath, monthPath);
 
         return monthPath;
     }
 
-    private static void makeDir(String uploadePath, String... paths){
-        if(new java.io.File(paths[paths.length-1]).exists()){
+    private static void makeDir(String uploadePath, String... paths) {
+        if (new java.io.File(paths[paths.length - 1]).exists()) {
             return;
         }
-        for(String path : paths){
-            java.io.File dirPath = new java.io.File(uploadePath+path);
+        for (String path : paths) {
+            java.io.File dirPath = new java.io.File(uploadePath + path);
 
-            if(!dirPath.exists()){
+            if (!dirPath.exists()) {
                 dirPath.mkdir();
             }
         }
     }
 
     // createdUrlName
-    private String createUrlName(MultipartFile multipartFiles){
+    private String createUrlName(MultipartFile multipartFiles) {
 
-        String uploadPath = "Files";// s3 폴더명
         UUID uid = UUID.randomUUID();//랜덤의 uid생성
 
-        String saveName = "/"+uid.toString()+"_"+multipartFiles.getOriginalFilename(); //파일명중복방지를위해 파일명변경 : 파일명=/uid_원래파일명
+        String saveName = "/" + uid.toString() + "_" + multipartFiles.getOriginalFilename(); //파일명중복방지를위해 파일명변경 : 파일명=/uid_원래파일명
 
+        // \2017\12\27 같은 형태로 저장해준다.
         String savedPath = calcPath(uploadPath);
 
         String uploadedFileName = null;
 
-        uploadedFileName = (savedPath)+saveName.replace(java.io.File.separatorChar,'/');
-
-        // TODO 폴더 안에 후 작업해야함.
-        s3.fileUpload(uploadPath+uploadedFileName, byteData);
+        // 파일 구별자를 `/`로 설정(\->/) 이게 기존에 / 였어도 넘어오면서 \로 바뀌는 거같다.
+        uploadedFileName = (savedPath) + saveName.replace(java.io.File.separatorChar, '/');
+        System.out.println("createUrlName : "+uploadedFileName);
 
         return (uploadedFileName).replace(java.io.File.separatorChar, '/');
 
     }
 
-    // setUrl
-    private void setUrl(File file){
-        try{
-            file.setFileURL(new URL(s3Util.getFileURL(file.getName())).toString());
-        } catch (MalformedURLException e) {
-            throw new IllegalStateException(e.getMessage(), e);
-        }
-    }
-
     // fileUpload
     @Override
-    public void fileUpload(MultipartFile[]multipartFiles, Long projectIdx){
+    public List<FileUploadResponseDto> fileUpload(MultipartFile[] multipartFiles, Long projectIdx) {
 
         Project project = commonService.findById(projectIdx);
 
-        // 파일 이름은 업로드할때는 랜덤 문자 붙이고 이걸 따로 저장한다.
-        // 디비에는 id, url : 랜덤문자+파일명일것이다. 그리고 originName : 원래파일명
-        // 클라이언트에게 해당 플젝트의 List<파일>을 준다.
-
-        // 파일 이름 및 파일 이름 변경 작업
-        // 파일 업로드하기
-        // 업로드 한 파일의 이름 Get
-        // save
-
         int sw = 1;
         FileType type = null;
-        List<PutObjectResult> putObjectResults = new ArrayList<>();
+        List<FileUploadResponseDto> fileUploadResponseDtos = new ArrayList<>();
 
-        for(MultipartFile files : multipartFiles){
-            if(sw==1){
+        for (MultipartFile files : multipartFiles) {
+            if (sw == 1) {
                 type = FileType.IMAGE;
-            }else if(sw==-1){
+            } else if (sw == -1) {
                 type = FileType.PDF;
             }
 
+            String originName = files.getOriginalFilename();
+
             String createdUrl = createUrlName(files);
 
-            s3Service.upload(files,createdUrl);
+            s3Service.upload(files, uploadPath + createdUrl); // 실제 파일 업로드
 
             File file = File.builder()
-                    .project(project)
-                    .name(getName(files))
+                    .name(originName)
+                    .fileURL(createdUrl)
                     .type(type)
+                    .project(project)
                     .build();
 
-            setUrl(file);
             fileRepository.save(file);
-            sw*=-1;
+
+            fileUploadResponseDtos.add(new FileUploadResponseDto(file.getIdx(),originName,createdUrl));
+
+            sw *= -1;
         }
 
+        return fileUploadResponseDtos;
     }
 
     // deleteAllFile
     @Override
-    public void deleteAllFile(Long projectIdx){
+    public void deleteAllFile(Long projectIdx) {
         List<File> fileList = fileRepository.findByProjectIdx(projectIdx);
-        for(File file : fileList)
-            s3Util.fileDelete(uploadPath+file.getName());
+        for (File file : fileList) {
+            s3Util.fileDelete(uploadPath + file.getName());
+        }
         fileRepository.deleteByProjectIdx(projectIdx);
     }
 

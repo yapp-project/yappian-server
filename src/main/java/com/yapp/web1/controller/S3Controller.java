@@ -22,6 +22,7 @@ public class S3Controller {
     @Autowired
     private S3Service s3Service;
 
+    /*
     @PostMapping("/upload")
     public List<PutObjectResult> upload(@RequestParam("file") MultipartFile[] multipartFiles) {
         return s3Service.upload(multipartFiles);
@@ -36,4 +37,5 @@ public class S3Controller {
     public List<S3ObjectSummary> list() throws IOException {
         return s3Service.list();
     }
+    */
 }
