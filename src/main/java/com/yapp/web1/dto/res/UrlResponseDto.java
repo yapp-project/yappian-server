@@ -4,9 +4,11 @@ import com.yapp.web1.domain.VO.UrlType;
 import lombok.Builder;
 import lombok.Getter;
 
-import lombok.NoArgsConstructor;
+/**
+ * Url 정보 res dto
 
-@NoArgsConstructor
+ * @author JiHye Kim
+ */
 @Getter
 public class UrlResponseDto {
 

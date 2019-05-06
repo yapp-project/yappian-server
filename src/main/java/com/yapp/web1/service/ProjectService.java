@@ -13,7 +13,6 @@ import java.util.List;
 /**
  * ProjectService Interface
  *
- * @author Dakyung Ko
  * @author Jihye Kim
  * @since 0.0.3
  * @version 1.2

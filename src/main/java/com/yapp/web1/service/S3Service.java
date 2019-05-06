@@ -18,6 +18,12 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.List;
 
+
+/**
+ * S3 Service
+ *
+ * @author Jihye Kim
+ */
 @Service
 public class S3Service {
 

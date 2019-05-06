@@ -6,6 +6,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Url 생성시 RequestDto
+ *
+ * @author JiHye Kim
+ */
+
 @NoArgsConstructor
 @Setter
 @Getter

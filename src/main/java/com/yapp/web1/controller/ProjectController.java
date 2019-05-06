@@ -42,7 +42,6 @@ public class ProjectController {
      * @return 생성한 프로젝트 데이터
      * @see /v1/api/project
      */
-
     @PostMapping("/project")
     public ResponseEntity<?> createProject(@Valid @RequestBody final ProjectRequestDto project, HttpSession session) {
         try {
@@ -64,7 +63,6 @@ public class ProjectController {
      * @throws NOTFOUNDException  프로젝트가 존재해야 수정할 수 있다.
      * @see /v1/api/project/{idx}
      */
-
     @PutMapping("/project/{idx}")
     public ResponseEntity<?> updateProject(@PathVariable final Long idx, @Valid @RequestBody final ProjectRequestDto project, HttpSession session) {
         try {
@@ -105,7 +103,6 @@ public class ProjectController {
      * @param idx 조회할 프로젝트 idx
      * @see /v1/api/project/{idx}
      */
-
     @GetMapping("/project/{idx}")
     public ResponseEntity<?> getProject(@PathVariable final Long idx, HttpSession session) {
         try {
@@ -125,10 +122,10 @@ public class ProjectController {
      * @see /v1/api/project/{projectIdx}
      */
     @PostMapping("/project/{projectIdx}")
-    public ResponseEntity<?> joinProject(@PathVariable final Long projectIdx, @RequestBody String password, HttpSession session) {
+    public ResponseEntity<?> joinProject(@PathVariable final Long projectIdx, String password, HttpSession session) {
         try {
             // 추후 user.getIdx로 수정.
-            projectService.joinProject(projectIdx, password, 1L);
+            projectService.joinProject(projectIdx, password, 2L);
             return new ResponseEntity<>("해당 프로젝트에 조인 성공", HttpStatus.OK);
         } catch (NotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -142,7 +139,6 @@ public class ProjectController {
      *
      * @see /v1/api/user/projects
      */
-
     @GetMapping("user/projects")
     public ResponseEntity<?> getProjectList(HttpSession session) {
         List<ProjectListinUserResDto> projectList = projectService.getProjectList(1L);
@@ -171,7 +167,7 @@ public class ProjectController {
      * @param projectIdx 완료할 프로젝트 idx
      * @throws Exception join한 유저가 아닌 경우
      * @see /v1/api/project/{idx}/finish
-     * <p>
+     *
      * pdf만 올리기는 추후 수정.
      */
     @PutMapping("/project/{projectIdx}/finish")

@@ -8,12 +8,13 @@ import java.util.List;
 
 /**
  * UrlService Interface
+ * @author Jihye Kim
  */
 public interface UrlService {
 
     /**
      * 해당 프로젝트의 URL 불러오기
-     * @param idx projectIdx
+     * @param projectId projectIdx
      * @param session 로그인 유저 정보
      * @return 해당 프로젝트의 url List
      * @throws Exception join한 유저만 url 생성 가능
@@ -23,7 +24,7 @@ public interface UrlService {
 
     /**
      * URL 생성
-     * @param idx projectIdx
+     * @param projectId projectIdx
      * @param url     생성할 Url 관련 데이터 - projectId 포함(UrlRequestDto)
      * @param userIdx 로그인 유저 정보
      * @return 생성한 url 데이터(UrlResponseDto), 해당 프로젝트의 url List

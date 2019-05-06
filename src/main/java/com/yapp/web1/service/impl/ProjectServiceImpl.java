@@ -41,7 +41,7 @@ public class ProjectServiceImpl implements ProjectService {
     private final CommonService commonService;
 
     // finishResponseDto
-    private FinishProjectResponseDto finishDto(Project project,  List<FileUploadResponseDto> fileUploadResponseDtos){
+    private FinishProjectResponseDto finishDto(Project project, List<FileUploadResponseDto> fileUploadResponseDtos) {
 
         FinishProjectResponseDto finishProjectResponseDtos = FinishProjectResponseDto.builder()
                 .projectIdx(project.getIdx())
@@ -160,7 +160,7 @@ public class ProjectServiceImpl implements ProjectService {
 
         Project project = commonService.findById(projectIdx);
 
-        if(!project.getPassword().equals(password)){
+        if (!project.getPassword().equals(password)) {
             throw new NoPermissionException("프로젝트 비밀번호 다릅니다.");
         }
 
@@ -171,13 +171,28 @@ public class ProjectServiceImpl implements ProjectService {
 
     // user'projectList
     @Override
-    public List<ProjectListinUserResDto> getProjectList(Long userIdx){
+    public List<ProjectListinUserResDto> getProjectList(Long userIdx) {
         User user = commonService.findUserById(userIdx);
 
         Set<Project> projectSet = user.getJoinedProjects();
 
-        List projectList = new ArrayList(projectSet);
-        
+        List<Project> setToList = new ArrayList(projectSet);
+
+        List<ProjectListinUserResDto> projectListinUserResDtos = new ArrayList<>();
+
+        for(Project project : setToList){
+            ProjectListinUserResDto dto = ProjectListinUserResDto.builder()
+                    .idx(project.getIdx())
+                    .projectType(project.getType())
+                    .orderNumber(project.getOrders().getNumber())
+                    .projectName(project.getName())
+                    .build();
+            projectListinUserResDtos.add(dto);
+        }
+
+        Collections.sort(projectListinUserResDtos);
+
+        return projectListinUserResDtos;
     }
 
     // userList
@@ -219,10 +234,16 @@ public class ProjectServiceImpl implements ProjectService {
     public FinishProjectResponseDto getFinishedProject(Long projectIdx) {
         Project project = commonService.findById(projectIdx);
         List<File> file = fileRepository.findByProjectIdx(projectIdx);
-        List<FileUploadResponseDto> fileUploadResponseDtos=new ArrayList<>();
+        List<FileUploadResponseDto> fileUploadResponseDtos = new ArrayList<>();
 
-        for(int i=0; i<file.size(); ++i){
-           fileUploadResponseDtos.add(new FileUploadResponseDto(file.get(i).getIdx(), file.get(i).getType(), file.get(i).getName(), file.get(i).getFileURL()));
+        for(File f : file){
+            FileUploadResponseDto dto = FileUploadResponseDto.builder()
+                    .fileIdx(f.getIdx())
+                    .type(f.getType())
+                    .originName(f.getName())
+                    .fileUrl(f.getFileURL())
+                    .build();
+            fileUploadResponseDtos.add(dto);
         }
 
         return finishDto(project, fileUploadResponseDtos);

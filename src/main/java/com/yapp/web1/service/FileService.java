@@ -11,5 +11,12 @@ public interface FileService {
      */
     void deleteAllFile(Long projectIdx);
 
+    /**
+     * 파일 업로드 후, 업로드 한 파일의 정보 목록
+     *
+     * @param multipartFiles
+     * @param projectIdx
+     * @return
+     */
     List<FileUploadResponseDto> fileUpload(MultipartFile[] multipartFiles, Long projectIdx);
 }

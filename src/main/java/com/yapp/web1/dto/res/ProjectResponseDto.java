@@ -6,14 +6,12 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * 프로젝트 생성 후 ResponseDto
  * 프로젝트 생성 후 바로 프로젝트 상세 정보를 보여주기 위함.
  *
  * @author JiHye Kim
- * @author Dakyung Ko
  */
 @Getter
 public class ProjectResponseDto {

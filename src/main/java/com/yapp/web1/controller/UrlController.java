@@ -14,6 +14,12 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+/**
+ * Url Controller
+ * @author Jihye Kim
+ * @version 1.0
+ * @since 0.0.1
+ */
 @CrossOrigin("*")
 @AllArgsConstructor
 @RequestMapping("/v1/api")
@@ -65,7 +71,6 @@ public class UrlController {
      * @param session
      * @see /v1/api/project/{projectIdx}/url/{idx}
      */
-
     @DeleteMapping("project/{projectIdx}/url/{idx}")
     public ResponseEntity<?> deleteUrl(@PathVariable final Long projectIdx,@PathVariable final Long idx, HttpSession session) {
         try {

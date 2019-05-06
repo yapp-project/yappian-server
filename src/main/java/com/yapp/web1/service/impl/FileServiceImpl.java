@@ -1,11 +1,9 @@
 package com.yapp.web1.service.impl;
 
-import com.amazonaws.services.s3.model.PutObjectResult;
 import com.yapp.web1.domain.File;
 import com.yapp.web1.domain.Project;
 import com.yapp.web1.domain.VO.FileType;
 import com.yapp.web1.dto.res.FileUploadResponseDto;
-import com.yapp.web1.dto.res.FinishProjectResponseDto;
 import com.yapp.web1.repository.FileRepository;
 import com.yapp.web1.service.CommonService;
 import com.yapp.web1.service.FileService;
@@ -33,6 +31,7 @@ public class FileServiceImpl implements FileService {
 
     String uploadPath = "Files";// s3 폴더명
 
+    // 파일 경로명 월별 설정 메소드
     private static String calcPath(String uploadePath) {
         Calendar cal = Calendar.getInstance();
 
@@ -45,6 +44,7 @@ public class FileServiceImpl implements FileService {
         return monthPath;
     }
 
+    // 파일 경로명 월별 설정 메소드
     private static void makeDir(String uploadePath, String... paths) {
         if (new java.io.File(paths[paths.length - 1]).exists()) {
             return;
@@ -58,19 +58,19 @@ public class FileServiceImpl implements FileService {
         }
     }
 
-    // createdUrlName
+    // 파일명 중복방지를 위해 파일명 변경하는 메소드
     private String createUrlName(MultipartFile multipartFiles) {
 
         UUID uid = UUID.randomUUID();//랜덤의 uid생성
 
         String saveName = "/" + uid.toString() + "_" + multipartFiles.getOriginalFilename(); //파일명중복방지를위해 파일명변경 : 파일명=/uid_원래파일명
 
-        // \2017\12\27 같은 형태로 저장해준다.
+        // \2019\05\07 같은 형태로 저장해준다.
         String savedPath = calcPath(uploadPath);
 
         String uploadedFileName = null;
 
-        // 파일 구별자를 `/`로 설정(\->/) 이게 기존에 / 였어도 넘어오면서 \로 바뀌는 거같다.
+        // 파일 구별자를 `/`로 설정(\->/) 이게 기존에 / 였어도 넘어오면서 \로 바뀐다.
         uploadedFileName = (savedPath) + saveName.replace(java.io.File.separatorChar, '/');
 
         return (uploadedFileName).replace(java.io.File.separatorChar, '/');

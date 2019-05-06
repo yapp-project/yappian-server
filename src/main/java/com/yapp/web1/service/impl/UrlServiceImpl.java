@@ -41,8 +41,15 @@ public class UrlServiceImpl implements UrlService {
     private List<UrlResponseDto> parseUrl(Long projectIdx) {
         List<Url> exUrlList = urlRepository.findByProjectIdx(projectIdx);
         List<UrlResponseDto> urlResponseDtos = new ArrayList<>();
-        for (int i = 0; i < exUrlList.size(); ++i) {
-            urlResponseDtos.add(new UrlResponseDto(exUrlList.get(i).getIdx(), exUrlList.get(i).getType(), exUrlList.get(i).getTitle(), exUrlList.get(i).getContents()));
+
+        for(Url url : exUrlList){
+            UrlResponseDto dto = UrlResponseDto.builder()
+                    .idx(url.getIdx())
+                    .type(url.getType())
+                    .title(url.getTitle())
+                    .contents(url.getContents())
+                    .build();
+            urlResponseDtos.add(dto);
         }
 
         return urlResponseDtos;

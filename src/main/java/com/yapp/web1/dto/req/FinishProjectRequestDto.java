@@ -1,6 +1,5 @@
 package com.yapp.web1.dto.req;
 
-import com.yapp.web1.domain.File;
 import com.yapp.web1.domain.VO.Mark;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,13 +9,9 @@ import lombok.Setter;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * 프로젝트 완료 페이지 작성 Dto
  * @author JiHye Kim
- * @author Dakyung Ko
  */
 @NoArgsConstructor
 @Setter

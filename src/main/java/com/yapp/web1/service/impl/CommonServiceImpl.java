@@ -94,7 +94,7 @@ public class CommonServiceImpl implements CommonService {
         }
     }
 
-    // joinedProject
+    // project의 join한 유저 목록 res dto
     @Override
     public List<UserResponseDto> joinedProject(Project project){
         Set<User> userSet = project.getUserList();

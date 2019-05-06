@@ -9,6 +9,8 @@ import java.util.List;
 
 /**
  * 프로젝트 완료 페이지 Dto
+ *
+ * @author JiHye Kim
  */
 @Getter
 public class FinishProjectResponseDto {

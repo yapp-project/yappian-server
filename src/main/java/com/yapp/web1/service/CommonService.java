@@ -32,5 +32,11 @@ public interface CommonService {
      * user 권한 검사
      */
     void checkUserPermission(List<UserResponseDto> userList, Long userIdx);
+
+    /**
+     * project의 join한 유저 목록
+     * @param project
+     * @return
+     */
     List<UserResponseDto> joinedProject(Project project);
 }

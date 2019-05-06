@@ -6,10 +6,12 @@ import lombok.Getter;
 
 /**
  * 내가 조인된 프로젝트 목록 리스트
+ *
+ * @author JiHye Kim
  */
 
 @Getter
-public class ProjectListinUserResDto {
+public class ProjectListinUserResDto implements Comparable<ProjectListinUserResDto>{
 
     private Long idx;
     private int orderNumber; // 기수
@@ -22,5 +24,10 @@ public class ProjectListinUserResDto {
         this.orderNumber = orderNumber;
         this.projectType = projectType;
         this.projectName = projectName;
+    }
+
+    @Override
+    public int compareTo(ProjectListinUserResDto p){
+        return p.orderNumber - this.orderNumber;
     }
 }
