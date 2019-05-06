@@ -1,16 +1,11 @@
 package com.yapp.web1.service;
 
-import com.yapp.web1.domain.Orders;
-import com.yapp.web1.domain.Project;
-import com.yapp.web1.domain.User;
 import com.yapp.web1.dto.req.FinishProjectRequestDto;
 import com.yapp.web1.dto.req.ProjectRequestDto;
-import com.yapp.web1.dto.res.ApiResponse;
 import com.yapp.web1.dto.res.FinishProjectResponseDto;
+import com.yapp.web1.dto.res.ProjectListinUserResDto;
 import com.yapp.web1.dto.res.ProjectResponseDto;
 import com.yapp.web1.dto.res.UserResponseDto;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -69,7 +64,12 @@ public interface ProjectService {
      * @param projectIdx 조회할 프로젝트 idx
      * @see /v1/api/project/{projectIdx}
      */
-    void joinProject(Long projectIdx, Long randomUser);
+    void joinProject(Long projectIdx, String password, Long randomUser);
+
+    /**
+     * 내가 조인한 프로젝트 목록 조회
+     */
+    List<ProjectListinUserResDto> getProjectList(Long userIdx);
 
     /**
      * 프로젝트에 속한 유저 목록 조회

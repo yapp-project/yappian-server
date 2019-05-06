@@ -1,7 +1,6 @@
 package com.yapp.web1.controller;
 
 import com.yapp.web1.dto.req.UrlRequestDto;
-import com.yapp.web1.dto.res.ApiResponse;
 import com.yapp.web1.dto.res.ProjectResponseDto;
 import com.yapp.web1.dto.res.UrlResponseDto;
 import com.yapp.web1.exception.Common.NoPermissionException;
@@ -9,6 +8,7 @@ import com.yapp.web1.exception.Common.NotFoundException;
 import com.yapp.web1.service.UrlService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -31,22 +31,13 @@ public class UrlController {
      * @see /v1/api/project/{projectIdx}/url/list
      */
     @GetMapping("/project/{projectIdx}/url/list")
-    public ApiResponse<?> getUrl(@PathVariable Long projectIdx, HttpSession session) {
-        List<UrlResponseDto> urlResponseDto = null;
+    public ResponseEntity<?> getUrl(@PathVariable Long projectIdx, HttpSession session) {
         try {
-            urlResponseDto = urlService.getUrl(projectIdx);
-            return ApiResponse.builder()
-                    .status(HttpStatus.CREATED)
-                    .message("Url 가져오기 성공")
-                    .data(urlResponseDto)
-                    .build();
-        } catch (Exception e) {
-            return ApiResponse.builder()
-                    .status(HttpStatus.NOT_FOUND)
-                    .message("해당 프로젝트 없음")
-                    .build();
+            List<UrlResponseDto> urlResponseDto = urlService.getUrl(projectIdx);
+            return new ResponseEntity<>(urlResponseDto, HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
-
     }
 
     /**
@@ -59,22 +50,13 @@ public class UrlController {
      * @see /v1/api/project/{projectIdx}/url
      */
     @PostMapping("project/{projectIdx}/url")
-    public ApiResponse<?> createUrl(@PathVariable Long projectIdx, @RequestBody UrlRequestDto url, HttpSession session) {
-        ProjectResponseDto projectResponseDto = null;
+    public ResponseEntity<?> createUrl(@PathVariable Long projectIdx, @RequestBody UrlRequestDto url, HttpSession session) {
         try {
-            projectResponseDto = urlService.createUrl(projectIdx, url, 1L);// 1 : dummy data
-            return ApiResponse.builder()
-                              .status(HttpStatus.CREATED)
-                              .message("Url 생성 성공")
-                              .data(projectResponseDto)
-                              .build();
+            ProjectResponseDto projectResponseDto = urlService.createUrl(projectIdx, url, 1L);// 1 : dummy data
+            return new ResponseEntity<>(projectResponseDto, HttpStatus.CREATED);
         } catch (NoPermissionException e) {
-            return ApiResponse.builder()
-                    .status(HttpStatus.FORBIDDEN)
-                    .message(e.getMessage())
-                    .build();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
         }
-
     }
 
     /**
@@ -85,24 +67,14 @@ public class UrlController {
      */
 
     @DeleteMapping("project/{projectIdx}/url/{idx}")
-    public ApiResponse deleteUrl(@PathVariable final Long projectIdx,@PathVariable final Long idx, HttpSession session) {
+    public ResponseEntity<?> deleteUrl(@PathVariable final Long projectIdx,@PathVariable final Long idx, HttpSession session) {
         try {
             urlService.deleteUrl(projectIdx, idx, 1L);// 1L : dummy data
-            return ApiResponse.builder()
-                    .status(HttpStatus.NO_CONTENT)
-                    .message("Url 삭제 성공")
-                    .build();
+            return new ResponseEntity<>("Url 삭제 성공", HttpStatus.NO_CONTENT);
+        }catch (NoPermissionException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
         } catch (NotFoundException e) {
-            return ApiResponse.builder()
-                    .status(HttpStatus.NOT_FOUND)
-                    .message(e.getMessage())
-                    .build();
-        } catch (NoPermissionException e) {
-            return ApiResponse.builder()
-                    .status(HttpStatus.FORBIDDEN)
-                    .message(e.getMessage())
-                    .build();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
-
     }
 }

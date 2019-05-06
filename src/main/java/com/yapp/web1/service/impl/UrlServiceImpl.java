@@ -6,7 +6,6 @@ import com.yapp.web1.dto.req.UrlRequestDto;
 import com.yapp.web1.dto.res.ProjectResponseDto;
 import com.yapp.web1.dto.res.UrlResponseDto;
 import com.yapp.web1.exception.Common.NotFoundException;
-import com.yapp.web1.exception.Url.UrlException;
 import com.yapp.web1.repository.UrlRepository;
 import com.yapp.web1.service.CommonService;
 import com.yapp.web1.service.UrlService;
@@ -61,7 +60,7 @@ public class UrlServiceImpl implements UrlService {
 
     // create Url
     @Override
-    public ProjectResponseDto createUrl(Long projectIdx, UrlRequestDto url, Long userIdx) throws UrlException {
+    public ProjectResponseDto createUrl(Long projectIdx, UrlRequestDto url, Long userIdx) {
 
         Project findProject = commonService.findById(projectIdx);
         commonService.checkUserPermission(commonService.getUserListInProject(projectIdx), userIdx);
@@ -83,7 +82,7 @@ public class UrlServiceImpl implements UrlService {
         return projectResponseDto;
     }
 
-    // deleteByurlId
+    // deleteByUrlId
     @Override
     public void deleteUrl(Long projectIdx, final Long idx, Long userIdx) {
         Project findProject = commonService.findById(projectIdx);

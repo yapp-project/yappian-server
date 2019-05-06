@@ -1,11 +1,9 @@
 package com.yapp.web1.exception.Common;
 
-import com.yapp.web1.exception.Url.UrlException;
-
 /**
  * url 접근 불허가 에러
  */
-public class NoPermissionException extends UrlException {
+public class NoPermissionException extends RuntimeException {
 
     public NoPermissionException(String message){
         super(message);

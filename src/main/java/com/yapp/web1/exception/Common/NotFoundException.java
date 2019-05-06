@@ -1,11 +1,9 @@
 package com.yapp.web1.exception.Common;
 
-import com.yapp.web1.exception.Url.UrlException;
-
 /**
  * 리소스 없음 에러
  */
-public class NotFoundException extends UrlException {
+public class NotFoundException extends RuntimeException {
 
     public NotFoundException(String message){
         super(message);

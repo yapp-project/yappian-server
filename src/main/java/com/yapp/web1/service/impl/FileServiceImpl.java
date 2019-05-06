@@ -10,15 +10,10 @@ import com.yapp.web1.repository.FileRepository;
 import com.yapp.web1.service.CommonService;
 import com.yapp.web1.service.FileService;
 import com.yapp.web1.service.S3Service;
-import com.yapp.web1.util.S3Util;
-import com.yapp.web1.util.UploadFileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,8 +24,6 @@ import java.util.UUID;
 @Service
 public class FileServiceImpl implements FileService {
 
-    @Autowired
-    S3Util s3Util;
     @Autowired
     FileRepository fileRepository;
     @Autowired
@@ -79,7 +72,6 @@ public class FileServiceImpl implements FileService {
 
         // 파일 구별자를 `/`로 설정(\->/) 이게 기존에 / 였어도 넘어오면서 \로 바뀌는 거같다.
         uploadedFileName = (savedPath) + saveName.replace(java.io.File.separatorChar, '/');
-        System.out.println("createUrlName : "+uploadedFileName);
 
         return (uploadedFileName).replace(java.io.File.separatorChar, '/');
 
@@ -117,7 +109,7 @@ public class FileServiceImpl implements FileService {
 
             fileRepository.save(file);
 
-            fileUploadResponseDtos.add(new FileUploadResponseDto(file.getIdx(),originName,createdUrl));
+            fileUploadResponseDtos.add(new FileUploadResponseDto(file.getIdx(),file.getType(), originName,createdUrl));
 
             sw *= -1;
         }
@@ -130,9 +122,8 @@ public class FileServiceImpl implements FileService {
     public void deleteAllFile(Long projectIdx) {
         List<File> fileList = fileRepository.findByProjectIdx(projectIdx);
         for (File file : fileList) {
-            s3Util.fileDelete(uploadPath + file.getName());
+            s3Service.fileDelete(uploadPath + file.getName());
         }
         fileRepository.deleteByProjectIdx(projectIdx);
     }
-
 }

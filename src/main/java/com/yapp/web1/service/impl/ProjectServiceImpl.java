@@ -7,6 +7,7 @@ import com.yapp.web1.domain.VO.Mark;
 import com.yapp.web1.dto.req.FinishProjectRequestDto;
 import com.yapp.web1.dto.req.ProjectRequestDto;
 import com.yapp.web1.dto.res.*;
+import com.yapp.web1.exception.Common.NoPermissionException;
 import com.yapp.web1.repository.FileRepository;
 import com.yapp.web1.repository.ProjectRepository;
 import com.yapp.web1.service.CommonService;
@@ -38,6 +39,23 @@ public class ProjectServiceImpl implements ProjectService {
     private final UrlService urlService;
     private final FileService fileService;
     private final CommonService commonService;
+
+    // finishResponseDto
+    private FinishProjectResponseDto finishDto(Project project,  List<FileUploadResponseDto> fileUploadResponseDtos){
+
+        FinishProjectResponseDto finishProjectResponseDtos = FinishProjectResponseDto.builder()
+                .projectIdx(project.getIdx())
+                .ordersNumber(project.getOrders().getNumber())
+                .projectName(project.getName())
+                .projectType(project.getType())
+                .productURL(project.getProductURL())
+                .projectDescription(project.getDescription())
+                .releaseCheck(project.getReleaseCheck())
+                .fileList(fileUploadResponseDtos)
+                .build();
+
+        return finishProjectResponseDtos;
+    }
 
     // projectDetail
     private ProjectResponseDto projectDetail(Project project, List<UserResponseDto> userList, List<UrlResponseDto> urlList) {
@@ -113,7 +131,6 @@ public class ProjectServiceImpl implements ProjectService {
         // 수정 조건 : 프로젝트 조인된 사람만 수정할 수 있다.
         commonService.checkUserPermission(getUserListInProject(idx), userIdx);
 
-
         // parsUser 삭제
         List<UserResponseDto> userResponseDtos = commonService.joinedProject(findProject);
         User user = null;
@@ -139,12 +156,28 @@ public class ProjectServiceImpl implements ProjectService {
 
     // join project
     @Override
-    public void joinProject(Long projectIdx, Long userIdx) {
+    public void joinProject(Long projectIdx, String password, Long userIdx) {
+
+        Project project = commonService.findById(projectIdx);
+
+        if(!project.getPassword().equals(password)){
+            throw new NoPermissionException("프로젝트 비밀번호 다릅니다.");
+        }
 
         User user = commonService.findUserById(userIdx);
-        Project project = commonService.findById(projectIdx);
         joinedProject(project, user.getIdx());
 
+    }
+
+    // user'projectList
+    @Override
+    public List<ProjectListinUserResDto> getProjectList(Long userIdx){
+        User user = commonService.findUserById(userIdx);
+
+        Set<Project> projectSet = user.getJoinedProjects();
+
+        List projectList = new ArrayList(projectSet);
+        
     }
 
     // userList
@@ -160,7 +193,7 @@ public class ProjectServiceImpl implements ProjectService {
     // setFinishedProject
     @Override
     public FinishProjectResponseDto setFinishedProject(Long projectIdx, MultipartFile[] multipartFiles, FinishProjectRequestDto dto, Long userIdx) {
-        System.out.println("projectImpl");
+
         Project project = commonService.findById(projectIdx);
 
         commonService.checkUserPermission(getUserListInProject(projectIdx), userIdx);
@@ -168,36 +201,31 @@ public class ProjectServiceImpl implements ProjectService {
         // 파일 업로드
         List<FileUploadResponseDto> fileUploadResponseDtos = fileService.fileUpload(multipartFiles, projectIdx);
 
-        System.out.println("fileUpload 성공");
         List<File> file = fileRepository.findByProjectIdx(projectIdx);
 
         // set finishedProject
         project.setDescription(dto.getDescription());
+        project.setProductURL(dto.getProductURL());
+        project.setReleaseCheck(dto.getReleaseCheck());
         project.setFinalCheck(Mark.Y);
         project.setFileList(file);
         projectRepository.save(project);
 
-        System.out.println("set finishedProject");
-        // res dto
-        FinishProjectResponseDto finishProjectResponseDtos = null;
-
-        finishProjectResponseDtos.builder()
-                .projectIdx(project.getIdx())
-                .ordersNumber(project.getOrders().getNumber())
-                .projectName(project.getName())
-                .projectType(project.getType())
-                .productURL(project.getProductURL())
-                .projectDescription(project.getDescription())
-                .fileList(fileUploadResponseDtos)
-                .build();
-
-        return finishProjectResponseDtos;
+        return finishDto(project, fileUploadResponseDtos);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public FinishProjectResponseDto getFinishedProject(Long idx) {
-        return null;
+    public FinishProjectResponseDto getFinishedProject(Long projectIdx) {
+        Project project = commonService.findById(projectIdx);
+        List<File> file = fileRepository.findByProjectIdx(projectIdx);
+        List<FileUploadResponseDto> fileUploadResponseDtos=new ArrayList<>();
+
+        for(int i=0; i<file.size(); ++i){
+           fileUploadResponseDtos.add(new FileUploadResponseDto(file.get(i).getIdx(), file.get(i).getType(), file.get(i).getName(), file.get(i).getFileURL()));
+        }
+
+        return finishDto(project, fileUploadResponseDtos);
     }
 
 }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.List;
@@ -28,17 +29,8 @@ public class S3Service {
     @Autowired
     private AmazonS3Client amazonS3Client;
 
-    /*
-    private PutObjectResult upload(InputStream inputStream, String filePath) {
-        PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, filePath, inputStream, new ObjectMetadata());
-        PutObjectResult putObjectResult = amazonS3Client.putObject(putObjectRequest);
-        IOUtils.closeQuietly(inputStream);
-        return putObjectResult;
-    }
-*/
     public void upload(MultipartFile multipartFiles, String fileName) {
 
-        System.out.println("s3 upload 메소드");
         String filePath = (fileName).replace(java.io.File.separatorChar, '/');//파일 경로를 분리해주는 메서드
 
         if(StringUtils.isEmpty(multipartFiles.getOriginalFilename())){
@@ -48,7 +40,6 @@ public class S3Service {
             PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, filePath, multipartFiles.getInputStream(), new ObjectMetadata());
             amazonS3Client.putObject(putObjectRequest);
             IOUtils.closeQuietly(multipartFiles.getInputStream());
-            System.out.println("업로드 레알 성고오오옹");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -68,10 +59,17 @@ public class S3Service {
         httpHeaders.setContentDispositionFormData("attachment", fileName);
         return new ResponseEntity<>(bytes, httpHeaders, HttpStatus.OK);
     }
+
     public List<S3ObjectSummary> list() {
         ObjectListing objectListing = amazonS3Client.listObjects(new ListObjectsRequest().withBucketName(bucket));
         List<S3ObjectSummary> s3ObjectSummaries = objectListing.getObjectSummaries();
         return s3ObjectSummaries;
+    }
+
+    //파일 삭제
+    public void fileDelete(String fileName){
+        String name = (fileName).replace(File.separatorChar, '/');
+        amazonS3Client.deleteObject(bucket, name);
     }
 
 }

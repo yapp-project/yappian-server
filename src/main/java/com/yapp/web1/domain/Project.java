@@ -148,6 +148,9 @@ public class Project extends BaseEntity {
         this.productURL = productURL;
     }
 
+    // setter - releaseCheck
+    public void setReleaseCheck(Mark releaseCheck){this.releaseCheck = releaseCheck;}
+
     // setter - fileList
     public void setFileList(List<File> fileList){this.fileList = fileList;}
 }
