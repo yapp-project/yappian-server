@@ -1,7 +1,5 @@
 #security-aws!!!!!#
-/application.yml
-*.yml
-/resources/
+/src/main/resources/application.yml
 
 HELP.md
 /.gradle/
