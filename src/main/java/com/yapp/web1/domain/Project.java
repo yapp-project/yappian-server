@@ -20,7 +20,6 @@ import java.util.*;
 @AttributeOverride(name = "idx", column = @Column(name = "project_idx"))
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-//@EqualsAndHashCode(of = {"idx", "name"}) // 잘 적용되나 확인해봐야 함
 public class Project extends BaseEntity {
     /**
      * Project Table Fields
@@ -39,8 +38,8 @@ public class Project extends BaseEntity {
     @Convert(converter = MarkAttributeConverter.class)
     private Mark finalCheck = Mark.N;
 
-    @Column(name = "release_check", nullable = false)
     @Convert(converter = MarkAttributeConverter.class)
+    @Column(name = "release_check", nullable = false)
     private Mark releaseCheck = Mark.N;
 
     @Column(name = "description")
@@ -59,6 +58,7 @@ public class Project extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "orders_idx",
             foreignKey = @ForeignKey(name = "fk_project_orders"), nullable = false)
+
     private Orders orders;
 
     /**
@@ -118,7 +118,7 @@ public class Project extends BaseEntity {
         this.type = type;
     }
 
-    // setter - pasword
+    // setter - password
     public void setPassword(String password) {
         this.password = password;
     }

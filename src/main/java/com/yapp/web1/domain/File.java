@@ -1,9 +1,7 @@
 package com.yapp.web1.domain;
 
 import com.yapp.web1.converter.FileTypeAttributeConverter;
-import com.yapp.web1.converter.MarkAttributeConverter;
 import com.yapp.web1.domain.VO.FileType;
-import com.yapp.web1.domain.VO.Mark;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

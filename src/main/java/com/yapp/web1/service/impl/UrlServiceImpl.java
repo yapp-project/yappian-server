@@ -21,7 +21,9 @@ import java.util.List;
 @AllArgsConstructor
 public class UrlServiceImpl implements UrlService {
 
+
     private final CommonService commonService;
+
     private final UrlRepository urlRepository;
 
     // not found 검사
@@ -42,7 +44,7 @@ public class UrlServiceImpl implements UrlService {
         List<Url> exUrlList = urlRepository.findByProjectIdx(projectIdx);
         List<UrlResponseDto> urlResponseDtos = new ArrayList<>();
 
-        for(Url url : exUrlList){
+        for (Url url : exUrlList) {
             UrlResponseDto dto = UrlResponseDto.builder()
                     .idx(url.getIdx())
                     .type(url.getType())

@@ -3,6 +3,7 @@ package com.yapp.web1.repository;
 import com.yapp.web1.common.RepositoryTest;
 import com.yapp.web1.domain.Orders;
 import com.yapp.web1.domain.Project;
+import com.yapp.web1.domain.VO.Mark;
 import com.yapp.web1.domain.VO.ProjectType;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,11 +26,16 @@ public class ProjectRepositoryTest extends RepositoryTest {
     @Before
     public void setup(){
         findOrders = ordersRepository.getOne(1L);
+
         project = Project.builder()
                 .type(ProjectType.WEB)
+                .password("passwd")
                 .name("프로젝트팀")
+                .finalCheck(Mark.N)
+                .releaseCheck(Mark.N)
                 .createUserIdx(1L)
-                .orders(findOrders).build();
+                .orders(findOrders)
+                .build();
     }
 
     @Test

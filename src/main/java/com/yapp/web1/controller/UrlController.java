@@ -6,10 +6,14 @@ import com.yapp.web1.dto.res.UrlResponseDto;
 import com.yapp.web1.exception.Common.NoPermissionException;
 import com.yapp.web1.exception.Common.NotFoundException;
 import com.yapp.web1.service.UrlService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -24,6 +28,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/v1/api")
 @RestController
+@Api(tags = "산출물(URL) APIs")
 public class UrlController {
 
     private final UrlService urlService;
@@ -37,7 +42,9 @@ public class UrlController {
      * @see /v1/api/project/{projectIdx}/url/list
      */
     @GetMapping("/project/{projectIdx}/url/list")
-    public ResponseEntity<?> getUrl(@PathVariable Long projectIdx, HttpSession session) {
+    @ApiOperation(value = "각 프로젝트의 URL 목록 호출 (인증 필요 없음)")
+    public ResponseEntity<?> getUrl(@PathVariable  @ApiParam(value = "조회할 Project idx", example = "1") Long projectIdx,
+                                    @ApiIgnore HttpSession session) {
         try {
             List<UrlResponseDto> urlResponseDto = urlService.getUrl(projectIdx);
             return new ResponseEntity<>(urlResponseDto, HttpStatus.OK);
@@ -56,7 +63,9 @@ public class UrlController {
      * @see /v1/api/project/{projectIdx}/url
      */
     @PostMapping("project/{projectIdx}/url")
-    public ResponseEntity<?> createUrl(@PathVariable Long projectIdx, @RequestBody UrlRequestDto url, HttpSession session) {
+    @ApiOperation(value = "새로운 URL 생성 (참여 유저 가능)")
+    public ResponseEntity<?> createUrl(@PathVariable @ApiParam(value = "URL 생성할 Project idx", example = "1") Long projectIdx,
+                                       @RequestBody UrlRequestDto url,  @ApiIgnore HttpSession session) {
         try {
             ProjectResponseDto projectResponseDto = urlService.createUrl(projectIdx, url, 1L);// 1 : dummy data
             return new ResponseEntity<>(projectResponseDto, HttpStatus.CREATED);
@@ -72,7 +81,10 @@ public class UrlController {
      * @see /v1/api/project/{projectIdx}/url/{idx}
      */
     @DeleteMapping("project/{projectIdx}/url/{idx}")
-    public ResponseEntity<?> deleteUrl(@PathVariable final Long projectIdx,@PathVariable final Long idx, HttpSession session) {
+    @ApiOperation(value = "URL 삭제 (작성자 가능)")
+    public ResponseEntity<?> deleteUrl(@PathVariable @ApiParam(value = "URL 삭제할 Project idx", example = "1") final Long projectIdx,
+                                       @PathVariable @ApiParam(value = "삭제할 Url idx", example = "1") final Long idx,
+                                       @ApiIgnore HttpSession session) {
         try {
             urlService.deleteUrl(projectIdx, idx, 1L);// 1L : dummy data
             return new ResponseEntity<>("Url 삭제 성공", HttpStatus.NO_CONTENT);
