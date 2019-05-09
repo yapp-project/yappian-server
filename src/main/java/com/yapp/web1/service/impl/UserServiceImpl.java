@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
 
         Set<Project> projectSet = user.getJoinedProjects();
 
-        List<Project> setToList = new ArrayList(projectSet);
+        List<Project> setToList = new ArrayList<>(projectSet);
 
         List<ProjectListinUserResDto> projectListinUserResDtos = new ArrayList<>();
 
