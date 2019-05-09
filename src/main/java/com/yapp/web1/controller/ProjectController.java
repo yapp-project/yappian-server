@@ -9,11 +9,14 @@ import com.yapp.web1.dto.res.UserResponseDto;
 import com.yapp.web1.exception.Common.NoPermissionException;
 import com.yapp.web1.exception.Common.NotFoundException;
 import com.yapp.web1.service.ProjectService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -43,7 +46,8 @@ public class ProjectController {
      * @see /v1/api/project
      */
     @PostMapping("/project")
-    public ResponseEntity<?> createProject(@Valid @RequestBody final ProjectRequestDto project, HttpSession session) {
+    @ApiOperation(value = "프로젝트 생성")
+    public ResponseEntity<?> createProject(@Valid @RequestBody final ProjectRequestDto project,  @ApiIgnore HttpSession session) {
         try {
             ProjectResponseDto createProjectDto = projectService.createProject(project, 1L);
             return new ResponseEntity<>(createProjectDto, HttpStatus.CREATED);
@@ -64,7 +68,9 @@ public class ProjectController {
      * @see /v1/api/project/{idx}
      */
     @PutMapping("/project/{idx}")
-    public ResponseEntity<?> updateProject(@PathVariable final Long idx, @Valid @RequestBody final ProjectRequestDto project, HttpSession session) {
+    @ApiOperation(value = "프로젝트 수정")
+    public ResponseEntity<?> updateProject(@PathVariable  @ApiParam(value = "수정할 Project idx", example = "5")  final Long idx,
+                                           @Valid @RequestBody final ProjectRequestDto project, HttpSession session) {
         try {
             ProjectResponseDto updateProject = projectService.updateProject(idx, project, 1L);
             return new ResponseEntity<>("프로젝트 수정 성공", HttpStatus.OK);
@@ -85,7 +91,9 @@ public class ProjectController {
      * @see /v1/api/project/{idx}
      */
     @DeleteMapping("/project/{idx}")
-    public ResponseEntity<?> deleteProject(@PathVariable final Long idx, HttpSession session) {
+    @ApiOperation(value = "프로젝트 삭제")
+    public ResponseEntity<?> deleteProject(@PathVariable @ApiParam(value = "삭제할 Project idx", example = "5") final Long idx,
+                                           @ApiIgnore HttpSession session) {
         try {
             projectService.deleteProject(idx, 1L);
             return new ResponseEntity<>("Project 삭제 성공", HttpStatus.NO_CONTENT);
@@ -104,7 +112,9 @@ public class ProjectController {
      * @see /v1/api/project/{idx}
      */
     @GetMapping("/project/{idx}")
-    public ResponseEntity<?> getProject(@PathVariable final Long idx, HttpSession session) {
+    @ApiOperation(value = "프로젝트 상세 - 프로젝트 정보 및 URL 목록")
+    public ResponseEntity<?> getProject(@PathVariable @ApiParam(value = "조회할 projectIdx", example = "5")final Long idx,
+                                        @ApiIgnore HttpSession session) {
         try {
             ProjectResponseDto project = projectService.getProject(idx);
             return new ResponseEntity<>(project, HttpStatus.OK);
@@ -117,12 +127,14 @@ public class ProjectController {
     /**
      * 프로젝트에 조인하기
      *
-     * @param projectIdx 조회할 프로젝트 idx
+     * @param projectIdx 조인할 프로젝트 idx
      * @Exception 비밀번호 다름. NoPermissionException
      * @see /v1/api/project/{projectIdx}
      */
     @PostMapping("/project/{projectIdx}")
-    public ResponseEntity<?> joinProject(@PathVariable final Long projectIdx, String password, HttpSession session) {
+    @ApiOperation(value = "프로젝트 조인하기")
+    public ResponseEntity<?> joinProject(@PathVariable @ApiParam(value = "조인할 projectIdx", example = "5") final Long projectIdx,
+                                         String password, @ApiIgnore HttpSession session) {
         try {
             // 추후 user.getIdx로 수정.
             projectService.joinProject(projectIdx, password, 2L);
@@ -140,7 +152,8 @@ public class ProjectController {
      * @see /v1/api/user/projects
      */
     @GetMapping("user/projects")
-    public ResponseEntity<?> getProjectList(HttpSession session) {
+    @ApiOperation(value = "내가 조인한 프로젝트 목록 조회(인증 필요 없음)")
+    public ResponseEntity<?> getProjectList(@ApiIgnore HttpSession session) {
         List<ProjectListinUserResDto> projectList = projectService.getProjectList(1L);
         return new ResponseEntity<>(projectList, HttpStatus.OK);
     }
@@ -152,7 +165,9 @@ public class ProjectController {
      * @see /v1/api/project/{idx}/users
      */
     @GetMapping("/project/{idx}/users")
-    public ResponseEntity<?> getUserListInProject(@PathVariable final Long idx, HttpSession session) {
+    @ApiOperation(value = "프로젝트에 속한 유저 목록 조회(인증 필요 없음)")
+    public ResponseEntity<?> getUserListInProject(@PathVariable @ApiParam(value = "조회할 projectIdx", example = "5") final Long idx,
+                                                  @ApiIgnore HttpSession session) {
         try {
             List<UserResponseDto> userList = projectService.getUserListInProject(idx);
             return new ResponseEntity<>(userList, HttpStatus.OK);
@@ -171,8 +186,11 @@ public class ProjectController {
      * pdf만 올리기는 추후 수정.
      */
     @PutMapping("/project/{projectIdx}/finish")
-    public ResponseEntity<?> setFinishedProject(@PathVariable final Long projectIdx, @RequestParam("files") MultipartFile[] multipartFiles,
-                                                @Valid FinishProjectRequestDto project, HttpSession session) {
+    @ApiOperation(value = "프로젝트 완료 설정")
+    public ResponseEntity<?> setFinishedProject(@PathVariable @ApiParam(value = "완료할 projectIdx", example = "5") final Long projectIdx,
+                                                @RequestParam("files") MultipartFile[] multipartFiles,
+                                                @Valid FinishProjectRequestDto project,
+                                                @ApiIgnore HttpSession session) {
         FinishProjectResponseDto finishProjectResponseDto = null;
         try {
             finishProjectResponseDto = projectService.setFinishedProject(projectIdx, multipartFiles, project, 1L);
@@ -192,7 +210,9 @@ public class ProjectController {
      * @see /v1/api/project/{idx}/finish
      */
     @GetMapping("/project/{projectIdx}/finish")
-    public ResponseEntity<?> getFinishedProject(@PathVariable final Long projectIdx, HttpSession session) {
+    @ApiOperation(value = "프로젝트 완료 상세")
+    public ResponseEntity<?> getFinishedProject(@PathVariable @ApiParam(value = "조회할 projectIdx", example = "5") final Long projectIdx,
+                                                @ApiIgnore HttpSession session) {
         try {
             FinishProjectResponseDto project = projectService.getFinishedProject(projectIdx);
             return new ResponseEntity<>(project, HttpStatus.OK);
