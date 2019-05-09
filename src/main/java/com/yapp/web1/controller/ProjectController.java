@@ -3,12 +3,12 @@ package com.yapp.web1.controller;
 import com.yapp.web1.dto.req.FinishProjectRequestDto;
 import com.yapp.web1.dto.req.ProjectRequestDto;
 import com.yapp.web1.dto.res.FinishProjectResponseDto;
-import com.yapp.web1.dto.res.ProjectListinUserResDto;
 import com.yapp.web1.dto.res.ProjectResponseDto;
 import com.yapp.web1.dto.res.UserResponseDto;
 import com.yapp.web1.exception.Common.NoPermissionException;
 import com.yapp.web1.exception.Common.NotFoundException;
 import com.yapp.web1.service.ProjectService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
@@ -25,6 +25,7 @@ import java.util.List;
 /**
  * Project Controller
  *
+ * @author Dakyung Ko
  * @author Jihye Kim
  * @version 1.5
  * @since 0.0.3
@@ -33,6 +34,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/v1/api")
 @RestController
+@Api(tags = "프로젝트 APIs")
 public class ProjectController {
 
     private ProjectService projectService;
@@ -63,14 +65,15 @@ public class ProjectController {
      * @param project 수정할 프로젝트 데이터
      * @param session 로그인 유저 session
      * @return 수정한 프로젝트 데이터, 해당 프로젝트의 task 목록
-     * @throws FORBIDDENException 프로젝트 조인한 사람만 수정할 수 있다.
-     * @throws NOTFOUNDException  프로젝트가 존재해야 수정할 수 있다.
+     * @throws NoPermissionException 프로젝트 조인한 사람만 수정할 수 있다.
+     * @throws NotFoundException  프로젝트가 존재해야 수정할 수 있다.
      * @see /v1/api/project/{idx}
      */
     @PutMapping("/project/{idx}")
     @ApiOperation(value = "프로젝트 수정")
     public ResponseEntity<?> updateProject(@PathVariable  @ApiParam(value = "수정할 Project idx", example = "5")  final Long idx,
-                                           @Valid @RequestBody final ProjectRequestDto project, HttpSession session) {
+                                           @Valid @RequestBody final ProjectRequestDto project,
+                                           @ApiIgnore HttpSession session) {
         try {
             ProjectResponseDto updateProject = projectService.updateProject(idx, project, 1L);
             return new ResponseEntity<>("프로젝트 수정 성공", HttpStatus.OK);
@@ -86,8 +89,8 @@ public class ProjectController {
      *
      * @param idx     수정할 프로젝트 idx
      * @param session 로그인 유저 session
-     * @throws FORBIDDENException 프로젝트 조인한 사람만 수정할 수 있다.
-     * @throws NOTFOUNDException  프로젝트가 존재해야 수정할 수 있다.
+     * @throws NoPermissionException 프로젝트 조인한 사람만 수정할 수 있다.
+     * @throws NotFoundException  프로젝트가 존재해야 수정할 수 있다.
      * @see /v1/api/project/{idx}
      */
     @DeleteMapping("/project/{idx}")
@@ -125,11 +128,15 @@ public class ProjectController {
     }
 
     /**
-     * 프로젝트에 조인하기
+     * 프로젝트 참여
      *
-     * @param projectIdx 조인할 프로젝트 idx
-     * @Exception 비밀번호 다름. NoPermissionException
-     * @see /v1/api/project/{projectIdx}
+     * @param projectIdx 참여할 프로젝트 idx
+     * @param session 로그인 유저 session
+     * @exception NoPermissionException 비밀번호 다름
+     * @exception NoPermissionException 권한 없음(비회원)
+     * @exception Exception 이미 join된 유저 - 추후 수정
+     *
+     * @see /v1/api/join/{projectIdx}
      */
     @PostMapping("/project/{projectIdx}")
     @ApiOperation(value = "프로젝트 조인하기")
@@ -146,17 +153,9 @@ public class ProjectController {
         }
     }
 
-    /**
-     * 내가 조인한 프로젝트 목록 조회
-     *
-     * @see /v1/api/user/projects
-     */
-    @GetMapping("user/projects")
-    @ApiOperation(value = "내가 조인한 프로젝트 목록 조회(인증 필요 없음)")
-    public ResponseEntity<?> getProjectList(@ApiIgnore HttpSession session) {
-        List<ProjectListinUserResDto> projectList = projectService.getProjectList(1L);
-        return new ResponseEntity<>(projectList, HttpStatus.OK);
-    }
+    // TODO 프로젝트 조인 취소 구현
+
+
 
     /**
      * 프로젝트에 속한 유저 목록 조회

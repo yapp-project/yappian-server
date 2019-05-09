@@ -3,6 +3,7 @@ package com.yapp.web1.controller;
 import com.yapp.web1.dto.res.OrdersResponseDto;
 import com.yapp.web1.dto.res.ProjectListResponseDto;
 import com.yapp.web1.service.OrdersService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.List;
 /**
  * Orders Controller
  *
+ * @author Dakyung Ko
  * @author JiHye Kim
  * @since 0.0.3
  * @version 1.2
@@ -25,6 +27,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/v1/api")
 @RestController
+@Api(tags = "기수 APIs")
 public class OrdersController {
 
     private OrdersService ordersService;

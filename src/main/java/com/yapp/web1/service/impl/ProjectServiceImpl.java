@@ -169,32 +169,6 @@ public class ProjectServiceImpl implements ProjectService {
 
     }
 
-    // user'projectList
-    @Override
-    public List<ProjectListinUserResDto> getProjectList(Long userIdx) {
-        User user = commonService.findUserById(userIdx);
-
-        Set<Project> projectSet = user.getJoinedProjects();
-
-        List<Project> setToList = new ArrayList(projectSet);
-
-        List<ProjectListinUserResDto> projectListinUserResDtos = new ArrayList<>();
-
-        for(Project project : setToList){
-            ProjectListinUserResDto dto = ProjectListinUserResDto.builder()
-                    .idx(project.getIdx())
-                    .projectType(project.getType())
-                    .orderNumber(project.getOrders().getNumber())
-                    .projectName(project.getName())
-                    .build();
-            projectListinUserResDtos.add(dto);
-        }
-
-        Collections.sort(projectListinUserResDtos);
-
-        return projectListinUserResDtos;
-    }
-
     // userList
     @Transactional(readOnly = true)
     @Override

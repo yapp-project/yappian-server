@@ -1,11 +1,17 @@
 package com.yapp.web1.controller;
 
-import com.yapp.web1.dto.res.ProjectListResponseDto;
+import com.yapp.web1.dto.res.ProjectListinUserResDto;
 import com.yapp.web1.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -22,23 +28,20 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/v1/api")
 @RestController
+@Api(tags = "유저 APIs")
 public class UserController {
 
     private UserService userService;
 
     /**
-     * 프로젝트 참여 및 참여 취소(나가기)
+     * 내가 조인한 프로젝트 목록 조회
      *
-     * @param idx 참여할 프로젝트 idx
-     * @param session 로그인 유저 session
-     * @exception Exception 이미 join된 유저 - 추후 수정
-     *
-     * @see /v1/api/join/{idx}
+     * @see /v1/api/user/projects
      */
-    @PutMapping("/join/{idx}")
-    public ResponseEntity joinProject(@PathVariable final Long idx, HttpSession session){
-        userService.joinProject(idx, null);
-        return new ResponseEntity(HttpStatus.OK);
+    @GetMapping("user/projects")
+    @ApiOperation(value = "내가 조인한 프로젝트 목록 조회(인증 필요 없음)")
+    public ResponseEntity<?> getProjectList(@ApiIgnore HttpSession session) {
+        List<ProjectListinUserResDto> projectList = userService.getProjectList(1L);
+        return new ResponseEntity<>(projectList, HttpStatus.OK);
     }
-
 }

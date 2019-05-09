@@ -8,6 +8,7 @@ import lombok.Getter;
 /**
  * 프로젝트 리스트 Dto
  *
+ * @author Dakyung Ko
  * @author JiHye Kim
  */
 @Getter
