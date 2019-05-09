@@ -63,6 +63,9 @@ public class User extends BaseEntity {
         this.userOrders = Optional.ofNullable(userOrders).orElse(this.userOrders);
         this.joinedProjects = Optional.ofNullable(joinedProject).orElse(this.joinedProjects);
     }
-    
-    //    + hashcode/toString override
+
+    // setter - joinedProjects
+    public void setJoinedProjects(Set<Project> joinedProjects){
+        this.joinedProjects = joinedProjects;
+    }
 }

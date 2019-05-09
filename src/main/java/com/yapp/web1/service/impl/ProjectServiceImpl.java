@@ -1,29 +1,29 @@
 package com.yapp.web1.service.impl;
 
-import com.yapp.web1.domain.Orders;
+import com.yapp.web1.domain.File;
 import com.yapp.web1.domain.Project;
-import com.yapp.web1.domain.Url;
 import com.yapp.web1.domain.User;
 import com.yapp.web1.domain.VO.Mark;
 import com.yapp.web1.dto.req.FinishProjectRequestDto;
 import com.yapp.web1.dto.req.ProjectRequestDto;
-import com.yapp.web1.dto.res.FinishProjectResponseDto;
-import com.yapp.web1.dto.res.ProjectResponseDto;
-import com.yapp.web1.dto.res.UserResponseDto;
-import com.yapp.web1.repository.OrdersRepository;
+import com.yapp.web1.dto.res.*;
+import com.yapp.web1.exception.Common.NoPermissionException;
+import com.yapp.web1.repository.FileRepository;
 import com.yapp.web1.repository.ProjectRepository;
+import com.yapp.web1.service.CommonService;
+import com.yapp.web1.service.FileService;
 import com.yapp.web1.service.ProjectService;
+import com.yapp.web1.service.UrlService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.*;
 
 /**
  * ProjectService 구현 클래스
  *
- * @author Dakyung Ko
  * @author Jihye Kim
  * @version 1.2
  * @since 0.0.4
@@ -32,151 +32,167 @@ import java.util.*;
 @Service
 @Transactional
 @AllArgsConstructor
-
 public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
-    private final OrdersRepository ordersRepository;
-  //  private final TaskRepository taskRepository;
+    private final FileRepository fileRepository;
+    private final UrlService urlService;
+    private final FileService fileService;
+    private final CommonService commonService;
 
+    // finishResponseDto
+    private FinishProjectResponseDto finishDto(Project project, List<FileUploadResponseDto> fileUploadResponseDtos) {
 
-    // project findById
-    @Transactional(readOnly = true)
-    @Override
-    public Project findById(Long idx) {
-        return projectRepository.findById(idx).orElseThrow(() -> new EntityNotFoundException("해당 프로젝트 없음"));
+        FinishProjectResponseDto finishProjectResponseDtos = FinishProjectResponseDto.builder()
+                .projectIdx(project.getIdx())
+                .ordersNumber(project.getOrders().getNumber())
+                .projectName(project.getName())
+                .projectType(project.getType())
+                .productURL(project.getProductURL())
+                .projectDescription(project.getDescription())
+                .releaseCheck(project.getReleaseCheck())
+                .fileList(fileUploadResponseDtos)
+                .build();
+
+        return finishProjectResponseDtos;
     }
-/*
+
+    // projectDetail
+    private ProjectResponseDto projectDetail(Project project, List<UserResponseDto> userList, List<UrlResponseDto> urlList) {
+
+        ProjectResponseDto responseDto = ProjectResponseDto.builder()
+                .project(project)
+                .userList(userList)
+                .urlList(urlList).build();
+        return responseDto;
+    }
+
+    // userSet
+    private Set<User> userSet(Long userIdx) {
+        Set<User> userSet = new HashSet<>();
+        userSet.add(commonService.findUserById(userIdx));
+
+        return userSet;
+    }
+
+    // join 하기 - user
+    private void joinedProject(Project project, Long userIdx) {
+        User user = commonService.findUserById(userIdx);
+
+        user.getJoinedProjects().add(project);
+    }
+
     // createProject
     @Override
     public ProjectResponseDto createProject(ProjectRequestDto dto, Long userIdx) { //실제로는 User user. 그리고 User.getIdx()해서 구현
-        Orders order = ordersRepository.findById(dto.getOrdersIdx()).orElseThrow(() -> new EntityNotFoundException("기수 못찾음"));
+
         final Project project = Project.builder()
                 .type(dto.getProjectType())
                 .name(dto.getProjectName())
                 .finalCheck(Mark.N)
                 .createUserIdx(userIdx)
-                .orders(order).build();
+                .password(dto.getPassword())
+                .releaseCheck(Mark.N)
+                .userList(userSet(userIdx))
+                .orders(commonService.findOrdersById(dto.getOrdersIdx())).build();
 
         projectRepository.save(project); // create
 
-        // 생성후 바로 프로젝트 상세 정보를 보여주기 위함.
-        ProjectResponseDto responseDto = ProjectResponseDto.builder()
-                .project(project)
-                .taskList(new ArrayList<>()).build(); // 생성할 때는 빈 Url 목록
-        return responseDto;
+        // user쪽 join
+        joinedProject(project, userIdx);
+
+        return projectDetail(project, commonService.joinedProject(project), new ArrayList<>());
     }
-/*
-    // taskList와 각각의 userList GET
-    private List<TaskListResponseDto> getTaskUser(Long projectIdx) {
-        System.out.println("getTaskUser 메소드");
-        // 해당 프로젝트의 task 목록
-        List<Url> urlList = taskRepository.findByProjectIdx(projectIdx);
-        /*
-        System.out.println(
-                "urlList" +
-                        urlList.stream()
-                                .map(Url::toString)
-                                .collect(Collectors.joining(", "))
-        );
-        */
 
-        /*
-        List<List<UserResponseDto>> userList = new ArrayList<>();
-        List<UserResponseDto> userWork = new ArrayList<>();
-        for(int i = 0; i< urlList.size(); ++i){
-            for(int j = 0; j< urlList.get(i).getWorks().size(); ++j){
-                userWork.add(new UserResponseDto(urlList.get(i).getWorks().get(j).getIdx(), urlList.get(i).getWorks().get(j).getName()));
-            }
-            userList.add(userWork);
-            userWork = new ArrayList<>();
-        }
-
-        // 원하는 userList 정보들과 task 정보들이 저장된 taskListResponseDto
-        List<TaskListResponseDto> taskListResponseDtos = new ArrayList<>();
-        for(int i = 0; i< urlList.size(); ++i){
-            taskListResponseDtos.add(new TaskListResponseDto(urlList.get(i),userList.get(i)));
-        }
-
-        return taskListResponseDtos;
-    }
-*/
-    /*
+    //update project
     @Override
-    public ProjectResponseDto updateProject(Long idx, ProjectRequestDto dto, Long userIdx)//실제로는 User user. 그리고 User.getIdx()해서 구현
-    {
-        // projectIdx로 createUserIdx를 찾는다. 그리고 비교
-        Project project = findById(idx);
-        Long createUserIdx = project.getCreateUserIdx();
-        Orders order = ordersRepository.findById(dto.getOrdersIdx()).orElseThrow(() -> new EntityNotFoundException("기수 못찾음"));
+    public ProjectResponseDto updateProject(Long idx, ProjectRequestDto dto, Long userIdx) {
+        Project project = commonService.findById(idx);
 
-        // 수정 조건 : 프로젝트 생성자만 할 수 있다.
-        if (String.valueOf(createUserIdx).equals(String.valueOf(userIdx))) {
-            //기수, 타입, 이름
-            project.updateProject(dto.getProjectName(),dto.getProjectType(),order);
-            projectRepository.save(project); // update
-            System.out.println("업데이트");
-        } else {
-            System.out.println("생성한 유저만 수정할 수 있음");
-            return null; // 예외처리하기
-        }
+        // 수정 조건 : 프로젝트 조인된 사람만 수정할 수 있다.
+        commonService.checkUserPermission(getUserListInProject(idx), userIdx);
 
-        // 수정 후 바로 프로젝트 상세 정보를 보여주기 위함.
-        ProjectResponseDto responseDto = ProjectResponseDto.builder()
-                .project(project)
-                .taskList(getTaskUser(idx)).build();
-        return responseDto;
+        project.setOrders(commonService.findOrdersById(dto.getOrdersIdx()));
+        project.setName(dto.getProjectName());
+        project.setType(dto.getProjectType());
+        project.setPassword(dto.getPassword());
+
+        projectRepository.save(project); // update
+
+        return projectDetail(project, commonService.joinedProject(project), urlService.getUrl(idx));
     }
-*/
+
+    //delete project
     @Override
-    public boolean deleteProject(Long idx, Long userIdx) //실제로는 User user. 그리고 User.getIdx()해서 구현
+    public void deleteProject(Long idx, Long userIdx) //User user
     {
-        // projectIdx로 createUserIdx를 찾는다. 그리고 비교
-        Project project = findById(idx);
-        Long createUserIdx = project.getCreateUserIdx();
+        Project findProject = commonService.findById(idx); // 해당 프로젝트 존재 여부 체크 위함
 
-        // 수정 조건 : 프로젝트 생성자만 할 수 있다.
-        if (String.valueOf(createUserIdx).equals(String.valueOf(userIdx))) {
-            projectRepository.delete(project); // delete
-        } else {
-            System.out.println("생성한 유저만 삭제할 수 있음");
-            return false; // 예외처리하기
+        // 수정 조건 : 프로젝트 조인된 사람만 수정할 수 있다.
+        commonService.checkUserPermission(getUserListInProject(idx), userIdx);
+
+        // parsUser 삭제
+        List<UserResponseDto> userResponseDtos = commonService.joinedProject(findProject);
+        User user = null;
+
+        for (int i = 0; i < userResponseDtos.size(); ++i) {
+            user = commonService.findUserById(userResponseDtos.get(i).getUserIdx());
+            user.setJoinedProjects(null);
         }
-        return false;
+
+        urlService.deleteAllUrl(idx); // 해당 프로젝트의 url 삭제
+        fileService.deleteAllFile(idx); // 해당 프로젝트의 file 삭제
+        projectRepository.deleteById(idx);
     }
 
-    /*
+    // get project
     @Transactional(readOnly = true)
     @Override
     public ProjectResponseDto getProject(Long idx) {
-        Project project = findById(idx);
+        Project project = commonService.findById(idx);
 
-        ProjectResponseDto responseDto = ProjectResponseDto.builder()
-                .project(project)
-                .taskList(getTaskUser(idx)).build();
-        return responseDto;
+        return projectDetail(project, commonService.joinedProject(project), urlService.getUrl(idx));
     }
-    */
-    @Override
-    public boolean setFinishedProject(Long idx, FinishProjectRequestDto dto) {
-        // 예시
-        Project findProject = findById(idx);
 
-        if (findProject.getFinalCheck() == Mark.Y) {
-            return false; // 추후 수정
+    // join project
+    @Override
+    public void joinProject(Long projectIdx, String password, Long userIdx) {
+
+        Project project = commonService.findById(projectIdx);
+
+        if (!project.getPassword().equals(password)) {
+            throw new NoPermissionException("프로젝트 비밀번호 다릅니다.");
         }
 
-        findProject.updateProductURL(dto.getProductURL());
-        findProject.describeProject(dto.getDescription());
-        findProject.finishedProject();
-        projectRepository.save(findProject);
-        return true;
+        User user = commonService.findUserById(userIdx);
+        joinedProject(project, user.getIdx());
+
     }
 
-    @Transactional(readOnly = true)
+    // user'projectList
     @Override
-    public FinishProjectResponseDto getFinishedProject(Long idx) {
-        return null;
+    public List<ProjectListinUserResDto> getProjectList(Long userIdx) {
+        User user = commonService.findUserById(userIdx);
+
+        Set<Project> projectSet = user.getJoinedProjects();
+
+        List<Project> setToList = new ArrayList(projectSet);
+
+        List<ProjectListinUserResDto> projectListinUserResDtos = new ArrayList<>();
+
+        for(Project project : setToList){
+            ProjectListinUserResDto dto = ProjectListinUserResDto.builder()
+                    .idx(project.getIdx())
+                    .projectType(project.getType())
+                    .orderNumber(project.getOrders().getNumber())
+                    .projectName(project.getName())
+                    .build();
+            projectListinUserResDtos.add(dto);
+        }
+
+        Collections.sort(projectListinUserResDtos);
+
+        return projectListinUserResDtos;
     }
 
     // userList
@@ -184,19 +200,53 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<UserResponseDto> getUserListInProject(Long idx) {
 
-        Project project = findById(idx);
-        Set<User> userSet = project.getUserList();
+        Project project = commonService.findById(idx);
 
-        List<UserResponseDto> userList = new ArrayList<>();
+        return commonService.joinedProject(project);
+    }
 
-        User user;
-        Iterator<User> it = userSet.iterator();
+    // setFinishedProject
+    @Override
+    public FinishProjectResponseDto setFinishedProject(Long projectIdx, MultipartFile[] multipartFiles, FinishProjectRequestDto dto, Long userIdx) {
 
-        while (it.hasNext()) {
-            user = it.next();
-            userList.add(new UserResponseDto(user.getIdx(), user.getName()));
+        Project project = commonService.findById(projectIdx);
+
+        commonService.checkUserPermission(getUserListInProject(projectIdx), userIdx);
+
+        // 파일 업로드
+        List<FileUploadResponseDto> fileUploadResponseDtos = fileService.fileUpload(multipartFiles, projectIdx);
+
+        List<File> file = fileRepository.findByProjectIdx(projectIdx);
+
+        // set finishedProject
+        project.setDescription(dto.getDescription());
+        project.setProductURL(dto.getProductURL());
+        project.setReleaseCheck(dto.getReleaseCheck());
+        project.setFinalCheck(Mark.Y);
+        project.setFileList(file);
+        projectRepository.save(project);
+
+        return finishDto(project, fileUploadResponseDtos);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public FinishProjectResponseDto getFinishedProject(Long projectIdx) {
+        Project project = commonService.findById(projectIdx);
+        List<File> file = fileRepository.findByProjectIdx(projectIdx);
+        List<FileUploadResponseDto> fileUploadResponseDtos = new ArrayList<>();
+
+        for(File f : file){
+            FileUploadResponseDto dto = FileUploadResponseDto.builder()
+                    .fileIdx(f.getIdx())
+                    .type(f.getType())
+                    .originName(f.getName())
+                    .fileUrl(f.getFileURL())
+                    .build();
+            fileUploadResponseDtos.add(dto);
         }
-        return userList;
+
+        return finishDto(project, fileUploadResponseDtos);
     }
 
 }

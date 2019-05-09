@@ -1,9 +1,7 @@
 package com.yapp.web1.domain;
 
 import com.yapp.web1.converter.FileTypeAttributeConverter;
-import com.yapp.web1.converter.MarkAttributeConverter;
 import com.yapp.web1.domain.VO.FileType;
-import com.yapp.web1.domain.VO.Mark;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,6 +21,10 @@ import javax.persistence.*;
 @Getter
 public class File extends BaseEntity {
     /** File Table Fields **/
+
+    @Column(name="name", nullable = false)
+    private String name;
+
     @Column(name="file_url", nullable = false)
     private String fileURL;
 
@@ -31,18 +33,20 @@ public class File extends BaseEntity {
     private FileType type;
 
     /** Relation Mapping **/
-    /** File - Url 양방향 매핑 **/
+    /** File - Project 단방향 매핑 **/
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name="url_idx",
-            foreignKey = @ForeignKey(name="fk_file_url"),
+    @JoinColumn(name="project_idx",
+            foreignKey = @ForeignKey(name="fk_file_project"),
             nullable = false)
-    private Url url;
+    private Project project;
 
     /** Method **/
     @Builder
-    public File(String fileURL, FileType type,  Url url){
+    public File(String name, String fileURL, FileType type,  Project project){
+        this.name = name;
         this.fileURL = fileURL;
         this.type = type;
-        this.url = url;
+        this.project = project;
     }
+
 }

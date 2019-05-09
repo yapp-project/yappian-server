@@ -2,6 +2,7 @@ package com.yapp.web1.service.impl;
 
 import com.yapp.web1.domain.Orders;
 import com.yapp.web1.domain.Project;
+import com.yapp.web1.domain.VO.Mark;
 import com.yapp.web1.dto.res.OrdersResponseDto;
 import com.yapp.web1.dto.res.ProjectListResponseDto;
 import com.yapp.web1.repository.OrdersRepository;
@@ -17,7 +18,6 @@ import java.util.List;
 /**
  * OrdersService 구현 클래스
  *
- * @author Dakyung Ko
  * @author Jihye Kim
  * @since 0.0.3
  * @version 1.1
@@ -30,6 +30,7 @@ public class OrdersServiceImpl implements OrdersService {
     private final OrdersRepository ordersRepository;
     private final ProjectRepository projectRepository;
 
+    // get orderList
     @Transactional(readOnly = true)
     @Override
     public List<OrdersResponseDto> getOrderList() {
@@ -40,24 +41,21 @@ public class OrdersServiceImpl implements OrdersService {
         return orderList;
     }
 
-    /*
-     joined는 추후,,
-     */
+    // get projectList by order
     @Transactional(readOnly = true)
     @Override
     public List<ProjectListResponseDto> getProjectListByOrder(Long orderIdx) {
-        List<Project> findProjects = projectRepository.findAllByOrdersIdx(orderIdx);
+        List<Project> findProjects = projectRepository.findByOrdersIdxAndFinalCheck(orderIdx,Mark.Y);
+
         List<ProjectListResponseDto> projectList = new ArrayList<>();
+
         for(Project project : findProjects) {
             ProjectListResponseDto projectDto = ProjectListResponseDto.builder()
                     .projectIdx(project.getIdx())
-                    .projectType(project.getType())
-                    .projectName(project.getName())
-                    .finalCheck(project.getFinalCheck())
-                    .createUserIdx(project.getCreateUserIdx())
-                    .orderNumber(project.getOrders().getNumber())
-                    .favorite(null) // 수정해야함
-                    .joined(null) // 수정해야함
+                    .type(project.getType())
+                    .name(project.getName())
+                    .releaseCheck(project.getReleaseCheck())
+                    .imgUrl(project.getFileList().get(0).getFileURL())
                     .build();
             projectList.add(projectDto);
         }
