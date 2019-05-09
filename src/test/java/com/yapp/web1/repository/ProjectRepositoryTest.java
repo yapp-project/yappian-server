@@ -5,12 +5,10 @@ import com.yapp.web1.domain.Orders;
 import com.yapp.web1.domain.Project;
 import com.yapp.web1.domain.VO.Mark;
 import com.yapp.web1.domain.VO.ProjectType;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static junit.framework.TestCase.assertTrue;
 
@@ -23,8 +21,9 @@ public class ProjectRepositoryTest extends RepositoryTest {
     private Orders findOrders;
     private Project project;
 
-    @Before
-    public void setup(){
+    @Test
+    public void Entity저장시_BaseEntity적용테스트(){
+        // given
         findOrders = ordersRepository.getOne(1L);
 
         project = Project.builder()
@@ -36,11 +35,7 @@ public class ProjectRepositoryTest extends RepositoryTest {
                 .createUserIdx(1L)
                 .orders(findOrders)
                 .build();
-    }
 
-    @Test
-    public void Entity저장시_BaseEntity적용테스트(){
-        // given
         LocalDateTime now = LocalDateTime.now();
         projectRepository.save(project);
 
