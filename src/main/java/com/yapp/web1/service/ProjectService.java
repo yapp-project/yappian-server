@@ -1,12 +1,13 @@
 package com.yapp.web1.service;
 
-import com.yapp.web1.domain.Project;
-import com.yapp.web1.domain.User;
 import com.yapp.web1.dto.req.FinishProjectRequestDto;
 import com.yapp.web1.dto.req.ProjectRequestDto;
 import com.yapp.web1.dto.res.FinishProjectResponseDto;
 import com.yapp.web1.dto.res.ProjectResponseDto;
 import com.yapp.web1.dto.res.UserResponseDto;
+import com.yapp.web1.exception.Common.NoPermissionException;
+import com.yapp.web1.exception.Common.NotFoundException;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -21,22 +22,13 @@ import java.util.List;
 public interface ProjectService {
 
     /**
-     * 프로젝트 찾기
-     * @param idx
-     * @return Project
-     */
-
-    Project findById(Long idx);
-    /**
      * 프로젝트 생성
      *
      * @param dto 생성할 Project 정보
      * @param userIdx 로그인 유저
      * @return 생성한 Project 정보
-     *
-     * @exception Exception 같은 기수 다른 Project에 join된 경우 - 추후 수정
      */
-    //ProjectResponseDto createProject(ProjectRequestDto dto, Long userIdx);//실제로는 User user
+    ProjectResponseDto createProject(ProjectRequestDto dto, Long userIdx);//실제로는 User user
 
     /**
      * 프로젝트 수정
@@ -44,39 +36,54 @@ public interface ProjectService {
      * @param idx 수정할 Project idx
      * @param dto 수정할 Project 정보
      * @param userIdx 로그인 유저
-     *
-     * @exception Exception Project의 createUserIdx와 session userIdx 불일치 시 삭제 불가
+     * @exception NoPermissionException 프로젝트 조인한 사람만 수정할 수 있다.
+     * @exception NotFoundException 프로젝트가 존재해야 수정할 수 있다.
      */
-  //  ProjectResponseDto updateProject(Long idx, ProjectRequestDto dto, Long userIdx);//실제로는 User user
+    ProjectResponseDto updateProject(Long idx, ProjectRequestDto dto, Long userIdx);//실제로는 User user
 
     /**
      * 프로젝트 삭제
      *
      * @param idx 삭제할 Project idx
-     * @param user 로그인 유저
-     *
-     * @exception Exception Project의 createUserIdx와 session userIdx 불일치 시 삭제 불가
+     * @param userIdx 로그인 유저
+     * @exception NoPermissionException 프로젝트 조인한 사람만 수정할 수 있다.
+     * @exception NotFoundException 프로젝트가 존재해야 수정할 수 있다.
      */
-    boolean deleteProject(Long idx, Long userIdx);//실제로는 User user
+    void deleteProject(Long idx, Long userIdx);//실제로는 User user
 
     /**
-     * 프로젝트 조회
-     *
-     * @param idx 조회할 Project idx
-     * @exception Exception invalid idx
+     * 프로젝트 상세
+     * 프로젝트 정보 및 Url 목록
+     * @param idx 조회할 프로젝트 idx
+     * @see /v1/api/project/{idx}
      */
-    //ProjectResponseDto getProject(Long idx);
+    ProjectResponseDto getProject(Long idx);
+
+    /**
+     * 프로젝트에 참여
+     *
+     * @param projectIdx 참여할 Project idx
+     * @see /v1/api/project/{projectIdx}
+     */
+    void joinProject(Long projectIdx, String password, Long randomUser);
+
+    /**
+     * 프로젝트에 속한 유저 목록 조회
+    *
+    * @param idx 조회할 Project idx
+     */
+    List<UserResponseDto> getUserListInProject(Long idx);
 
     /**
      * 프로젝트 완료 설정
      * 프로젝트 완료 정보 반영 후 finalCheck 변경해야 함 - finishedProject()
      *
-     * @param idx 완료할 Project idx
+     * @param projectIdx 완료할 Project idx
      * @param dto 프로젝트 완료 정보
      *
-     * @exception Exception 이미 완료된 경우
+     * @exception Exception noPermission, notFound
      */
-    boolean setFinishedProject(Long idx, FinishProjectRequestDto dto);
+    FinishProjectResponseDto setFinishedProject(Long projectIdx, MultipartFile[] multipartFiles, FinishProjectRequestDto dto, Long userIdx);
 
     /**
      * 프로젝트 완료 조회
@@ -86,11 +93,4 @@ public interface ProjectService {
      * @exception Exception 완료되지 않은 경우 조회 불가
      */
     FinishProjectResponseDto getFinishedProject(Long idx);
-
-    /**
-     * 프로젝트에 속한 유저 목록 조회
-     *
-     * @param idx 조회할 Project idx
-     */
-    List<UserResponseDto> getUserListInProject(Long idx);
 }

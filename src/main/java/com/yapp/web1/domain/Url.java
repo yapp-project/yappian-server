@@ -37,7 +37,7 @@ public class Url extends BaseEntity {
     /** Url - Project 양방향 매핑 **/
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "project_idx",
-            foreignKey = @ForeignKey(name="fk_task_project"),
+            foreignKey = @ForeignKey(name="fk_url_project"),
             nullable = false)
     private Project project;
 

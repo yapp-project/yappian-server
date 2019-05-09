@@ -8,32 +8,25 @@ import lombok.Getter;
 /**
  * 프로젝트 리스트 Dto
  *
- * @author JiHye Kim
  * @author Dakyung Ko
+ * @author JiHye Kim
  */
 @Getter
 public class ProjectListResponseDto {
 
     private Long projectIdx; // 프로젝트 idx
-    private ProjectType projectType; //프로젝트 타입
-    private String projectName; // 프로젝트 이름
-    private Mark finalCheck; // 프로젝트 완료 여부
-    private Long createUserIdx; // 생성한 유저 Idx
-    private int orderNumber; // 기수
-    private Mark favorite; // 북마크
-    private Mark joined; // 조인여부
+    private ProjectType type; //프로젝트 타입
+    private String name; // 프로젝트 이름
+    private Mark releaseCheck; // 프로젝트 런칭 여부
+    private String imgUrl; // 대표 이미지 url
 
     @Builder
-    public ProjectListResponseDto(Long projectIdx, ProjectType projectType, String projectName, Mark finalCheck, Long createUserIdx,
-                                  int orderNumber, Mark favorite, Mark joined){
-        this.projectIdx = projectIdx;
-        this.projectType = projectType;
-        this.projectName = projectName;
-        this.finalCheck = finalCheck;
-        this.createUserIdx = createUserIdx;
-        this.orderNumber = orderNumber;
-        this.favorite = favorite;
-        this.joined = joined;
+    public ProjectListResponseDto(Long projectIdx, ProjectType type, String name, Mark releaseCheck, String imgUrl){
+       this.projectIdx = projectIdx;
+       this.type = type;
+       this.name = name;
+       this.releaseCheck = releaseCheck;
+       this.imgUrl = imgUrl;
     }
 
 }
