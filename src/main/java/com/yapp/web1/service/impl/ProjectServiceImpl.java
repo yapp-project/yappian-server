@@ -35,7 +35,6 @@ import java.util.*;
 public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
-    private final FileRepository fileRepository;
     private final UrlService urlService;
     private final FileService fileService;
     private final CommonService commonService;
@@ -80,6 +79,41 @@ public class ProjectServiceImpl implements ProjectService {
         User user = commonService.findUserById(userIdx);
 
         user.getJoinedProjects().add(project);
+    }
+
+    // getProjectsList
+    @Override
+    public List<ProjectsResDto> getProjects(){
+
+        List<Project> projects = projectRepository.findAll();
+
+        List<ProjectsResDto> projectList = new ArrayList<>();
+
+        for(Project project : projects) {
+
+            List<UserResponseDto> userList = commonService.joinedProject(project);
+            List<UrlResponseDto> urlList = urlService.getUrl(project.getIdx());
+            List<FileUploadResponseDto> fileList = fileService.getFileList(project.getIdx());
+
+            ProjectsResDto projectsDto = ProjectsResDto.builder()
+                    .idx(project.getIdx())
+                    .name(project.getName())
+                    .password(project.getPassword())
+                    .type(project.getType())
+                    .ordersIdx(project.getOrders().getIdx())
+                    .orderNumber(project.getOrders().getNumber())
+                    .createUserIdx(project.getCreateUserIdx())
+                    .finalCheck(project.getFinalCheck())
+                    .releaseCheck(project.getReleaseCheck())
+                    .productURL(project.getProductURL())
+                    .description(project.getDescription())
+                    .userList(userList)
+                    .urlList(urlList)
+                    .fileList(fileList)
+                    .build();
+            projectList.add(projectsDto);
+        }
+        return projectList;
     }
 
     // createProject
@@ -216,7 +250,7 @@ public class ProjectServiceImpl implements ProjectService {
         // 파일 업로드
         List<FileUploadResponseDto> fileUploadResponseDtos = fileService.fileUpload(multipartFiles, projectIdx);
 
-        List<File> file = fileRepository.findByProjectIdx(projectIdx);
+        List<File> file = fileService.getFiles(projectIdx);
 
         // set finishedProject
         project.setDescription(dto.getDescription());
@@ -233,18 +267,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public FinishProjectResponseDto getFinishedProject(Long projectIdx) {
         Project project = commonService.findById(projectIdx);
-        List<File> file = fileRepository.findByProjectIdx(projectIdx);
-        List<FileUploadResponseDto> fileUploadResponseDtos = new ArrayList<>();
-
-        for(File f : file){
-            FileUploadResponseDto dto = FileUploadResponseDto.builder()
-                    .fileIdx(f.getIdx())
-                    .type(f.getType())
-                    .originName(f.getName())
-                    .fileUrl(f.getFileURL())
-                    .build();
-            fileUploadResponseDtos.add(dto);
-        }
+        List<FileUploadResponseDto> fileUploadResponseDtos = fileService.getFileList(projectIdx);
 
         return finishDto(project, fileUploadResponseDtos);
     }

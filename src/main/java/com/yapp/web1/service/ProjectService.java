@@ -2,10 +2,7 @@ package com.yapp.web1.service;
 
 import com.yapp.web1.dto.req.FinishProjectRequestDto;
 import com.yapp.web1.dto.req.ProjectRequestDto;
-import com.yapp.web1.dto.res.FinishProjectResponseDto;
-import com.yapp.web1.dto.res.ProjectListinUserResDto;
-import com.yapp.web1.dto.res.ProjectResponseDto;
-import com.yapp.web1.dto.res.UserResponseDto;
+import com.yapp.web1.dto.res.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -18,6 +15,11 @@ import java.util.List;
  * @version 1.2
  */
 public interface ProjectService {
+
+    /**
+     * 프로젝트 리스트 - 전체 내용
+     */
+    List<ProjectsResDto> getProjects();
 
     /**
      * 프로젝트 생성
