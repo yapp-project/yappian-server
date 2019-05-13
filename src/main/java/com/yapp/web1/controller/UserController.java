@@ -19,10 +19,9 @@ import java.util.List;
 /**
  * User Controller
  *
- * @author Dakyung Ko
  * @author Jihye Kim
- * @since 0.0.3
- * @version 1.3
+ * @since 0.0.4
+ * @version 1.4
  */
 @CrossOrigin("*")
 @AllArgsConstructor
