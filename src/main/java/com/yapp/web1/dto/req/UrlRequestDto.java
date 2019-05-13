@@ -8,13 +8,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Url 생성시 RequestDto
  *
  * @author JiHye Kim
  */
-
-import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor
 @Setter
@@ -23,7 +23,7 @@ import javax.validation.constraints.NotNull;
 public class UrlRequestDto {
 
     @NotNull
-    @ApiModelProperty(notes = "URL 타입 (FIRST, SECOND, HOME, TOOL)")
+    @ApiModelProperty(notes = "URL 타입 (TOOL,FIRST, SECOND, HOME) (순서대로 숫자 0,1,2,3도 가능)")
     private UrlType type;
 
     @NotNull
