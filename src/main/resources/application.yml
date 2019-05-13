@@ -1,0 +1,109 @@
+﻿# main
+spring:
+  profiles:
+    active: test # 기본 환경 선택
+# common setting
+---
+spring.profiles: common
+server:
+  port: 8085
+  error.whitelabel.enabled: false
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  output:
+    ansi:
+      enabled: always
+  devtools:
+    livereload:
+      enabled: true
+    add-properties: false
+  freemarker:
+    cache: false
+  jpa:
+    open-in-view: false
+# local 환경
+---
+spring:
+  profiles: local
+  profiles.include: common
+  datasource:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/yappian?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=UTC
+      username: user1
+      password: test123
+  jpa:
+      hibernate:
+        ddl-auto: update
+      properties:
+        hibernate:
+        dialect: org.hibernate.dialect.MySQL8InnoDBDialect
+        format_sql: true
+        show-sql: true
+#  datasource:
+#    hikari:
+#      jdbc-url: jdbc:mariadb://localhost:3306/contact?useSSL=false
+#      username: root
+#      password: test123
+#      driver-class-name: org.mariadb.jdbc.Driver
+        #    initialization-mode: always
+        #    data: classpath:init.sql
+#  jpa:
+#    database: mysql
+    #    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+#    show-sql: true
+#    hibernate:
+#      ddl-auto: update
+#      ddl-auto: create-drop
+#    generate-ddl: true
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.MariaDB103Dialect
+#logging:
+#  level:
+#    org.springframework.web.client: DEBUG
+#    org.hibernate.SQL: DEBUG
+#    org.hibernate.type: TRACE
+#  file: ./log/local
+# local에서 test
+---
+spring.profiles: test
+spring.profiles.include: common
+
+spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2/
+      settings:
+#        trace: true
+        web-allow-others: true
+  datasource:
+    hikari:
+      jdbc-url: jdbc:h2:mem:yappian;DB_CLOSE_ON_EXIT=false;DB_CLOSE_DELAY=-1;MVCC=TRUE
+      username: sa
+      password:
+      driver-class-name: org.h2.Driver
+    data: classpath:init.sql
+  jpa:
+    database: h2
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+    generate-ddl: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true
+logging:
+  level:
+    org.springframework.web.client: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type: TRACE
+# production 환경
+---
+#spring.profiles: prod
+#spring.profiles.include: real-db, common
+#logging:
+#  file: ./log/prod

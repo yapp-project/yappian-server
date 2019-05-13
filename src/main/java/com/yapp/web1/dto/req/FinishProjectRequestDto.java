@@ -14,6 +14,7 @@ import javax.validation.constraints.Size;
 /**
  * 프로젝트 완료 페이지 작성 Dto
  * @author JiHye Kim
+ * @author Dakyung Ko
  */
 @NoArgsConstructor
 @Setter

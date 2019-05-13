@@ -8,7 +8,6 @@ import com.yapp.web1.dto.req.FinishProjectRequestDto;
 import com.yapp.web1.dto.req.ProjectRequestDto;
 import com.yapp.web1.dto.res.*;
 import com.yapp.web1.exception.Common.NoPermissionException;
-import com.yapp.web1.repository.FileRepository;
 import com.yapp.web1.repository.ProjectRepository;
 import com.yapp.web1.service.CommonService;
 import com.yapp.web1.service.FileService;
@@ -201,32 +200,6 @@ public class ProjectServiceImpl implements ProjectService {
         User user = commonService.findUserById(userIdx);
         joinedProject(project, user.getIdx());
 
-    }
-
-    // user'projectList
-    @Override
-    public List<ProjectListinUserResDto> getProjectList(Long userIdx) {
-        User user = commonService.findUserById(userIdx);
-
-        Set<Project> projectSet = user.getJoinedProjects();
-
-        List<Project> setToList = new ArrayList(projectSet);
-
-        List<ProjectListinUserResDto> projectListinUserResDtos = new ArrayList<>();
-
-        for(Project project : setToList){
-            ProjectListinUserResDto dto = ProjectListinUserResDto.builder()
-                    .idx(project.getIdx())
-                    .projectType(project.getType())
-                    .orderNumber(project.getOrders().getNumber())
-                    .projectName(project.getName())
-                    .build();
-            projectListinUserResDtos.add(dto);
-        }
-
-        Collections.sort(projectListinUserResDtos);
-
-        return projectListinUserResDtos;
     }
 
     // userList

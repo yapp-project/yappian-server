@@ -16,6 +16,7 @@ import javax.validation.constraints.Size;
  * 프로젝트 생성/수정 시 RequestDto
  *
  * @author JiHye Kim
+ * @author Dakyung Ko
  */
 
 @NoArgsConstructor
