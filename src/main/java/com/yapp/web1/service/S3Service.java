@@ -44,6 +44,7 @@ public class S3Service {
         }
         try {
             PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, filePath, multipartFiles.getInputStream(), new ObjectMetadata());
+            putObjectRequest.setCannedAcl(CannedAccessControlList.PublicRead);
             amazonS3Client.putObject(putObjectRequest);
             IOUtils.closeQuietly(multipartFiles.getInputStream());
         } catch (IOException e) {
