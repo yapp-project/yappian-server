@@ -2,6 +2,7 @@ package com.yapp.web1.service;
 
 import com.yapp.web1.dto.req.FinishProjectRequestDto;
 import com.yapp.web1.dto.req.ProjectRequestDto;
+import com.yapp.web1.dto.res.*;
 import com.yapp.web1.dto.res.FinishProjectResponseDto;
 import com.yapp.web1.dto.res.ProjectResponseDto;
 import com.yapp.web1.dto.res.UserResponseDto;
@@ -14,12 +15,16 @@ import java.util.List;
 /**
  * ProjectService Interface
  *
- * @author Dakyung Ko
  * @author Jihye Kim
- * @since 0.0.3
- * @version 1.2
+ * @since 0.0.4
+ * @version 1.3
  */
 public interface ProjectService {
+
+    /**
+     * 프로젝트 리스트 - 전체 내용
+     */
+    List<ProjectsResDto> getProjects();
 
     /**
      * 프로젝트 생성

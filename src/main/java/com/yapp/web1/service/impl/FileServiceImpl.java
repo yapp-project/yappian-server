@@ -10,6 +10,7 @@ import com.yapp.web1.service.FileService;
 import com.yapp.web1.service.S3Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.text.DecimalFormat;
@@ -77,6 +78,32 @@ public class FileServiceImpl implements FileService {
 
     }
 
+    // get file list
+    @Transactional(readOnly = true)
+    @Override
+    public List<File> getFiles(Long projectIdx){
+        return fileRepository.findByProjectIdx(projectIdx);
+    }
+
+    // filesResDto
+    @Override
+    public List<FileUploadResponseDto> getFileList(Long projectIdx){
+        List<File> files = this.getFiles(projectIdx);
+        List<FileUploadResponseDto> fileList = new ArrayList<>();
+
+        for(File file : files){
+            FileUploadResponseDto dto = FileUploadResponseDto.builder()
+                    .fileIdx(file.getIdx())
+                    .type(file.getType())
+                    .originName(file.getName())
+                    .fileUrl(file.getFileURL())
+                    .build();
+            fileList.add(dto);
+        }
+
+        return fileList;
+    }
+
     // fileUpload
     @Override
     public List<FileUploadResponseDto> fileUpload(MultipartFile[] multipartFiles, Long projectIdx) {
@@ -100,16 +127,19 @@ public class FileServiceImpl implements FileService {
 
             s3Service.upload(files, uploadPath + createdUrl); // 실제 파일 업로드
 
+            String downUrl = "https://s3.ap-northeast-2.amazonaws.com/yappian/"+uploadPath+createdUrl;
+            downUrl = (downUrl).replace(java.io.File.separatorChar, '/');
+
             File file = File.builder()
                     .name(originName)
-                    .fileURL(createdUrl)
+                    .fileURL(downUrl)
                     .type(type)
                     .project(project)
                     .build();
 
             fileRepository.save(file);
 
-            fileUploadResponseDtos.add(new FileUploadResponseDto(file.getIdx(),file.getType(), originName,createdUrl));
+            fileUploadResponseDtos.add(new FileUploadResponseDto(file.getIdx(),file.getType(), originName,downUrl));
 
             sw *= -1;
         }
