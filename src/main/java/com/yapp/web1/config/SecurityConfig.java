@@ -8,18 +8,22 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.web.filter.CharacterEncodingFilter;
 
 import javax.servlet.Filter;
 
+/**
+ * SecurityConfig
+ *
+ * @author Dakyung Ko
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final CharacterEncodingFilter ssoFilter;
+    private final Filter ssoFilter;
     private final Environment env;
 
-    public SecurityConfig(CharacterEncodingFilter ssoFilter, Environment env){
+    public SecurityConfig(Filter ssoFilter, Environment env) {
         this.ssoFilter = ssoFilter;
         this.env = env;
     }
@@ -44,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/me", "/h2/**", "/api/login/**", "/api/_hcheck", "/js/**", "/css/**", "/image/**", "/fonts/**", "/favicon.ico").permitAll()
                 .anyRequest().authenticated()
                 .and().exceptionHandling()
-                .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/api/login"))
+                .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/api/_hcheck"))
                 .and().headers().frameOptions().sameOrigin()
                 .and().csrf().disable()
                 .addFilterBefore(ssoFilter, BasicAuthenticationFilter.class)

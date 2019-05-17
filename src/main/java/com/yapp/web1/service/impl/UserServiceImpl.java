@@ -6,6 +6,7 @@ import com.yapp.web1.dto.res.ProjectListinUserResDto;
 import com.yapp.web1.repository.UserRepository;
 import com.yapp.web1.service.CommonService;
 import com.yapp.web1.service.UserService;
+import com.yapp.web1.social.UserConnection;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +25,6 @@ import java.util.Set;
  * @version 1.0
  */
 @Service
-@Transactional
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
@@ -33,6 +33,7 @@ public class UserServiceImpl implements UserService {
 
     // user'projectList
     @Override
+    @Transactional(readOnly = true)
     public List<ProjectListinUserResDto> getProjectList(Long userIdx) {
         User user = commonService.findUserById(userIdx);
 
@@ -57,7 +58,29 @@ public class UserServiceImpl implements UserService {
         return projectListinUserResDtos;
     }
 
-    // 로그인 구현 후 삭제
+    @Override
+    @Transactional
+    public User signUp(UserConnection userConnection) {
+        final User user = User.signUp(userConnection);
+        return userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public User findBySocial(UserConnection userConnection) {
+        final User user = userRepository.findBySocial(userConnection);
+        if (user == null) throw new RuntimeException();
+        return user;
+    }
+
+    @Override
+    @Transactional
+    public boolean isExistUser(UserConnection userConnection) {
+        final User user = userRepository.findBySocial(userConnection);
+        return (user != null ? true : false);
+    }
+
+    // TODO 로그인 구현 후 삭제
     private User testUser(){
         User findUser = userRepository.findByName("테스트유저");
         if(findUser != null) return findUser;
