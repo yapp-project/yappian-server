@@ -10,9 +10,14 @@ import java.util.List;
  *
  * @author JiHye Kim
  * @since 0.0.3
- * @version 1.2
+ * @version 1.3
  */
 public interface OrdersService {
+    /**
+     * 기수 추가 - 6개월단위
+     */
+    void createOrder();
+
     /**
      * 기수 목록 반환
      *
