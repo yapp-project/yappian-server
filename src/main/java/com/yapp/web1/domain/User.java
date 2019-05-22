@@ -17,7 +17,8 @@ import java.util.Set;
 /**
  * User 테이블의 Domain 클래스
  *
- * @author Dakyung Ko, Jihye Kim
+ * @author Dakyung Ko
+ * @author Jihye Kim
  */
 @Entity
 @Table(name="user")

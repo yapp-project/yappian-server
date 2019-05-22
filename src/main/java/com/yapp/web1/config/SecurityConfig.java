@@ -38,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     private boolean isTestMode() {
-        String profile = env.getActiveProfiles().length > 0? env.getActiveProfiles()[0] : "test";
+        String profile = env.getActiveProfiles().length > 0 ? env.getActiveProfiles()[0] : "test";
         return profile.equals("test");
     }
 
@@ -48,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/me", "/h2/**", "/api/login/**", "/api/_hcheck", "/js/**", "/css/**", "/image/**", "/fonts/**", "/favicon.ico").permitAll()
                 .anyRequest().authenticated()
                 .and().exceptionHandling()
-                .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/api/_hcheck"))
+                    .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/api/_hcheck"))
                 .and().headers().frameOptions().sameOrigin()
                 .and().csrf().disable()
                 .addFilterBefore(ssoFilter, BasicAuthenticationFilter.class)
