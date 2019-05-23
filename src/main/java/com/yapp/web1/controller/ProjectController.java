@@ -4,6 +4,7 @@ import com.yapp.web1.dto.req.FinishProjectRequestDto;
 import com.yapp.web1.dto.req.ProjectRequestDto;
 import com.yapp.web1.dto.res.FinishProjectResponseDto;
 import com.yapp.web1.dto.res.ProjectResponseDto;
+import com.yapp.web1.dto.res.ProjectsResDto;
 import com.yapp.web1.dto.res.UserResponseDto;
 import com.yapp.web1.exception.Common.NoPermissionException;
 import com.yapp.web1.exception.Common.NotFoundException;
@@ -28,7 +29,7 @@ import java.util.List;
  * @author Dakyung Ko
  * @author Jihye Kim
  * @version 1.5
- * @since 0.0.3
+ * @since 0.0.4
  */
 @CrossOrigin("*")
 @AllArgsConstructor
@@ -38,6 +39,22 @@ import java.util.List;
 public class ProjectController {
 
     private ProjectService projectService;
+
+    /**
+     * 프로젝트 목록
+     * @see /v1/api/projects
+     */
+    @GetMapping("/projects")
+    @ApiOperation(value="프로젝트 리스트")
+    public ResponseEntity<?> getProjects(@ApiIgnore HttpSession session){
+        List<ProjectsResDto> projectsResDto;
+        try{
+            projectsResDto = projectService.getProjects();
+        }catch (NotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(projectsResDto, HttpStatus.OK);
+    }
 
     /**
      * 프로젝트 생성
@@ -50,12 +67,13 @@ public class ProjectController {
     @PostMapping("/project")
     @ApiOperation(value = "프로젝트 생성")
     public ResponseEntity<?> createProject(@Valid @RequestBody final ProjectRequestDto project,  @ApiIgnore HttpSession session) {
+        ProjectResponseDto createProjectDto;
         try {
-            ProjectResponseDto createProjectDto = projectService.createProject(project, 1L);
-            return new ResponseEntity<>(createProjectDto, HttpStatus.CREATED);
+             createProjectDto = projectService.createProject(project, 1L);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+        return new ResponseEntity<>(createProjectDto, HttpStatus.CREATED);
     }
 
     /**
@@ -76,12 +94,12 @@ public class ProjectController {
                                            @ApiIgnore HttpSession session) {
         try {
             ProjectResponseDto updateProject = projectService.updateProject(idx, project, 1L);
-            return new ResponseEntity<>("프로젝트 수정 성공", HttpStatus.OK);
         } catch (NoPermissionException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
         } catch (NotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
+        return new ResponseEntity<>("프로젝트 수정 성공", HttpStatus.OK);
     }
 
     /**
@@ -99,12 +117,12 @@ public class ProjectController {
                                            @ApiIgnore HttpSession session) {
         try {
             projectService.deleteProject(idx, 1L);
-            return new ResponseEntity<>("Project 삭제 성공", HttpStatus.NO_CONTENT);
         } catch (NoPermissionException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
         } catch (NotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
+        return new ResponseEntity<>("Project 삭제 성공", HttpStatus.NO_CONTENT);
     }
 
     /**
@@ -118,13 +136,13 @@ public class ProjectController {
     @ApiOperation(value = "프로젝트 상세 - 프로젝트 정보 및 URL 목록")
     public ResponseEntity<?> getProject(@PathVariable @ApiParam(value = "조회할 projectIdx", example = "5")final Long idx,
                                         @ApiIgnore HttpSession session) {
+        ProjectResponseDto project;
         try {
-            ProjectResponseDto project = projectService.getProject(idx);
-            return new ResponseEntity<>(project, HttpStatus.OK);
+            project = projectService.getProject(idx);
         } catch (NotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
-
+        return new ResponseEntity<>(project, HttpStatus.OK);
     }
 
     /**
@@ -145,12 +163,12 @@ public class ProjectController {
         try {
             // 추후 user.getIdx로 수정.
             projectService.joinProject(projectIdx, password, 2L);
-            return new ResponseEntity<>("해당 프로젝트에 조인 성공", HttpStatus.OK);
         } catch (NotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (NoPermissionException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
         }
+        return new ResponseEntity<>("해당 프로젝트에 조인 성공", HttpStatus.OK);
     }
 
     // TODO 프로젝트 조인 취소 구현
@@ -167,12 +185,13 @@ public class ProjectController {
     @ApiOperation(value = "프로젝트에 속한 유저 목록 조회(인증 필요 없음)")
     public ResponseEntity<?> getUserListInProject(@PathVariable @ApiParam(value = "조회할 projectIdx", example = "5") final Long idx,
                                                   @ApiIgnore HttpSession session) {
+        List<UserResponseDto> userList;
         try {
-            List<UserResponseDto> userList = projectService.getUserListInProject(idx);
-            return new ResponseEntity<>(userList, HttpStatus.OK);
+             userList= projectService.getUserListInProject(idx);
         } catch (NotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
+        return new ResponseEntity<>(userList, HttpStatus.OK);
     }
 
     /**
@@ -193,12 +212,12 @@ public class ProjectController {
         FinishProjectResponseDto finishProjectResponseDto = null;
         try {
             finishProjectResponseDto = projectService.setFinishedProject(projectIdx, multipartFiles, project, 1L);
-            return new ResponseEntity<>(finishProjectResponseDto, HttpStatus.OK);
         } catch (NoPermissionException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
         } catch (NotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
+        return new ResponseEntity<>(finishProjectResponseDto, HttpStatus.OK);
     }
 
     /**
@@ -212,11 +231,12 @@ public class ProjectController {
     @ApiOperation(value = "프로젝트 완료 상세")
     public ResponseEntity<?> getFinishedProject(@PathVariable @ApiParam(value = "조회할 projectIdx", example = "5") final Long projectIdx,
                                                 @ApiIgnore HttpSession session) {
+        FinishProjectResponseDto project;
         try {
-            FinishProjectResponseDto project = projectService.getFinishedProject(projectIdx);
-            return new ResponseEntity<>(project, HttpStatus.OK);
+            project = projectService.getFinishedProject(projectIdx);
         } catch (NotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
+        return new ResponseEntity<>(project, HttpStatus.OK);
     }
 }

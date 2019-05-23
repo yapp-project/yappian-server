@@ -39,13 +39,40 @@ public class S3Service {
 
         String filePath = (fileName).replace(java.io.File.separatorChar, '/');//파일 경로를 분리해주는 메서드
 
+        String fileExtension = filePath.substring(filePath.lastIndexOf(".")+1, filePath.length());
+        String type="jpeg";
+
         if(StringUtils.isEmpty(multipartFiles.getOriginalFilename())){
             System.out.println("file 없음");
         }
         try {
-            PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, filePath, multipartFiles.getInputStream(), new ObjectMetadata());
+            ObjectMetadata metadata = new ObjectMetadata();
+
+            // image without jpg
+            if(!fileExtension.toLowerCase().equals(type) && !fileExtension.toLowerCase().equals("pdf")){
+                type = fileExtension.toLowerCase();
+                metadata.setContentType("image/"+type);
+            }
+
+            // jpg
+            else if(!fileExtension.toLowerCase().equals("pdf")){
+                metadata.setContentType("image/"+type);
+            }
+
+            // pdf
+            else{
+                type = fileExtension.toLowerCase();
+                metadata.setContentType("application/"+type);
+            }
+            metadata.setContentDisposition("inline");
+            metadata.setContentEncoding("UTF-8");
+
+            // upload
+            PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, filePath, multipartFiles.getInputStream(), metadata);
+            putObjectRequest.setCannedAcl(CannedAccessControlList.PublicRead);
             amazonS3Client.putObject(putObjectRequest);
             IOUtils.closeQuietly(multipartFiles.getInputStream());
+
         } catch (IOException e) {
             e.printStackTrace();
         }

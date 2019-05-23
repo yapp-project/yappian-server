@@ -17,6 +17,7 @@ import java.util.List;
 @Getter
 public class ProjectResponseDto {
 
+    private Long projectIdx;
     private int orderNumber; // 기수
     private ProjectType projectType; // 프로젝트 타입
     private String projectName; // 프로젝트 이름
@@ -25,6 +26,7 @@ public class ProjectResponseDto {
 
     @Builder
     public ProjectResponseDto(Project project,List<UserResponseDto> userList, List<UrlResponseDto>  urlList){
+        this.projectIdx = project.getIdx();
         this.orderNumber = project.getOrders().getNumber();
         this.projectType = project.getType();
         this.projectName = project.getName();
