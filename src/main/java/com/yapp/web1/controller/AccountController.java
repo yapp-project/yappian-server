@@ -1,5 +1,6 @@
 package com.yapp.web1.controller;
 
+import com.yapp.web1.common.AuthUtils;
 import com.yapp.web1.dto.res.ProjectListInAccountResDto;
 import com.yapp.web1.service.AccountService;
 import io.swagger.annotations.Api;
@@ -11,9 +12,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import springfox.documentation.annotations.ApiIgnore;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -21,12 +20,12 @@ import java.util.List;
  *
  * @author Dakyung Ko
  * @author Jihye Kim
- * @since 0.0.3
- * @version 1.3
+ * @since 0.0.4
+ * @version 1.4
  */
 @CrossOrigin("*")
 @AllArgsConstructor
-@RequestMapping("/v1/api")
+@RequestMapping("/api")
 @RestController
 @Api(tags = "유저 APIs")
 public class AccountController {
@@ -36,12 +35,12 @@ public class AccountController {
     /**
      * 내가 조인한 프로젝트 목록 조회
      *
-     * @see /v1/api/user/projects
+     * @see /api/user/projects
      */
     @GetMapping("user/projects")
-    @ApiOperation(value = "내가 조인한 프로젝트 목록 조회(인증 필요 없음)")
-    public ResponseEntity<?> getProjectList(@ApiIgnore HttpSession session) {
-        List<ProjectListInAccountResDto> projectList = accountService.getProjectList(1L);
+    @ApiOperation(value = "내가 조인한 프로젝트 목록 조회(인증 필요)")
+    public ResponseEntity<?> getProjectList() {
+        List<ProjectListInAccountResDto> projectList = accountService.getProjectList(AuthUtils.getCurrentAccount().getIdx());
         return new ResponseEntity<>(projectList, HttpStatus.OK);
     }
 }
