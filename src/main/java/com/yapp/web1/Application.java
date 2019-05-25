@@ -13,7 +13,7 @@ public class Application {
                     + "classpath:application.yml,"
                     + "/app/config/yappian/s3.yml,"
                     + "/app/config/yappian/google.yml,"
-                    + "classpath:local-ssl.yml"
+                    + "/app/config/local-ssl.yml"
             ;
 
     public static void main(String[] args) {
