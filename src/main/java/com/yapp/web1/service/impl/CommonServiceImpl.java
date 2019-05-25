@@ -1,16 +1,16 @@
 package com.yapp.web1.service.impl;
 
+import com.yapp.web1.domain.Account;
 import com.yapp.web1.domain.File;
 import com.yapp.web1.domain.Orders;
 import com.yapp.web1.domain.Project;
-import com.yapp.web1.domain.User;
-import com.yapp.web1.dto.res.UserResponseDto;
+import com.yapp.web1.dto.res.AccountResponseDto;
 import com.yapp.web1.exception.Common.NoPermissionException;
 import com.yapp.web1.exception.Common.NotFoundException;
 import com.yapp.web1.repository.FileRepository;
 import com.yapp.web1.repository.OrdersRepository;
 import com.yapp.web1.repository.ProjectRepository;
-import com.yapp.web1.repository.UserRepository;
+import com.yapp.web1.repository.AccountRepository;
 import com.yapp.web1.service.CommonService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,7 @@ public class CommonServiceImpl implements CommonService {
 
     private final ProjectRepository projectRepository;
     private final OrdersRepository ordersRepository;
-    private final UserRepository userRepository;
+    private final AccountRepository accountRepository;
     private final FileRepository fileRepository;
 
     // File findByFileId
@@ -45,11 +45,11 @@ public class CommonServiceImpl implements CommonService {
         return ordersRepository.findById(idx).orElseThrow(() -> new NotFoundException("해당 기수 없음"));
     }
 
-    // User findByUserId
+    // Account findByAccountId
     @Transactional(readOnly = true)
     @Override
-    public User findUserById(Long idx){
-        return userRepository.findById(idx).orElseThrow(() -> new NotFoundException("해당 유저 없음"));
+    public Account findAccountById(Long idx){
+        return accountRepository.findById(idx).orElseThrow(() -> new NotFoundException("해당 유저 없음"));
     }
 
     // project findById
@@ -59,33 +59,33 @@ public class CommonServiceImpl implements CommonService {
         return projectRepository.findById(idx).orElseThrow(() -> new NotFoundException("해당 프로젝트 없음"));
     }
 
-    // userList
+    // accountList
     @Transactional(readOnly = true)
     @Override
-    public List<UserResponseDto> getUserListInProject(Long idx) {
+    public List<AccountResponseDto> getAccountListInProject(Long idx) {
 
         Project project = findById(idx);
-        Set<User> userSet = project.getUserList();
+        Set<Account> accountSet = project.getAccountList();
 
-        List<UserResponseDto> userList = new ArrayList<>();
+        List<AccountResponseDto> accountList = new ArrayList<>();
 
-        User user;
-        Iterator<User> it = userSet.iterator();
+        Account account;
+        Iterator<Account> it = accountSet.iterator();
 
         while (it.hasNext()) {
-            user = it.next();
-            userList.add(new UserResponseDto(user.getIdx(), user.getName()));
+            account = it.next();
+            accountList.add(new AccountResponseDto(account.getIdx(), account.getName()));
         }
-        return userList;
+        return accountList;
     }
 
-    // user 권한 검사
+    // account 권한 검사
     @Transactional(readOnly = true)
     @Override
-    public void checkUserPermission(List<UserResponseDto> userList, Long userIdx) {
+    public void checkAccountPermission(List<AccountResponseDto> accountList, Long accountIdx) {
         boolean check = false;
-        for (UserResponseDto user : userList) {
-            if ((user.getUserIdx()).equals((userIdx))) {
+        for (AccountResponseDto account : accountList) {
+            if ((account.getAccountIdx()).equals((accountIdx))) {
                 check = true;
             }
         }
@@ -96,19 +96,19 @@ public class CommonServiceImpl implements CommonService {
 
     // project의 join한 유저 목록 res dto
     @Override
-    public List<UserResponseDto> joinedProject(Project project){
-        Set<User> userSet = project.getUserList();
-        User u;
+    public List<AccountResponseDto> joinedProject(Project project){
+        Set<Account> accountSet = project.getAccountList();
+        Account u;
 
-        List<UserResponseDto> userResponseDtos =new ArrayList<>();
+        List<AccountResponseDto> accountResponseDtos =new ArrayList<>();
 
-        Iterator<User> it = userSet.iterator();
+        Iterator<Account> it = accountSet.iterator();
 
         while(it.hasNext()){
             u = it.next();
-            userResponseDtos.add(new UserResponseDto(u.getIdx(),u.getName()));
+            accountResponseDtos.add(new AccountResponseDto(u.getIdx(),u.getName()));
         }
-        return userResponseDtos;
+        return accountResponseDtos;
     }
 
 

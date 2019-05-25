@@ -10,16 +10,16 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 /**
- * Social에서 받아온 User 데이터 테이블
+ * Social에서 받아온 Account 데이터 테이블
  *
  * @author Dakyung Ko
  */
 @Entity
-@Table(name = "user_connection")
-@AttributeOverride(name="idx", column=@Column(name="user_connection_idx"))
+@Table(name = "account_connection")
+@AttributeOverride(name="idx", column=@Column(name="account_connection_idx"))
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class UserConnection extends BaseEntity {
+public class AccountConnection extends BaseEntity {
 
     @Column(name = "email")
     private String email;
@@ -47,7 +47,7 @@ public class UserConnection extends BaseEntity {
     private long expireTime;
 
     @Builder
-    private UserConnection(String email, SocialProviderType socialProviderType, String providerIdx, String displayName, String profileUrl, String imageUrl, String accessToken, long expireTime) {
+    private AccountConnection(String email, SocialProviderType socialProviderType, String providerIdx, String displayName, String profileUrl, String imageUrl, String accessToken, long expireTime) {
         this.email = email;
         this.socialProviderType = socialProviderType;
         this.providerIdx = providerIdx;
@@ -58,8 +58,8 @@ public class UserConnection extends BaseEntity {
         this.expireTime = expireTime;
     }
 
-    public static UserConnection valueOf(GoogleUserDetails userDetails) {
-        return UserConnection.builder()
+    public static AccountConnection valueOf(GoogleUserDetails userDetails) {
+        return AccountConnection.builder()
                 .expireTime(userDetails.getExpiration())
                 .accessToken(userDetails.getAccess_token())
                 .providerIdx(userDetails.getSub())

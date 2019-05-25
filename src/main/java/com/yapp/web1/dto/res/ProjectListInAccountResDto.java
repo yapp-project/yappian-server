@@ -11,7 +11,7 @@ import lombok.Getter;
  */
 
 @Getter
-public class ProjectListinUserResDto implements Comparable<ProjectListinUserResDto>{
+public class ProjectListInAccountResDto implements Comparable<ProjectListInAccountResDto>{
 
     private Long idx;
     private int orderNumber; // 기수
@@ -19,7 +19,7 @@ public class ProjectListinUserResDto implements Comparable<ProjectListinUserResD
     private String projectName; // 프로젝트 이름
 
     @Builder
-    public ProjectListinUserResDto(Long idx, int orderNumber, ProjectType projectType, String projectName){
+    public ProjectListInAccountResDto(Long idx, int orderNumber, ProjectType projectType, String projectName){
         this.idx = idx;
         this.orderNumber = orderNumber;
         this.projectType = projectType;
@@ -27,7 +27,7 @@ public class ProjectListinUserResDto implements Comparable<ProjectListinUserResD
     }
 
     @Override
-    public int compareTo(ProjectListinUserResDto p){
+    public int compareTo(ProjectListInAccountResDto p){
         return p.orderNumber - this.orderNumber;
     }
 }

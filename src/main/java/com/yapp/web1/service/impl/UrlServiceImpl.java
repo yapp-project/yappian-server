@@ -69,10 +69,10 @@ public class UrlServiceImpl implements UrlService {
 
     // create Url
     @Override
-    public ProjectResponseDto createUrl(Long projectIdx, UrlRequestDto url, Long userIdx) {
+    public ProjectResponseDto createUrl(Long projectIdx, UrlRequestDto url, Long accountIdx) {
 
         Project findProject = commonService.findById(projectIdx);
-        commonService.checkUserPermission(commonService.getUserListInProject(projectIdx), userIdx);
+        commonService.checkAccountPermission(commonService.getAccountListInProject(projectIdx), accountIdx);
 
         Url setUrl = Url.builder()
                 .type(url.getType())
@@ -85,7 +85,7 @@ public class UrlServiceImpl implements UrlService {
 
         ProjectResponseDto projectResponseDto = ProjectResponseDto.builder()
                 .project(findProject)
-                .userList(commonService.joinedProject(findProject))
+                .accountList(commonService.joinedProject(findProject))
                 .urlList(parseUrl(projectIdx))
                 .build();
         return projectResponseDto;
@@ -93,10 +93,10 @@ public class UrlServiceImpl implements UrlService {
 
     // deleteByUrlId
     @Override
-    public void deleteUrl(Long projectIdx, final Long idx, Long userIdx) {
+    public void deleteUrl(Long projectIdx, final Long idx, Long accountIdx) {
         Project findProject = commonService.findById(projectIdx);
 
-        commonService.checkUserPermission(commonService.getUserListInProject(projectIdx), userIdx);
+        commonService.checkAccountPermission(commonService.getAccountListInProject(projectIdx), accountIdx);
         checkNotFound(findProject.getUrlList(), idx);
 
         urlRepository.deleteById(idx);

@@ -4,7 +4,7 @@ import com.yapp.web1.dto.req.FinishProjectRequestDto;
 import com.yapp.web1.dto.req.ProjectRequestDto;
 import com.yapp.web1.dto.res.FinishProjectResponseDto;
 import com.yapp.web1.dto.res.ProjectResponseDto;
-import com.yapp.web1.dto.res.UserResponseDto;
+import com.yapp.web1.dto.res.AccountResponseDto;
 import com.yapp.web1.exception.Common.NoPermissionException;
 import com.yapp.web1.exception.Common.NotFoundException;
 import com.yapp.web1.service.ProjectService;
@@ -165,11 +165,11 @@ public class ProjectController {
      */
     @GetMapping("/project/{idx}/users")
     @ApiOperation(value = "프로젝트에 속한 유저 목록 조회(인증 필요 없음)")
-    public ResponseEntity<?> getUserListInProject(@PathVariable @ApiParam(value = "조회할 projectIdx", example = "5") final Long idx,
-                                                  @ApiIgnore HttpSession session) {
+    public ResponseEntity<?> getAccountListInProject(@PathVariable @ApiParam(value = "조회할 projectIdx", example = "5") final Long idx,
+                                                     @ApiIgnore HttpSession session) {
         try {
-            List<UserResponseDto> userList = projectService.getUserListInProject(idx);
-            return new ResponseEntity<>(userList, HttpStatus.OK);
+            List<AccountResponseDto> accountList = projectService.getAccountListInProject(idx);
+            return new ResponseEntity<>(accountList, HttpStatus.OK);
         } catch (NotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }

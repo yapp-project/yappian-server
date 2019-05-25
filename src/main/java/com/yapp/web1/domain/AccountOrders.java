@@ -8,37 +8,37 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 /**
- * User와 Orders(기수)의 연관관계 테이블
+ * Account와 Orders(기수)의 연관관계 테이블
  *
  * @author Dakyung Ko, Jihye Kim
  */
 @Entity
-@Table(name="user_orders")
-@AttributeOverride(name="idx", column=@Column(name="user_orders_idx"))
+@Table(name="account_orders")
+@AttributeOverride(name="idx", column=@Column(name="account_orders_idx"))
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class UserOrders extends BaseEntity{
+public class AccountOrders extends BaseEntity{
 
     /** Relation Mapping **/
-    /** UserOrders - User 양방향 매핑 **/
+    /** AccountOrders - Account 양방향 매핑 **/
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name="user_idx",
-            foreignKey = @ForeignKey(name="fk_user_orders_user"),
+    @JoinColumn(name="account_idx",
+            foreignKey = @ForeignKey(name="fk_account_orders_account"),
             nullable = false)
-    private User user;
+    private Account account;
 
-    /** UserOrders - Orders 양방향 매핑 **/
+    /** AccountOrders - Orders 양방향 매핑 **/
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name="orders_idx",
-            foreignKey = @ForeignKey(name="fk_user_orders_orders"),
+            foreignKey = @ForeignKey(name="fk_account_orders_orders"),
             nullable = false)
     private Orders orders;
 
 
     /** Method **/
     @Builder
-    public UserOrders(User user, Orders order){
-        this.user = user;
+    public AccountOrders(Account account, Orders order){
+        this.account = account;
         this.orders = orders;
     }
 }

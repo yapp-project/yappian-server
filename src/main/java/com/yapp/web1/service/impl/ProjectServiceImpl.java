@@ -1,8 +1,8 @@
 package com.yapp.web1.service.impl;
 
+import com.yapp.web1.domain.Account;
 import com.yapp.web1.domain.File;
 import com.yapp.web1.domain.Project;
-import com.yapp.web1.domain.User;
 import com.yapp.web1.domain.VO.Mark;
 import com.yapp.web1.dto.req.FinishProjectRequestDto;
 import com.yapp.web1.dto.req.ProjectRequestDto;
@@ -43,7 +43,7 @@ public class ProjectServiceImpl implements ProjectService {
     // finishResponseDto
     private FinishProjectResponseDto finishDto(Project project, List<FileUploadResponseDto> fileUploadResponseDtos) {
 
-        FinishProjectResponseDto finishProjectResponseDtos = FinishProjectResponseDto.builder()
+        FinishProjectResponseDto finishProjectResponseDto = FinishProjectResponseDto.builder()
                 .projectIdx(project.getIdx())
                 .ordersNumber(project.getOrders().getNumber())
                 .projectName(project.getName())
@@ -54,63 +54,63 @@ public class ProjectServiceImpl implements ProjectService {
                 .fileList(fileUploadResponseDtos)
                 .build();
 
-        return finishProjectResponseDtos;
+        return finishProjectResponseDto;
     }
 
     // projectDetail
-    private ProjectResponseDto projectDetail(Project project, List<UserResponseDto> userList, List<UrlResponseDto> urlList) {
+    private ProjectResponseDto projectDetail(Project project, List<AccountResponseDto> accountList, List<UrlResponseDto> urlList) {
 
         ProjectResponseDto responseDto = ProjectResponseDto.builder()
                 .project(project)
-                .userList(userList)
+                .accountList(accountList)
                 .urlList(urlList).build();
         return responseDto;
     }
 
-    // userSet
-    private Set<User> userSet(Long userIdx) {
-        Set<User> userSet = new HashSet<>();
-        userSet.add(commonService.findUserById(userIdx));
+    // accountSet
+    private Set<Account> accountSet(Long accountIdx) {
+        Set<Account> accountSet = new HashSet<>();
+        accountSet.add(commonService.findAccountById(accountIdx));
 
-        return userSet;
+        return accountSet;
     }
 
-    // join 하기 - user
-    private void joinedProject(Project project, Long userIdx) {
-        User user = commonService.findUserById(userIdx);
+    // join 하기 - account
+    private void joinedProject(Project project, Long accountIdx) {
+        Account account = commonService.findAccountById(accountIdx);
 
-        user.getJoinedProjects().add(project);
+        account.getJoinedProjects().add(project);
     }
 
     // createProject
     @Override
-    public ProjectResponseDto createProject(ProjectRequestDto dto, Long userIdx) { //실제로는 User user. 그리고 User.getIdx()해서 구현
+    public ProjectResponseDto createProject(ProjectRequestDto dto, Long accountIdx) { //실제로는 Account account. 그리고 Account.getIdx()해서 구현
 
         final Project project = Project.builder()
                 .type(dto.getProjectType())
                 .name(dto.getProjectName())
                 .finalCheck(Mark.N)
-                .createUserIdx(userIdx)
+                .createAccountIdx(accountIdx)
                 .password(dto.getPassword())
                 .releaseCheck(Mark.N)
-                .userList(userSet(userIdx))
+                .accountList(accountSet(accountIdx))
                 .orders(commonService.findOrdersById(dto.getOrdersIdx())).build();
 
         projectRepository.save(project); // create
 
-        // user쪽 join
-        joinedProject(project, userIdx);
+        // account쪽 join
+        joinedProject(project, accountIdx);
 
         return projectDetail(project, commonService.joinedProject(project), new ArrayList<>());
     }
 
     //update project
     @Override
-    public ProjectResponseDto updateProject(Long idx, ProjectRequestDto dto, Long userIdx) {
+    public ProjectResponseDto updateProject(Long idx, ProjectRequestDto dto, Long accountIdx) {
         Project project = commonService.findById(idx);
 
         // 수정 조건 : 프로젝트 조인된 사람만 수정할 수 있다.
-        commonService.checkUserPermission(getUserListInProject(idx), userIdx);
+        commonService.checkAccountPermission(getAccountListInProject(idx), accountIdx);
 
         project.setOrders(commonService.findOrdersById(dto.getOrdersIdx()));
         project.setName(dto.getProjectName());
@@ -124,20 +124,20 @@ public class ProjectServiceImpl implements ProjectService {
 
     //delete project
     @Override
-    public void deleteProject(Long idx, Long userIdx) //User user
+    public void deleteProject(Long idx, Long accountIdx) //Account
     {
         Project findProject = commonService.findById(idx); // 해당 프로젝트 존재 여부 체크 위함
 
         // 수정 조건 : 프로젝트 조인된 사람만 수정할 수 있다.
-        commonService.checkUserPermission(getUserListInProject(idx), userIdx);
+        commonService.checkAccountPermission(getAccountListInProject(idx), accountIdx);
 
-        // parsUser 삭제
-        List<UserResponseDto> userResponseDtos = commonService.joinedProject(findProject);
-        User user = null;
+        // parsAccount 삭제
+        List<AccountResponseDto> accountResponseDtos = commonService.joinedProject(findProject);
+        Account account = null;
 
-        for (int i = 0; i < userResponseDtos.size(); ++i) {
-            user = commonService.findUserById(userResponseDtos.get(i).getUserIdx());
-            user.setJoinedProjects(null);
+        for (int i = 0; i < accountResponseDtos.size(); ++i) {
+            account = commonService.findAccountById(accountResponseDtos.get(i).getAccountIdx());
+            account.setJoinedProjects(null);
         }
 
         urlService.deleteAllUrl(idx); // 해당 프로젝트의 url 삭제
@@ -156,7 +156,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     // join project
     @Override
-    public void joinProject(Long projectIdx, String password, Long userIdx) {
+    public void joinProject(Long projectIdx, String password, Long randomAccount) {
 
         Project project = commonService.findById(projectIdx);
 
@@ -164,15 +164,15 @@ public class ProjectServiceImpl implements ProjectService {
             throw new NoPermissionException("프로젝트 비밀번호 다릅니다.");
         }
 
-        User user = commonService.findUserById(userIdx);
-        joinedProject(project, user.getIdx());
+        Account account = commonService.findAccountById(randomAccount);
+        joinedProject(project, account.getIdx());
 
     }
 
-    // userList
+    // accountList
     @Transactional(readOnly = true)
     @Override
-    public List<UserResponseDto> getUserListInProject(Long idx) {
+    public List<AccountResponseDto> getAccountListInProject(Long idx) {
 
         Project project = commonService.findById(idx);
 
@@ -181,11 +181,11 @@ public class ProjectServiceImpl implements ProjectService {
 
     // setFinishedProject
     @Override
-    public FinishProjectResponseDto setFinishedProject(Long projectIdx, MultipartFile[] multipartFiles, FinishProjectRequestDto dto, Long userIdx) {
+    public FinishProjectResponseDto setFinishedProject(Long projectIdx, MultipartFile[] multipartFiles, FinishProjectRequestDto dto, Long accountIdx) {
 
         Project project = commonService.findById(projectIdx);
 
-        commonService.checkUserPermission(getUserListInProject(projectIdx), userIdx);
+        commonService.checkAccountPermission(getAccountListInProject(projectIdx), accountIdx);
 
         // 파일 업로드
         List<FileUploadResponseDto> fileUploadResponseDtos = fileService.fileUpload(multipartFiles, projectIdx);

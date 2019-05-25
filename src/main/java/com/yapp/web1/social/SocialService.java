@@ -1,7 +1,7 @@
 package com.yapp.web1.social;
 
-import com.yapp.web1.domain.User;
-import com.yapp.web1.service.UserService;
+import com.yapp.web1.domain.Account;
+import com.yapp.web1.service.AccountService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,15 +21,15 @@ import java.util.List;
 @AllArgsConstructor
 public class SocialService {
 
-    private final UserService userService;
+    private final AccountService accountService;
 
-    public UsernamePasswordAuthenticationToken doAuthentication(UserConnection userConnection) {
-        if(userService.isExistUser(userConnection)) {
-            final User user = userService.findBySocial(userConnection);
-            return setAuthenticationToken(user);
+    public UsernamePasswordAuthenticationToken doAuthentication(AccountConnection accountConnection) {
+        if(accountService.isExistUser(accountConnection)) {
+            final Account account = accountService.findBySocial(accountConnection);
+            return setAuthenticationToken(account);
         } else {
-            final User user = userService.signUp(userConnection);
-            return setAuthenticationToken(user);
+            final Account account = accountService.signUp(accountConnection);
+            return setAuthenticationToken(account);
         }
     }
 

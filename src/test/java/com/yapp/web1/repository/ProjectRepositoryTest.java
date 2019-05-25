@@ -32,7 +32,7 @@ public class ProjectRepositoryTest extends RepositoryTest {
                 .name("프로젝트팀")
                 .finalCheck(Mark.N)
                 .releaseCheck(Mark.N)
-                .createUserIdx(1L)
+                .createAccountIdx(1L)
                 .orders(findOrders)
                 .build();
 

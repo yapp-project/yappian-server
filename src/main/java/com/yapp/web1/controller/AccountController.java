@@ -1,7 +1,7 @@
 package com.yapp.web1.controller;
 
-import com.yapp.web1.dto.res.ProjectListinUserResDto;
-import com.yapp.web1.service.UserService;
+import com.yapp.web1.dto.res.ProjectListInAccountResDto;
+import com.yapp.web1.service.AccountService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
- * User Controller
+ * Account Controller
  *
  * @author Dakyung Ko
  * @author Jihye Kim
@@ -29,9 +29,9 @@ import java.util.List;
 @RequestMapping("/v1/api")
 @RestController
 @Api(tags = "유저 APIs")
-public class UserController {
+public class AccountController {
 
-    private UserService userService;
+    private AccountService accountService;
 
     /**
      * 내가 조인한 프로젝트 목록 조회
@@ -41,7 +41,7 @@ public class UserController {
     @GetMapping("user/projects")
     @ApiOperation(value = "내가 조인한 프로젝트 목록 조회(인증 필요 없음)")
     public ResponseEntity<?> getProjectList(@ApiIgnore HttpSession session) {
-        List<ProjectListinUserResDto> projectList = userService.getProjectList(1L);
+        List<ProjectListInAccountResDto> projectList = accountService.getProjectList(1L);
         return new ResponseEntity<>(projectList, HttpStatus.OK);
     }
 }
