@@ -3,6 +3,7 @@ package com.yapp.web1.config;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
@@ -26,6 +27,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public SecurityConfig(Filter ssoFilter, Environment env) {
         this.ssoFilter = ssoFilter;
         this.env = env;
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+//        web.ignoring()
+//                .antMatchers("/v2/api-docs", "/configuration/ui/**", "/swagger-resources/**", "/configuration/security", "/swagger-ui.html", "/webjars/**", "/swagger/**");
+        web.ignoring()
+                .antMatchers("/v2/api-docs", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**", "/swagger/**");
     }
 
     @Override
