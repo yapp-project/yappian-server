@@ -2,6 +2,7 @@ package com.yapp.web1.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -31,10 +32,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-//        web.ignoring()
-//                .antMatchers("/v2/api-docs", "/configuration/ui/**", "/swagger-resources/**", "/configuration/security", "/swagger-ui.html", "/webjars/**", "/swagger/**");
-        web.ignoring()
-                .antMatchers("/v2/api-docs", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**", "/swagger/**");
+        if(isTestMode()) {
+            web.ignoring()
+                    .antMatchers("/v2/api-docs", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**", "/swagger/**");
+        }
     }
 
     @Override
@@ -55,9 +56,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.antMatcher("/**")
                 .authorizeRequests()
                 .antMatchers("/", "/me", "/h2/**", "/api/login/**", "/api/_hcheck", "/js/**", "/css/**", "/image/**", "/fonts/**", "/favicon.ico").permitAll()
+                .mvcMatchers(HttpMethod.GET, "/api/order*/**", "/api/project/**").permitAll()
                 .anyRequest().authenticated()
                 .and().exceptionHandling()
-                    .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/api/_hcheck"))
+//                    .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/api/_hcheck"))
                 .and().headers().frameOptions().sameOrigin()
                 .and().csrf().disable()
                 .addFilterBefore(ssoFilter, BasicAuthenticationFilter.class)
@@ -72,10 +74,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     private void setRealMode(HttpSecurity http) throws Exception {
-        http.antMatcher("/**").authorizeRequests().antMatchers("/", "/api/login**", "/api/_hcheck").permitAll()
+        http.antMatcher("/**")
+                .authorizeRequests().antMatchers("/", "/api/login**", "/api/_hcheck").permitAll()
+                .mvcMatchers(HttpMethod.GET, "/api/order*/**", "/api/project/**").permitAll()
                 .anyRequest().authenticated()
                 .and().exceptionHandling()
-                .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/api/login")).and()
+                .and().headers().frameOptions().sameOrigin() //
+                .and().csrf().disable() // TODO CSRF 설정
                 .addFilterBefore(ssoFilter, BasicAuthenticationFilter.class);
         http.logout()
                 .invalidateHttpSession(true)
