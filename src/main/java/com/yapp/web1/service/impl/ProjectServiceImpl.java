@@ -7,7 +7,7 @@ import com.yapp.web1.domain.VO.Mark;
 import com.yapp.web1.dto.req.FinishProjectRequestDto;
 import com.yapp.web1.dto.req.ProjectRequestDto;
 import com.yapp.web1.dto.res.*;
-import com.yapp.web1.exception.Common.NoPermissionException;
+import com.yapp.web1.exception.NoPermissionException;
 import com.yapp.web1.repository.FileRepository;
 import com.yapp.web1.repository.ProjectRepository;
 import com.yapp.web1.service.CommonService;

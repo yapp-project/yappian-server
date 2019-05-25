@@ -1,4 +1,4 @@
-package com.yapp.web1.exception.Common;
+package com.yapp.web1.exception;
 
 /**
  * 리소스 없음 에러

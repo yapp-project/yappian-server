@@ -2,6 +2,7 @@ package com.yapp.web1.controller;
 
 import com.yapp.web1.common.AuthUtils;
 import com.yapp.web1.dto.res.ProjectListInAccountResDto;
+import com.yapp.web1.exception.NoPermissionException;
 import com.yapp.web1.service.AccountService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -40,7 +41,11 @@ public class AccountController {
     @GetMapping("user/projects")
     @ApiOperation(value = "내가 조인한 프로젝트 목록 조회(인증 필요)")
     public ResponseEntity<?> getProjectList() {
-        List<ProjectListInAccountResDto> projectList = accountService.getProjectList(AuthUtils.getCurrentAccount().getIdx());
-        return new ResponseEntity<>(projectList, HttpStatus.OK);
+        try {
+            List<ProjectListInAccountResDto> projectList = accountService.getProjectList(AuthUtils.getCurrentAccount().getIdx());
+            return new ResponseEntity<>(projectList, HttpStatus.OK);
+        } catch (NoPermissionException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
+        }
     }
 }

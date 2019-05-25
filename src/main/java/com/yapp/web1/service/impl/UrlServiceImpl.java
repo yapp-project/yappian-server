@@ -5,7 +5,7 @@ import com.yapp.web1.domain.Url;
 import com.yapp.web1.dto.req.UrlRequestDto;
 import com.yapp.web1.dto.res.ProjectResponseDto;
 import com.yapp.web1.dto.res.UrlResponseDto;
-import com.yapp.web1.exception.Common.NotFoundException;
+import com.yapp.web1.exception.NotFoundException;
 import com.yapp.web1.repository.UrlRepository;
 import com.yapp.web1.service.CommonService;
 import com.yapp.web1.service.UrlService;

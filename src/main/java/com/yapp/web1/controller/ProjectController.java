@@ -6,8 +6,8 @@ import com.yapp.web1.dto.req.ProjectRequestDto;
 import com.yapp.web1.dto.res.AccountResponseDto;
 import com.yapp.web1.dto.res.FinishProjectResponseDto;
 import com.yapp.web1.dto.res.ProjectResponseDto;
-import com.yapp.web1.exception.Common.NoPermissionException;
-import com.yapp.web1.exception.Common.NotFoundException;
+import com.yapp.web1.exception.NoPermissionException;
+import com.yapp.web1.exception.NotFoundException;
 import com.yapp.web1.service.ProjectService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -51,6 +51,8 @@ public class ProjectController {
         try {
             ProjectResponseDto createProjectDto = projectService.createProject(project, AuthUtils.getCurrentAccount().getIdx());
             return new ResponseEntity<>(createProjectDto, HttpStatus.CREATED);
+        } catch (NoPermissionException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
