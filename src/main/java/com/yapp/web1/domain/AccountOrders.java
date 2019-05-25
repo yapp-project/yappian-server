@@ -9,6 +9,7 @@ import javax.persistence.*;
 
 /**
  * Account와 Orders(기수)의 연관관계 테이블
+ * 현재 기수 데이터 기반으로 유저가 저장되지 않기 때문에 사용되지 않음
  *
  * @author Dakyung Ko, Jihye Kim
  */

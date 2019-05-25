@@ -4,8 +4,8 @@ import com.yapp.web1.domain.Account;
 import com.yapp.web1.domain.Project;
 import com.yapp.web1.dto.res.ProjectListInAccountResDto;
 import com.yapp.web1.repository.AccountRepository;
-import com.yapp.web1.service.CommonService;
 import com.yapp.web1.service.AccountService;
+import com.yapp.web1.service.CommonService;
 import com.yapp.web1.social.AccountConnection;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -78,23 +78,5 @@ public class AccountServiceImpl implements AccountService {
     public boolean isExistUser(AccountConnection accountConnection) {
         final Account account = accountRepository.findBySocial(accountConnection);
         return (account != null ? true : false);
-    }
-
-    // TODO 로그인 구현 후 삭제
-    private Account testUser(){
-        Account findAccount = accountRepository.findByName("테스트유저");
-        if(findAccount != null) return findAccount;
-        else return accountRepository.save(Account.builder().name("테스트유저").email("test@test.com").build());
-    }
-
-    // 로그인 구현 후 삭제
-    @Override
-    public Account getCurrentUser(){
-        return testUser();
-    }
-
-    @Override
-    public Account findByIdx(Long idx) {
-        return null;
     }
 }

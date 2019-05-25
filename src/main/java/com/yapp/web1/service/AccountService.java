@@ -41,12 +41,4 @@ public interface AccountService {
      */
     boolean isExistUser(AccountConnection accountConnection);
 
-    /**
-     * 임시 유저 데이터 반환
-     *
-     * @return Account.idx==1인 유저 데이터 반환
-     */
-    Account getCurrentUser();
-
-    Account findByIdx(Long idx);
 }
