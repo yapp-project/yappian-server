@@ -1,7 +1,5 @@
 # local ssl
-src/main/resources/local-ssl.yml
 keystore.p12
-
 
 HELP.md
 /.gradle/

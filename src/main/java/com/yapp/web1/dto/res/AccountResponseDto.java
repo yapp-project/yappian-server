@@ -4,18 +4,18 @@ import lombok.Builder;
 import lombok.Getter;
 
 /**
- * User ResponseDto
+ * Account ResponseDto
  *
  * @author Dakyung Ko
  */
 @Getter
-public class UserResponseDto {
-    private Long userIdx;
+public class AccountResponseDto {
+    private Long accountIdx;
     private String name;
 
     @Builder
-    public UserResponseDto(Long userIdx, String name){
-        this.userIdx = userIdx;
+    public AccountResponseDto(Long accountIdx, String name){
+        this.accountIdx = accountIdx;
         this.name = name;
     }
 }

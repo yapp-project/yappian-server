@@ -6,6 +6,7 @@ import lombok.Getter;
 
 /**
  * 기수 목록 Dto
+ * @author Dakyung Ko
  * @author JiHye Kim
  */
 @Getter

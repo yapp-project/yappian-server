@@ -1,0 +1,8 @@
+spring.profiles: ssl
+
+server:
+  ssl:
+    key-store: keystore.p12
+    key-store-password: yappian
+    keyStoreType: PKCS12
+    keyAlias: tomcat

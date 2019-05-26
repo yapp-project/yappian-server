@@ -1,10 +1,10 @@
 package com.yapp.web1.service;
 
+import com.yapp.web1.domain.Account;
 import com.yapp.web1.domain.File;
 import com.yapp.web1.domain.Orders;
 import com.yapp.web1.domain.Project;
-import com.yapp.web1.domain.User;
-import com.yapp.web1.dto.res.UserResponseDto;
+import com.yapp.web1.dto.res.AccountResponseDto;
 
 import java.util.List;
 
@@ -13,30 +13,30 @@ public interface CommonService {
     /**
      * 해당 엔티티 있는지 확인
      * @param idx
-     * @return Project, Orders, User
+     * @return Project, Orders, Account
      */
     Project findById(Long idx);
     Orders findOrdersById(Long idx);
-    User findUserById(Long idx);
+    Account findAccountById(Long idx);
     File findFileById(Long idx);
 
     /**
-     * 해당 프로젝트에 join된 userList
+     * 해당 프로젝트에 join된 accountList
      *
      * @param idx
-     * @return UserResponseDto
+     * @return AccountResponseDto
      */
-    List<UserResponseDto> getUserListInProject(Long idx);
+    List<AccountResponseDto> getAccountListInProject(Long idx);
 
     /**
-     * user 권한 검사
+     * account 권한 검사
      */
-    void checkUserPermission(List<UserResponseDto> userList, Long userIdx);
+    void checkAccountPermission(List<AccountResponseDto> accountList, Long accountIdx);
 
     /**
      * project의 join한 유저 목록
      * @param project
      * @return
      */
-    List<UserResponseDto> joinedProject(Project project);
+    List<AccountResponseDto> joinedProject(Project project);
 }

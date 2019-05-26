@@ -1,4 +1,4 @@
-package com.yapp.web1.exception.Common;
+package com.yapp.web1.exception;
 
 /**
  * url 접근 불허가 에러

@@ -26,7 +26,7 @@ spring:
 ---
 spring:
   profiles: local
-  profiles.include: common
+  profiles.include: common, ssl
   datasource:
       driver-class-name: com.mysql.cj.jdbc.Driver
       url: jdbc:mysql://localhost:3306/yappian?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=UTC
@@ -68,7 +68,7 @@ spring:
 # local에서 test
 ---
 spring.profiles: test
-spring.profiles.include: common
+spring.profiles.include: common, ssl
 
 spring:
   h2:
@@ -88,7 +88,7 @@ spring:
   jpa:
     database: h2
     database-platform: org.hibernate.dialect.H2Dialect
-    show-sql: true
+#    show-sql: true
     hibernate:
       ddl-auto: create
     generate-ddl: true
@@ -99,6 +99,7 @@ spring:
 logging:
   level:
     org.springframework.web.client: DEBUG
+    org.springframework.security: DEBUG
     org.hibernate.SQL: DEBUG
     org.hibernate.type: TRACE
 # production 환경

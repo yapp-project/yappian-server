@@ -48,8 +48,8 @@ public class Project extends BaseEntity {
     @Column(name = "url")
     private String productURL;
 
-    @Column(name = "create_user_idx", nullable = false)
-    private Long createUserIdx;
+    @Column(name = "create_account_idx", nullable = false)
+    private Long createAccountIdx;
 
     /** Relation Mapping **/
     /**
@@ -73,12 +73,12 @@ public class Project extends BaseEntity {
 
     /** Relation Mapping - Join Table **/
     /**
-     * Project - User 양방향 매핑
+     * Project - Account 양방향 매핑
      **/
     @ManyToMany(mappedBy = "joinedProjects",
             cascade = CascadeType.PERSIST,
             fetch = FetchType.LAZY)
-    private Set<User> userList = new HashSet<>();
+    private Set<Account> accountList = new HashSet<>();
 
     /**
      * Project - File 단방향 매핑
@@ -93,7 +93,7 @@ public class Project extends BaseEntity {
      **/
     @Builder
     public Project(ProjectType type, String name, String password, Mark finalCheck, Mark releaseCheck, String description,
-                   String productURL, Long createUserIdx, Orders orders, List<Url> urlList, Set<User> userList) {
+                   String productURL, Long createAccountIdx, Orders orders, List<Url> urlList, Set<Account> accountList) {
         this.type = type;
         this.name = name;
         this.password = password;
@@ -101,11 +101,11 @@ public class Project extends BaseEntity {
         this.releaseCheck = releaseCheck;
         this.description = description;
         this.productURL = productURL;
-        this.createUserIdx = createUserIdx;
+        this.createAccountIdx = createAccountIdx;
         this.orders = orders;
 
         this.urlList = Optional.ofNullable(urlList).orElse(this.urlList);
-        this.userList = Optional.ofNullable(userList).orElse(this.userList);
+        this.accountList = Optional.ofNullable(accountList).orElse(this.accountList);
     }
 
     // setter - name
@@ -128,9 +128,9 @@ public class Project extends BaseEntity {
         this.orders = orders;
     }
 
-    // setter - userList
-    public void setUserList(Set<User> userList) {
-        this.userList = userList;
+    // setter - accountList
+    public void setAccountList(Set<Account> accountList) {
+        this.accountList = accountList;
     }
 
     // setter - finalCheck

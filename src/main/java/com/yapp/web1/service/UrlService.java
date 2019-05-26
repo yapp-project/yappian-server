@@ -15,7 +15,6 @@ public interface UrlService {
     /**
      * 해당 프로젝트의 URL 불러오기
      * @param projectId projectIdx
-     * @param session 로그인 유저 정보
      * @return 해당 프로젝트의 url List
      * @throws Exception join한 유저만 url 생성 가능
      * @see /v1/api/{idx}/url
@@ -24,7 +23,7 @@ public interface UrlService {
 
     /**
      * URL 생성
-     * @param projectId projectIdx
+     * @param projectIdx projectIdx
      * @param url     생성할 Url 관련 데이터 - projectId 포함(UrlRequestDto)
      * @param userIdx 로그인 유저 정보
      * @return 생성한 url 데이터(UrlResponseDto), 해당 프로젝트의 url List
