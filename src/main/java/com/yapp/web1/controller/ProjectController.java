@@ -43,7 +43,7 @@ public class ProjectController {
      * 프로젝트 목록
      * FE 디버깅용 전체 공개 API
      *
-     * @see /v1/api/projects
+     * @see /api/projects
      */
     @GetMapping("/projects")
     @ApiOperation(value="프로젝트 리스트")
