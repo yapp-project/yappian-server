@@ -1,6 +1,3 @@
-# local ssl
-keystore.p12
-
 HELP.md
 /.gradle/
 /build/
