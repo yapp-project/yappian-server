@@ -262,6 +262,7 @@ public class ProjectServiceImpl implements ProjectService {
         return finishDto(project, fileUploadResponseDtos);
     }
 
+    // get finishedProject
     @Transactional(readOnly = true)
     @Override
     public FinishProjectResponseDto getFinishedProject(Long projectIdx) {
@@ -271,4 +272,10 @@ public class ProjectServiceImpl implements ProjectService {
         return finishDto(project, fileUploadResponseDtos);
     }
 
+    // leave project
+    @Override
+    public void leaveProject(Long projectIdx, Long userIdx){
+        Project project = commonService.findById(projectIdx);
+
+    }
 }

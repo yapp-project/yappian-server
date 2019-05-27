@@ -6,6 +6,7 @@ import com.yapp.web1.dto.res.*;
 import com.yapp.web1.exception.Common.NoPermissionException;
 import com.yapp.web1.exception.Common.NotFoundException;
 import com.yapp.web1.service.ProjectService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
@@ -236,5 +237,22 @@ public class ProjectController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(project, HttpStatus.OK);
+    }
+
+    /**
+     * 프로젝트 나가기
+     * @param projectIdx
+     * @param session
+     */
+    @PutMapping("/project/{projectIdx}/leave")
+    @ApiOperation(value="프로젝트 나가기")
+    public ResponseEntity<?> leaveProject(@PathVariable @ApiParam(value = "조회할 projectIdx", example = "5") final Long projectIdx,
+                                          @ApiIgnore HttpSession session){
+        try{
+            projectService.leaveProject(projectIdx,2L);
+        }catch (NotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>("나가기 성공",HttpStatus.OK);
     }
 }

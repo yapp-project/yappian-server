@@ -98,4 +98,11 @@ public interface ProjectService {
      * @exception Exception 완료되지 않은 경우 조회 불가
      */
     FinishProjectResponseDto getFinishedProject(Long idx);
+
+    /**
+     * 프로젝트 나가기
+     * @param projectIdx
+     * @param userIdx
+     */
+    void leaveProject(Long projectIdx, Long userIdx);
 }
