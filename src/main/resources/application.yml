@@ -68,7 +68,7 @@ spring:
 # local에서 test
 ---
 spring.profiles: test
-spring.profiles.include: common, ssl
+spring.profiles.include: common #, ssl
 
 spring:
   h2:
