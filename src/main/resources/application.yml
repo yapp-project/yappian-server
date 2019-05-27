@@ -40,35 +40,10 @@ spring:
         dialect: org.hibernate.dialect.MySQL8InnoDBDialect
         format_sql: true
         show-sql: true
-#  datasource:
-#    hikari:
-#      jdbc-url: jdbc:mariadb://localhost:3306/contact?useSSL=false
-#      username: root
-#      password: test123
-#      driver-class-name: org.mariadb.jdbc.Driver
-        #    initialization-mode: always
-        #    data: classpath:init.sql
-#  jpa:
-#    database: mysql
-    #    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-#    show-sql: true
-#    hibernate:
-#      ddl-auto: update
-#      ddl-auto: create-drop
-#    generate-ddl: true
-#    properties:
-#      hibernate:
-#        dialect: org.hibernate.dialect.MariaDB103Dialect
-#logging:
-#  level:
-#    org.springframework.web.client: DEBUG
-#    org.hibernate.SQL: DEBUG
-#    org.hibernate.type: TRACE
-#  file: ./log/local
 # local에서 test
 ---
 spring.profiles: test
-spring.profiles.include: common #, ssl
+spring.profiles.include: common, ssl
 
 spring:
   h2:
@@ -104,7 +79,7 @@ logging:
     org.hibernate.type: TRACE
 # production 환경
 ---
-#spring.profiles: prod
-#spring.profiles.include: real-db, common
+spring.profiles: prod
+spring.profiles.include: real-db, common
 #logging:
 #  file: ./log/prod
