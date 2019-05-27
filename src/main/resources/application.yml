@@ -29,15 +29,15 @@ spring:
   profiles.include: common, ssl
   datasource:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/yappian?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=UTC
-      username: user1
-      password: test123
+      url: jdbc:mysql://localhost:3306/yappian_local?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=UTC
+      username: yappian_local
+      password: test1234!
   jpa:
       hibernate:
         ddl-auto: update
       properties:
         hibernate:
-        dialect: org.hibernate.dialect.MySQL8InnoDBDialect
+        dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
         show-sql: true
 # local에서 test
