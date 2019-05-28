@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.text.SimpleDateFormat;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api")
 @Api(tags = "헬스체크 API")
