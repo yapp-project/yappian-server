@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        if(!isTestMode()) {
+        if(isTestMode()) {
             web.ignoring()
                     .antMatchers("/v2/api-docs", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**", "/swagger/**");
         }
@@ -56,16 +56,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.antMatcher("/**")
                 .authorizeRequests()
 //                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                .antMatchers(HttpMethod.OPTIONS, "/api/login/**", "/api/logout/**").permitAll()
-                .antMatchers("/", "/me", "/h2/**", "/api/_hcheck", "/auth", "/js/**", "/css/**", "/image/**", "/fonts/**", "/favicon.ico").permitAll()
-                .mvcMatchers(HttpMethod.GET, "/api/order*/**", "/api/project/**").permitAll()
-                .anyRequest().authenticated()
+                    .antMatchers("/", "/me", "/h2/**", "/api/login*/**", "/api/logout*/**", "/api/_hcheck", "/auth", "/js/**", "/css/**", "/image/**", "/fonts/**", "/favicon.ico")
+                        .permitAll()
+                    .antMatchers(HttpMethod.OPTIONS, "/api/login/**", "/api/logout/**")
+                        .permitAll()
+                    .mvcMatchers(HttpMethod.GET, "/api/order*/**", "/api/project/**")
+                        .permitAll()
+                    .anyRequest()
+                        .authenticated()
 //                .and().cors()
-                .and().exceptionHandling()
+                    .and().exceptionHandling()
 //                    .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/api/_hcheck"))
-                .and().headers().frameOptions().sameOrigin()
-                .and().csrf().disable()
-                .addFilterBefore(ssoFilter, BasicAuthenticationFilter.class)
+                    .and().headers().frameOptions().sameOrigin()
+                    .and().csrf().disable()
+                    .addFilterBefore(ssoFilter, BasicAuthenticationFilter.class)
         ;
         http.logout()
                 .invalidateHttpSession(true)
