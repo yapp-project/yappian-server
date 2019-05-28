@@ -9,6 +9,7 @@ import com.yapp.web1.repository.OrdersRepository;
 import com.yapp.web1.repository.ProjectRepository;
 import com.yapp.web1.service.OrdersService;
 import lombok.AllArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,21 @@ public class OrdersServiceImpl implements OrdersService {
 
     private final OrdersRepository ordersRepository;
     private final ProjectRepository projectRepository;
+
+    // create order
+    @Scheduled(cron="0 0 0 1 1/6 *")
+    @Override
+    public void createOrder(){
+        List<Orders> findOrders = ordersRepository.findByOrderByNumberDesc();
+
+        int number = findOrders.get(0).getNumber();
+
+        Orders orders = Orders.builder()
+                .number(++number)
+                .build();
+
+        ordersRepository.save(orders);
+    }
 
     // get orderList
     @Transactional(readOnly = true)
