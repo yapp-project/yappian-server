@@ -252,16 +252,20 @@ public class ProjectServiceImpl implements ProjectService {
         Account account = commonService.findAccountById(accountIdx);
 
         Set<Project> projectSet = account.getJoinedProjects();
+        Set<Project> result = new HashSet<>();
+        for(Project pro : projectSet){
+            result.add(pro);
+        }
         Iterator<Project> it = projectSet.iterator();
-
+        Project p;
         while (it.hasNext()) {
-            if(it.next().getIdx()==projectIdx){
-                projectSet.remove(it);
+            p = it.next();
+            if(p.getIdx()==projectIdx){
+                result.remove(p);
                 break;
             }
         }
-
         account.getJoinedProjects().clear();
-        account.setJoinedProjects(projectSet);
+        account.setJoinedProjects(result);
     }
 }
