@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -62,8 +63,9 @@ public class UrlController {
      */
     @PostMapping("project/{projectIdx}/url")
     @ApiOperation(value = "새로운 URL 생성 (참여 유저 가능)")
-    public ResponseEntity<?> createUrl(@PathVariable @ApiParam(value = "URL 생성할 Project idx", example = "1") Long projectIdx, @RequestBody UrlRequestDto url) {
+    public ResponseEntity<?> createUrl(@PathVariable @ApiParam(value = "URL 생성할 Project idx", example = "1") Long projectIdx, @RequestBody UrlRequestDto url, HttpSession session) {
         try {
+//            ProjectResponseDto projectResponseDto = urlService.createUrl(projectIdx, url, AuthUtils.getCurrentAccount(session).getIdx());
             ProjectResponseDto projectResponseDto = urlService.createUrl(projectIdx, url, AuthUtils.getCurrentAccount().getIdx());
             return new ResponseEntity<>(projectResponseDto, HttpStatus.CREATED);
         } catch (NoPermissionException e) {
@@ -79,8 +81,10 @@ public class UrlController {
     @DeleteMapping("project/{projectIdx}/url/{idx}")
     @ApiOperation(value = "URL 삭제 (작성자 가능)")
     public ResponseEntity<?> deleteUrl(@PathVariable @ApiParam(value = "URL 삭제할 Project idx", example = "1") final Long projectIdx,
-                                       @PathVariable @ApiParam(value = "삭제할 Url idx", example = "1") final Long idx) {
+                                       @PathVariable @ApiParam(value = "삭제할 Url idx", example = "1") final Long idx,
+                                       HttpSession session) {
         try {
+//            urlService.deleteUrl(projectIdx, idx, AuthUtils.getCurrentAccount(session).getIdx());
             urlService.deleteUrl(projectIdx, idx, AuthUtils.getCurrentAccount().getIdx());
             return new ResponseEntity<>("Url 삭제 성공", HttpStatus.NO_CONTENT);
         }catch (NoPermissionException e) {
