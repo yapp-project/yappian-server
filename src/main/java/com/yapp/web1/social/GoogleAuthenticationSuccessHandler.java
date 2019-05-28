@@ -29,7 +29,7 @@ public class GoogleAuthenticationSuccessHandler implements AuthenticationSuccess
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         httpSession.setAttribute("LOGIN_USER", getGoogleUser(authentication));
-        response.sendRedirect("/me");
+        response.sendRedirect("/");
     }
 
     private Account getGoogleUser(Authentication authentication) { // OAuth 인증정보를 통해 GoogleUser 인스턴스 생성
