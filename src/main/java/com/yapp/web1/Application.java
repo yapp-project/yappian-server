@@ -1,7 +1,7 @@
 package com.yapp.web1;
 
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
@@ -10,8 +10,19 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 public class Application {
 
+    public static final String APPLICATION_LOCATIONS =
+                    "spring.config.location="
+                    + "classpath:application.yml,"
+                    + "/app/config/yappian/s3.yml,"
+                    + "/app/config/yappian/google.yml,"
+                    + "/app/config/yappian/real-db.yml,"
+                    + "classpath:local-ssl.yml"
+            ;
+
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        new SpringApplicationBuilder(Application.class)
+                .properties(APPLICATION_LOCATIONS)
+                .run(args);
     }
 
 }

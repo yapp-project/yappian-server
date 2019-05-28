@@ -14,6 +14,11 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import static springfox.documentation.builders.RequestHandlerSelectors.withMethodAnnotation;
 
+/**
+ * Swagger2 Config
+ *
+ * @author Dakyung Ko
+ */
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig implements WebMvcConfigurer {
@@ -22,7 +27,6 @@ public class SwaggerConfig implements WebMvcConfigurer {
 
     @Bean
     public Docket api() {
-        // TODO Security 설정 후 수정
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .useDefaultResponseMessages(false)
@@ -30,7 +34,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
 //                    .apis(RequestHandlerSelectors.basePackage("com.yapp.web1.controller"))
 //                    .paths(PathSelectors.any())
                     .apis(withMethodAnnotation(ApiOperation.class))
-                .build();
+                    .build();
     }
 
     @Override
@@ -46,7 +50,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
         return new ApiInfoBuilder()
                 .title(applicationName)
                 .contact(new Contact("Dakyung Ko", null, "kdkyung57@gmail.com"))
-                .version("0.3")
+                .version("0.4")
                 .build();
     }
 }

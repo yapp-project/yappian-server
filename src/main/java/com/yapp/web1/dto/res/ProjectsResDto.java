@@ -26,7 +26,7 @@ public class ProjectsResDto {
     private Mark releaseCheck; // 프로젝트 런칭 여부
     private String productURL; // 프로젝트 대표 URL
     private String description; // 프로젝트 상세 설명
-    private List<UserResponseDto> userList; // User 리스트
+    private List<AccountResponseDto> accountList; // User 리스트
     private List<UrlResponseDto>  urlList; // Url 리스트
     private List<FileUploadResponseDto> fileList; // 파일 리스트
 
@@ -34,7 +34,7 @@ public class ProjectsResDto {
     public ProjectsResDto(Long idx, String name, String password, ProjectType type,
                           Long ordersIdx, int orderNumber, Long createUserIdx,
                           Mark finalCheck, Mark releaseCheck, String productURL,
-                          String description, List<UserResponseDto> userList,
+                          String description, List<AccountResponseDto> accountList,
                           List<UrlResponseDto> urlList, List<FileUploadResponseDto> fileList){
 
         this.idx = idx;
@@ -48,7 +48,7 @@ public class ProjectsResDto {
         this.releaseCheck = releaseCheck;
         this.productURL = productURL;
         this.description = description;
-        this.userList = userList;
+        this.accountList = accountList;
         this.urlList = urlList;
         this.fileList = fileList;
     }

@@ -8,7 +8,7 @@ import lombok.Setter;
 /**
  * 업로드 한 파일 정보 dto
  *
- * * @author JiHye Kim
+ * @author JiHye Kim
  */
 @Setter
 @Getter

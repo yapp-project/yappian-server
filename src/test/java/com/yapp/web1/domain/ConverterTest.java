@@ -4,6 +4,7 @@ import com.yapp.web1.common.RepositoryTest;
 import com.yapp.web1.domain.VO.Mark;
 import com.yapp.web1.domain.VO.ProjectType;
 import com.yapp.web1.repository.OrdersRepository;
+import org.hibernate.query.Query;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
@@ -35,7 +35,7 @@ public class ConverterTest extends RepositoryTest {
                 .name("프로젝트팀")
                 .finalCheck(Mark.N)
                 .releaseCheck(Mark.N)
-                .createUserIdx(1L)
+                .createAccountIdx(1L)
                 .orders(orders)
                 .build();
         em.persist(project);
@@ -43,10 +43,12 @@ public class ConverterTest extends RepositoryTest {
         em.clear();
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     @Transactional
     public void ProjectTypeConverter변환테스트(){
-        Query query = em.createNativeQuery("select * from project where type = :type", Project.class);
+        // Native Query로 테스트해야하기 때문에 unchecked함
+        Query<Project> query = (Query<Project>) em.createNativeQuery("select * from project where type = :type", Project.class);
         query.setParameter("type", 0); // WEB is 0
         List<Project> projectList = query.getResultList();
 

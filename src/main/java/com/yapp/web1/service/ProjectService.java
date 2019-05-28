@@ -2,7 +2,12 @@ package com.yapp.web1.service;
 
 import com.yapp.web1.dto.req.FinishProjectRequestDto;
 import com.yapp.web1.dto.req.ProjectRequestDto;
-import com.yapp.web1.dto.res.*;
+import com.yapp.web1.dto.res.FinishProjectResponseDto;
+import com.yapp.web1.dto.res.ProjectResponseDto;
+import com.yapp.web1.dto.res.AccountResponseDto;
+import com.yapp.web1.dto.res.ProjectsResDto;
+import com.yapp.web1.exception.NoPermissionException;
+import com.yapp.web1.exception.NotFoundException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -10,9 +15,10 @@ import java.util.List;
 /**
  * ProjectService Interface
  *
+ * @author Dakyung Ko
  * @author Jihye Kim
- * @since 0.0.3
- * @version 1.2
+ * @since 0.0.4
+ * @version 1.3
  */
 public interface ProjectService {
 
@@ -25,31 +31,31 @@ public interface ProjectService {
      * 프로젝트 생성
      *
      * @param dto 생성할 Project 정보
-     * @param userIdx 로그인 유저
+     * @param accountIdx 로그인 유저
      * @return 생성한 Project 정보
      */
-    ProjectResponseDto createProject(ProjectRequestDto dto, Long userIdx);//실제로는 User user
+    ProjectResponseDto createProject(ProjectRequestDto dto, Long accountIdx);//실제로는 Account
 
     /**
      * 프로젝트 수정
      *
      * @param idx 수정할 Project idx
      * @param dto 수정할 Project 정보
-     * @param userIdx 로그인 유저
-     * @exception FORBIDDENException 프로젝트 조인한 사람만 수정할 수 있다.
-     * @exception NOTFOUNDException 프로젝트가 존재해야 수정할 수 있다.
+     * @param accountIdx 로그인 유저
+     * @exception NoPermissionException 프로젝트 조인한 사람만 수정할 수 있다.
+     * @exception NotFoundException 프로젝트가 존재해야 수정할 수 있다.
      */
-    ProjectResponseDto updateProject(Long idx, ProjectRequestDto dto, Long userIdx);//실제로는 User user
+    ProjectResponseDto updateProject(Long idx, ProjectRequestDto dto, Long accountIdx);//실제로는 Account
 
     /**
      * 프로젝트 삭제
      *
      * @param idx 삭제할 Project idx
-     * @param user 로그인 유저
-     * @exception FORBIDDENException 프로젝트 조인한 사람만 수정할 수 있다.
-     * @exception NOTFOUNDException 프로젝트가 존재해야 수정할 수 있다.
+     * @param accountIdx 로그인 유저
+     * @exception NoPermissionException 프로젝트 조인한 사람만 수정할 수 있다.
+     * @exception NotFoundException 프로젝트가 존재해야 수정할 수 있다.
      */
-    void deleteProject(Long idx, Long userIdx);//실제로는 User user
+    void deleteProject(Long idx, Long accountIdx);//실제로는 Account
 
     /**
      * 프로젝트 상세
@@ -60,24 +66,19 @@ public interface ProjectService {
     ProjectResponseDto getProject(Long idx);
 
     /**
-     * 프로젝트에 조인하기
+     * 프로젝트에 참여
      *
-     * @param projectIdx 조회할 프로젝트 idx
+     * @param projectIdx 참여할 Project idx
      * @see /v1/api/project/{projectIdx}
      */
-    void joinProject(Long projectIdx, String password, Long randomUser);
-
-    /**
-     * 내가 조인한 프로젝트 목록 조회
-     */
-    List<ProjectListinUserResDto> getProjectList(Long userIdx);
+    void joinProject(Long projectIdx, String password, Long randomAccount);
 
     /**
      * 프로젝트에 속한 유저 목록 조회
     *
     * @param idx 조회할 Project idx
      */
-    List<UserResponseDto> getUserListInProject(Long idx);
+    List<AccountResponseDto> getAccountListInProject(Long idx);
 
     /**
      * 프로젝트 완료 설정
@@ -88,7 +89,7 @@ public interface ProjectService {
      *
      * @exception Exception noPermission, notFound
      */
-    FinishProjectResponseDto setFinishedProject(Long projectIdx, MultipartFile[] multipartFiles, FinishProjectRequestDto dto, Long userIdx);
+    FinishProjectResponseDto setFinishedProject(Long projectIdx, MultipartFile[] multipartFiles, FinishProjectRequestDto dto, Long accountIdx);
 
     /**
      * 프로젝트 완료 조회

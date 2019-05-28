@@ -25,13 +25,13 @@ public class Orders extends BaseEntity{
     int number;
 
     /** Relation Mapping **/
-    /** Orders - UserOrders 양방향 매핑 **/
+    /** Orders - AccountOrders 양방향 매핑 **/
     @JsonIgnore
     @OneToMany(mappedBy="orders",
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             orphanRemoval = true)
-    private Set<UserOrders> userOrders = new HashSet<>();
+    private Set<AccountOrders> accountOrders = new HashSet<>();
 
     /** Orders - Project 양방향 매핑 **/
     @JsonIgnore
@@ -44,10 +44,10 @@ public class Orders extends BaseEntity{
 
     /** Method **/
     @Builder
-    public Orders(int number, Set<UserOrders> userOrders, Set<Project> projects){
+    public Orders(int number, Set<AccountOrders> accountOrders, Set<Project> projects){
         this.number = number;
 
-        this.userOrders = Optional.ofNullable(userOrders).orElse(this.userOrders);
+        this.accountOrders = Optional.ofNullable(accountOrders).orElse(this.accountOrders);
         this.projects = Optional.ofNullable(projects).orElse(this.projects);
     }
 }
