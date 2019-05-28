@@ -18,10 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * ProjectService 구현 클래스
@@ -85,13 +82,13 @@ public class ProjectServiceImpl implements ProjectService {
 
     // getProjectsList
     @Override
-    public List<ProjectsResDto> getProjects(){
+    public List<ProjectsResDto> getProjects() {
 
         List<Project> projects = projectRepository.findAll();
 
         List<ProjectsResDto> projectList = new ArrayList<>();
 
-        for(Project project : projects) {
+        for (Project project : projects) {
 
             List<AccountResponseDto> accountList = commonService.joinedProject(project);
             List<UrlResponseDto> urlList = urlService.getUrl(project.getIdx());
@@ -120,7 +117,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     // createProject
     @Override
-    public ProjectResponseDto createProject(ProjectRequestDto dto, Long accountIdx) { //실제로는 Account account. 그리고 Account.getIdx()해서 구현
+    public ProjectResponseDto createProject(ProjectRequestDto dto, Long accountIdx) {
 
         final Project project = Project.builder()
                 .type(dto.getProjectType())
@@ -251,8 +248,20 @@ public class ProjectServiceImpl implements ProjectService {
 
     // leave project
     @Override
-    public void leaveProject(Long projectIdx, Long userIdx){
-        Project project = commonService.findById(projectIdx);
+    public void leaveProject(Long projectIdx, Long accountIdx) {
+        Account account = commonService.findAccountById(accountIdx);
 
+        Set<Project> projectSet = account.getJoinedProjects();
+        Iterator<Project> it = projectSet.iterator();
+
+        while (it.hasNext()) {
+            if(it.next().getIdx()==projectIdx){
+                projectSet.remove(it);
+                break;
+            }
+        }
+
+        account.getJoinedProjects().clear();
+        account.setJoinedProjects(projectSet);
     }
 }

@@ -79,26 +79,6 @@ public class S3Service {
 
     }
 
-    // 실제론 구현할 필요 없음 일단 확인하기 위함임.
-    public ResponseEntity<byte[]> download(String key) throws IOException {
-        GetObjectRequest getObjectRequest = new GetObjectRequest(bucket, key);
-        S3Object s3Object = amazonS3Client.getObject(getObjectRequest);
-        S3ObjectInputStream objectInputStream = s3Object.getObjectContent();
-        byte[] bytes = IOUtils.toByteArray(objectInputStream);
-        String fileName = URLEncoder.encode(key, "UTF-8").replaceAll("\\+", "%20");
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        httpHeaders.setContentLength(bytes.length);
-        httpHeaders.setContentDispositionFormData("attachment", fileName);
-        return new ResponseEntity<>(bytes, httpHeaders, HttpStatus.OK);
-    }
-
-    public List<S3ObjectSummary> list() {
-        ObjectListing objectListing = amazonS3Client.listObjects(new ListObjectsRequest().withBucketName(bucket));
-        List<S3ObjectSummary> s3ObjectSummaries = objectListing.getObjectSummaries();
-        return s3ObjectSummaries;
-    }
-
     //파일 삭제
     public void fileDelete(String fileName){
         String name = (fileName).replace(File.separatorChar, '/');

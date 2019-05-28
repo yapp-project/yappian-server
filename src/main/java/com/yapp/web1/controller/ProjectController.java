@@ -46,12 +46,12 @@ public class ProjectController {
      * @see /api/projects
      */
     @GetMapping("/projects")
-    @ApiOperation(value="프로젝트 리스트")
-    public ResponseEntity<?> getProjects(){
-        try{
+    @ApiOperation(value = "프로젝트 리스트")
+    public ResponseEntity<?> getProjects() {
+        try {
             List<ProjectsResDto> projectsResDto = projectService.getProjects();
             return new ResponseEntity<>(projectsResDto, HttpStatus.OK);
-        }catch (NotFoundException e) {
+        } catch (NotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
@@ -79,16 +79,16 @@ public class ProjectController {
     /**
      * 프로젝트 수정
      *
-     * @param projectIdx     수정할 프로젝트 idx
-     * @param project       수정할 프로젝트 데이터
+     * @param projectIdx 수정할 프로젝트 idx
+     * @param project    수정할 프로젝트 데이터
      * @return 수정한 프로젝트 데이터, 해당 프로젝트의 task 목록
      * @throws NoPermissionException 프로젝트 조인한 사람만 수정할 수 있다.
-     * @throws NotFoundException  프로젝트가 존재해야 수정할 수 있다.
+     * @throws NotFoundException     프로젝트가 존재해야 수정할 수 있다.
      * @see /api/project/{projectIdx}
      */
     @PutMapping("/project/{projectIdx}")
     @ApiOperation(value = "프로젝트 수정(참여 유저)")
-    public ResponseEntity<?> updateProject(@PathVariable  @ApiParam(value = "수정할 Project idx", example = "1")  final Long projectIdx,
+    public ResponseEntity<?> updateProject(@PathVariable @ApiParam(value = "수정할 Project idx", example = "1") final Long projectIdx,
                                            @Valid @RequestBody final ProjectRequestDto project) {
         try {
             projectService.updateProject(projectIdx, project, AuthUtils.getCurrentAccount().getIdx());
@@ -103,9 +103,9 @@ public class ProjectController {
     /**
      * 프로젝트 삭제
      *
-     * @param projectIdx    수정할 프로젝트 idx
+     * @param projectIdx 수정할 프로젝트 idx
      * @throws NoPermissionException 프로젝트 조인한 사람만 수정할 수 있다.
-     * @throws NotFoundException  프로젝트가 존재해야 수정할 수 있다.
+     * @throws NotFoundException     프로젝트가 존재해야 수정할 수 있다.
      * @see /api/project/{projectIdx}
      */
     @DeleteMapping("/project/{projectIdx}")
@@ -130,7 +130,7 @@ public class ProjectController {
      */
     @GetMapping("/project/{projectIdx}")
     @ApiOperation(value = "프로젝트 상세 - 프로젝트 정보 및 URL 목록(인증 필요 없음)")
-    public ResponseEntity<?> getProject(@PathVariable @ApiParam(value = "조회할 projectIdx", example = "1")final Long projectIdx) {
+    public ResponseEntity<?> getProject(@PathVariable @ApiParam(value = "조회할 projectIdx", example = "1") final Long projectIdx) {
         try {
             ProjectResponseDto project = projectService.getProject(projectIdx);
             return new ResponseEntity<>(project, HttpStatus.OK);
@@ -143,10 +143,9 @@ public class ProjectController {
      * 프로젝트 참여
      *
      * @param projectIdx 참여할 프로젝트 idx
-     * @exception NoPermissionException 비밀번호 다름
-     * @exception NoPermissionException 권한 없음(비회원)
-     * @exception Exception 이미 join된 유저 - 추후 수정
-     *
+     * @throws NoPermissionException 비밀번호 다름
+     * @throws NoPermissionException 권한 없음(비회원)
+     * @throws Exception             이미 join된 유저 - 추후 수정
      * @see /api/join/{projectIdx}
      */
     @PostMapping("/project/{projectIdx}")
@@ -161,10 +160,6 @@ public class ProjectController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
         }
     }
-
-    // TODO 프로젝트 조인 취소 구현
-
-
 
     /**
      * 프로젝트에 속한 유저 목록 조회
@@ -189,9 +184,7 @@ public class ProjectController {
      * @param projectIdx 완료할 프로젝트 idx
      * @throws Exception join한 유저가 아닌 경우
      * @see /api/project/{projectIdx}/finish
-     *
      */
-    // TODO pdf만 올리기는 추후 수정.
     @PutMapping("/project/{projectIdx}/finish")
     @ApiOperation(value = "프로젝트 완료 설정(참여 유저)")
     public ResponseEntity<?> setFinishedProject(@PathVariable @ApiParam(value = "완료할 projectIdx", example = "1") final Long projectIdx,
@@ -227,18 +220,17 @@ public class ProjectController {
 
     /**
      * 프로젝트 나가기
+     *
      * @param projectIdx
-     * @param session
      */
     @PutMapping("/project/{projectIdx}/leave")
-    @ApiOperation(value="프로젝트 나가기")
-    public ResponseEntity<?> leaveProject(@PathVariable @ApiParam(value = "조회할 projectIdx", example = "5") final Long projectIdx,
-                                          @ApiIgnore HttpSession session){
-        try{
-            projectService.leaveProject(projectIdx,2L);
-        }catch (NotFoundException e) {
+    @ApiOperation(value = "프로젝트 나가기")
+    public ResponseEntity<?> leaveProject(@PathVariable @ApiParam(value = "조회할 projectIdx", example = "5") final Long projectIdx) {
+        try {
+            projectService.leaveProject(projectIdx, AuthUtils.getCurrentAccount().getIdx());
+        } catch (NotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>("나가기 성공",HttpStatus.OK);
+        return new ResponseEntity<>("나가기 성공", HttpStatus.OK);
     }
 }

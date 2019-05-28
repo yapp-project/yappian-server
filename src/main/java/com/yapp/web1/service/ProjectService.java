@@ -103,7 +103,7 @@ public interface ProjectService {
     /**
      * 프로젝트 나가기
      * @param projectIdx
-     * @param userIdx
+     * @param accountIdx
      */
-    void leaveProject(Long projectIdx, Long userIdx);
+    void leaveProject(Long projectIdx, Long accountIdx);
 }

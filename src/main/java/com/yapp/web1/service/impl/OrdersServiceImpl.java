@@ -32,7 +32,7 @@ public class OrdersServiceImpl implements OrdersService {
     private final ProjectRepository projectRepository;
 
     // create order
-    @Scheduled(cron="0 0 0 0 0/6 * * ")
+    @Scheduled(cron="0 0 0 1 1/6 *")
     @Override
     public void createOrder(){
         List<Orders> findOrders = ordersRepository.findByOrderByNumberDesc();
