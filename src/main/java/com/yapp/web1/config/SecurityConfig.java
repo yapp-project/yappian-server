@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsUtils;
 
 import javax.servlet.Filter;
 
@@ -31,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        if(isTestMode()) {
+        if(!isTestMode()) {
             web.ignoring()
                     .antMatchers("/v2/api-docs", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**", "/swagger/**");
         }
@@ -54,9 +55,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private void setTestMode(HttpSecurity http) throws Exception {
         http.antMatcher("/**")
                 .authorizeRequests()
+//                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .antMatchers("/", "/me", "/h2/**", "/api/login/**", "/api/_hcheck", "/auth", "/js/**", "/css/**", "/image/**", "/fonts/**", "/favicon.ico").permitAll()
                 .mvcMatchers(HttpMethod.GET, "/api/order*/**", "/api/project/**").permitAll()
                 .anyRequest().authenticated()
+//                .and().cors()
                 .and().exceptionHandling()
 //                    .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/api/_hcheck"))
                 .and().headers().frameOptions().sameOrigin()

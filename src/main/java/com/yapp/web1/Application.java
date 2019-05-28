@@ -13,6 +13,7 @@ public class Application {
                     + "classpath:application.yml,"
                     + "/app/config/yappian/s3.yml,"
                     + "/app/config/yappian/google.yml,"
+                    + "/app/config/yappian/real-db.yml,"
                     + "classpath:local-ssl.yml"
             ;
 

@@ -1,5 +1,6 @@
 package com.yapp.web1.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,6 +14,7 @@ import java.security.Principal;
  * @since 0.0.4
  * @version 1.0
  */
+@CrossOrigin("*")
 @RestController
 public class AuthController {
 
