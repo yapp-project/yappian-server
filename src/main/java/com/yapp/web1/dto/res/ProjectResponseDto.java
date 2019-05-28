@@ -26,6 +26,7 @@ public class ProjectResponseDto {
 
     @Builder
     public ProjectResponseDto(Project project, List<AccountResponseDto> accountList, List<UrlResponseDto>  urlList){
+        this.projectIdx = project.getIdx();
         this.orderNumber = project.getOrders().getNumber();
         this.projectType = project.getType();
         this.projectName = project.getName();
