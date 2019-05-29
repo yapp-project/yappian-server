@@ -31,6 +31,9 @@ public class CorsFilter {
         response.addHeader("Cache-Control", "no-cache");
 
         if (!"OPTIONS".equalsIgnoreCase(request.getMethod())) {
+//            chain.doFilter(req, res);
+            response.setStatus(HttpServletResponse.SC_OK);
+        } else {
             chain.doFilter(req, res);
         }
     }

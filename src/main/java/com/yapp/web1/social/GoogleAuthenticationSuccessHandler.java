@@ -1,6 +1,7 @@
 package com.yapp.web1.social;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.yapp.web1.common.SessionConstants;
 import com.yapp.web1.domain.Account;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -28,7 +29,7 @@ public class GoogleAuthenticationSuccessHandler implements AuthenticationSuccess
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        httpSession.setAttribute("LOGIN_USER", getGoogleUser(authentication));
+        httpSession.setAttribute(SessionConstants.LOGIN_USER, getGoogleUser(authentication));
         response.sendRedirect("/");
     }
 
