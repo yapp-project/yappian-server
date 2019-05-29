@@ -23,7 +23,7 @@ import javax.servlet.Filter;
  * @author Dakyung Ko
  */
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity//(debug = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final Filter ssoFilter;
@@ -111,7 +111,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("*");
+        configuration.addAllowedOrigin("https://yappian.com/");
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(true);
