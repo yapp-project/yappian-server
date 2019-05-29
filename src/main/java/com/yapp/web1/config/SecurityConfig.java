@@ -55,8 +55,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private void setTestMode(HttpSecurity http) throws Exception {
         http.antMatcher("/**")
                 .authorizeRequests()
-                    .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                     .antMatchers("/", "/me", "/h2/**", "/api/login*/**", "/api/logout*/**", "/api/_hcheck", "/auth", "/js/**", "/css/**", "/image/**", "/fonts/**", "/favicon.ico")
+                        .permitAll()
+                    .requestMatchers(CorsUtils::isPreFlightRequest)
                         .permitAll()
 //                    .antMatchers(HttpMethod.OPTIONS, "/api/login/**", "/api/logout/**")
 //                        .permitAll()
