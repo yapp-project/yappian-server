@@ -1,6 +1,5 @@
 package com.yapp.web1.config;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
@@ -10,10 +9,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.CorsUtils;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.servlet.Filter;
 
@@ -59,8 +54,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private void setTestMode(HttpSecurity http) throws Exception {
         http.antMatcher("/**")
                 .authorizeRequests()
-                    .requestMatchers(CorsUtils::isPreFlightRequest)
-                        .permitAll()
                     .antMatchers("/", "/me", "/h2/**", "/h2-console/**", "/api/login*/**", "/api/logout*/**", "/api/_hcheck", "/auth",
                         "/js/**", "/css/**", "/image/**", "/fonts/**",
                         "/favicon.ico", "/static/**", "/**/*.json", "/**/*.html", "/**/*.js")
@@ -69,12 +62,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .permitAll()
                     .antMatchers(HttpMethod.OPTIONS, "/**")
                         .permitAll()
-                        .anyRequest()
-                            .authenticated()
-                            .and().cors()
+                    .anyRequest()
+                        .authenticated()
                     .and().exceptionHandling()
 //                    .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/api/_hcheck"))
-
+                    .and().headers().frameOptions().disable()
                     .and().csrf().disable()
                     .addFilterBefore(ssoFilter, BasicAuthenticationFilter.class)
         ;
@@ -102,18 +94,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
                 .logoutSuccessUrl("/")
                 .permitAll();
-    }
-
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("*");
-        configuration.addAllowedMethod("POST, GET, PUT, OPTIONS, DELETE");
-        configuration.addAllowedHeader("Origin, X-Requested-With, Content-Type, Accept, Authorization, Secrete_Token");
-        configuration.setAllowCredentials(true);
-        configuration.setMaxAge(3600L);
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
     }
 }
