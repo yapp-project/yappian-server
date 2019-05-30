@@ -31,6 +31,16 @@ public class OrdersController {
     private OrdersService ordersService;
 
     /**
+     * 기수 추가 - 6개월 단위
+     */
+    @PostMapping("/order")
+    @ApiOperation(value="기수 추가(6개월)")
+    public ResponseEntity<?> createOrder(){
+        ordersService.createOrder();
+        return new ResponseEntity<>("기수 추가 성공",HttpStatus.CREATED);
+    }
+
+    /**
      * 기수 목록 리스트
      *
      * @return 기수 목록 list
