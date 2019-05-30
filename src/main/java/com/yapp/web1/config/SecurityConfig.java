@@ -59,8 +59,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private void setTestMode(HttpSecurity http) throws Exception {
         http.antMatcher("/**")
                 .authorizeRequests()
-                    .requestMatchers(CorsUtils::isPreFlightRequest)
-                        .permitAll()
+//                    .requestMatchers(CorsUtils::isPreFlightRequest)
+//                        .permitAll()
                     .antMatchers("/", "/me", "/h2/**", "/h2-console/**", "/api/login*/**", "/api/logout*/**", "/api/_hcheck", "/auth",
                         "/js/**", "/css/**", "/image/**", "/fonts/**",
                         "/favicon.ico", "/static/**", "/**/*.json", "/**/*.html", "/**/*.js")
@@ -73,7 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .permitAll()
                     .anyRequest()
                         .authenticated()
-                        .and().cors()
+//                        .and().cors()
                     .and().exceptionHandling()
 //                    .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/api/_hcheck"))
                     .and().headers().frameOptions().disable()
@@ -108,16 +108,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
     }
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("*");
-        configuration.addAllowedMethod("*");
-        configuration.addAllowedHeader("*");
-        configuration.setAllowCredentials(true);
-        configuration.setMaxAge(3600L);
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+//    @Bean
+//    public CorsConfigurationSource corsConfigurationSource() {
+//        CorsConfiguration configuration = new CorsConfiguration();
+//        configuration.addAllowedOrigin("*");
+//        configuration.addAllowedMethod("*");
+//        configuration.addAllowedHeader("*");
+//        configuration.setAllowCredentials(true);
+//        configuration.setMaxAge(3600L);
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", configuration);
+//        return source;
+//    }
 }

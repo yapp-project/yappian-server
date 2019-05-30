@@ -33,7 +33,7 @@ public class GoogleAuthenticationSuccessHandler implements AuthenticationSuccess
         response.sendRedirect("/");
     }
 
-    private Account getGoogleUser(Authentication authentication) { // OAuth 인증정보를 통해 GoogleUser 인스턴스 생성
+    private Account getGoogleUser(Authentication authentication) {
         OAuth2Authentication oAuth2Authentication = (OAuth2Authentication) authentication;
 //        return (Account) authentication.getPrincipal();
         return objectMapper.convertValue(oAuth2Authentication.getUserAuthentication().getDetails(), Account.class);
