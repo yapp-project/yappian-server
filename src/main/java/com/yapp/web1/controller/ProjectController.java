@@ -91,10 +91,8 @@ public class ProjectController {
     @PutMapping("/project/{projectIdx}")
     @ApiOperation(value = "프로젝트 수정(참여 유저)")
     public ResponseEntity<?> updateProject(@PathVariable  @ApiParam(value = "수정할 Project idx", example = "1")  final Long projectIdx,
-                                           @Valid @RequestBody final ProjectRequestDto project,
-                                           HttpSession session) {
+                                           @Valid @RequestBody final ProjectRequestDto project) {
         try {
-//            projectService.updateProject(projectIdx, project, AuthUtils.getCurrentAccount(session).getIdx());
             projectService.updateProject(projectIdx, project, AuthUtils.getCurrentAccount().getIdx());
             return new ResponseEntity<>("프로젝트 수정 성공", HttpStatus.OK);
         } catch (NoPermissionException e) {

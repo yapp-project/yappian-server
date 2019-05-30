@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -18,7 +19,7 @@ import javax.servlet.Filter;
  * @author Dakyung Ko
  */
 @Configuration
-@EnableWebSecurity//(debug = true)
+@EnableWebSecurity(debug = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final Filter ssoFilter;
@@ -54,21 +55,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private void setTestMode(HttpSecurity http) throws Exception {
         http.antMatcher("/**")
                 .authorizeRequests()
-                    .antMatchers("/", "/me", "/h2/**", "/h2-console/**", "/api/login*/**", "/api/logout*/**", "/api/_hcheck", "/auth",
+                .antMatchers("/", "/me", "/h2/**", "/h2-console/**", "/api/login*/**", "/api/logout*/**", "/api/_hcheck", "/auth",
                         "/js/**", "/css/**", "/image/**", "/fonts/**",
                         "/favicon.ico", "/static/**", "/**/*.json", "/**/*.html", "/**/*.js")
-                        .permitAll()
-                    .mvcMatchers(HttpMethod.GET, "/api/order*/**", "/api/project/**")
-                        .permitAll()
-                    .antMatchers(HttpMethod.OPTIONS, "/**")
-                        .permitAll()
-                    .anyRequest()
-                        .authenticated()
-                    .and().exceptionHandling()
-//                    .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/api/_hcheck"))
-                    .and().headers().frameOptions().disable()
-                    .and().csrf().disable()
-                    .addFilterBefore(ssoFilter, BasicAuthenticationFilter.class)
+                .permitAll()
+                .mvcMatchers(HttpMethod.GET, "/api/order*/**", "/api/project/**")
+                .permitAll()
+                .antMatchers(HttpMethod.OPTIONS, "/**")
+                .permitAll()
+                .anyRequest()
+                .authenticated()
+                .and().exceptionHandling()
+                .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/api/login"))
+                .and().headers().frameOptions().disable()
+                .and().csrf().disable()
+                .addFilterBefore(ssoFilter, BasicAuthenticationFilter.class)
         ;
         http.logout()
                 .invalidateHttpSession(true)
