@@ -22,5 +22,4 @@ public class AuthController {
     public Principal home(Principal principal) {
         return principal;
     }
-
 }

@@ -7,9 +7,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.web.cors.CorsUtils;
 
 import javax.servlet.Filter;
 
@@ -55,19 +55,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private void setTestMode(HttpSecurity http) throws Exception {
         http.antMatcher("/**")
                 .authorizeRequests()
-//                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                    .antMatchers("/", "/me", "/h2/**", "/api/login*/**", "/api/logout*/**", "/api/_hcheck", "/auth", "/js/**", "/css/**", "/image/**", "/fonts/**", "/favicon.ico")
+                    .antMatchers("/", "/me", "/h2/**", "/h2-console/**", "/api/login*/**", "/api/logout*/**", "/api/_hcheck", "/auth",
+                        "/js/**", "/css/**", "/image/**", "/fonts/**",
+                        "/favicon.ico", "/static/**", "/**/*.json", "/**/*.html", "/**/*.js")
                         .permitAll()
-//                    .antMatchers(HttpMethod.OPTIONS, "/api/login/**", "/api/logout/**")
-//                        .permitAll()
                     .mvcMatchers(HttpMethod.GET, "/api/order*/**", "/api/project/**")
+                        .permitAll()
+                    .antMatchers(HttpMethod.OPTIONS, "/**")
                         .permitAll()
                     .anyRequest()
                         .authenticated()
-//                .and().cors()
                     .and().exceptionHandling()
-//                    .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/api/_hcheck"))
-                    .and().headers().frameOptions().sameOrigin()
+                      .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/api/login"))
+                    .and().headers().frameOptions().disable()
                     .and().csrf().disable()
                     .addFilterBefore(ssoFilter, BasicAuthenticationFilter.class)
         ;
@@ -75,7 +75,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
                 .logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
-                .logoutSuccessUrl("/auth")
+                .logoutSuccessUrl("/")
                 .permitAll()
         ;
     }
