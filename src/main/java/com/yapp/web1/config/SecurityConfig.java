@@ -65,18 +65,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/js/**", "/css/**", "/image/**", "/fonts/**",
                         "/favicon.ico", "/static/**", "/**/*.json", "/**/*.html", "/**/*.js")
                         .permitAll()
-                    .antMatchers(HttpMethod.OPTIONS, "/api/login/**", "/api/logout/**")
-                        .permitAll()
                     .mvcMatchers(HttpMethod.GET, "/api/order*/**", "/api/project/**")
                         .permitAll()
                     .antMatchers(HttpMethod.OPTIONS, "/**")
                         .permitAll()
-                    .anyRequest()
-                        .authenticated()
-                        .and().cors()
+                        .anyRequest()
+                            .authenticated()
+                            .and().cors()
                     .and().exceptionHandling()
 //                    .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/api/_hcheck"))
-                    .and().headers().frameOptions().disable()
+
                     .and().csrf().disable()
                     .addFilterBefore(ssoFilter, BasicAuthenticationFilter.class)
         ;
@@ -110,8 +108,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOrigin("*");
-        configuration.addAllowedMethod("*");
-        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("POST, GET, PUT, OPTIONS, DELETE");
+        configuration.addAllowedHeader("Origin, X-Requested-With, Content-Type, Accept, Authorization, Secrete_Token");
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
