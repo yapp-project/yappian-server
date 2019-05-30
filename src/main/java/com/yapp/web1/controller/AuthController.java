@@ -23,4 +23,10 @@ public class AuthController {
         return principal;
     }
 
+//    @GetMapping("/me")
+//    public String me(HttpSession session) {
+//        String result = session.getAttribute("LOGIN_USER").toString();
+//        System.out.println("*/*/*"+session.getId());
+//        return result;
+//    }
 }

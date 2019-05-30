@@ -1,5 +1,6 @@
 package com.yapp.web1.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
@@ -9,7 +10,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.CorsUtils;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.servlet.Filter;
 
@@ -19,7 +23,7 @@ import javax.servlet.Filter;
  * @author Dakyung Ko
  */
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity//(debug = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final Filter ssoFilter;
@@ -32,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        if(!isTestMode()) {
+        if(isTestMode()) {
             web.ignoring()
                     .antMatchers("/v2/api-docs", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**", "/swagger/**");
         }
@@ -55,23 +59,34 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private void setTestMode(HttpSecurity http) throws Exception {
         http.antMatcher("/**")
                 .authorizeRequests()
-//                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                .antMatchers(HttpMethod.OPTIONS, "/api/login/**", "/api/logout/**").permitAll()
-                .antMatchers("/", "/me", "/h2/**", "/api/_hcheck", "/auth", "/js/**", "/css/**", "/image/**", "/fonts/**", "/favicon.ico").permitAll()
-                .mvcMatchers(HttpMethod.GET, "/api/order*/**", "/api/project/**").permitAll()
-                .anyRequest().authenticated()
-//                .and().cors()
-                .and().exceptionHandling()
+                    .requestMatchers(CorsUtils::isPreFlightRequest)
+                        .permitAll()
+                    .antMatchers("/", "/me", "/h2/**", "/h2-console/**", "/api/login*/**", "/api/logout*/**", "/api/_hcheck", "/auth",
+                        "/js/**", "/css/**", "/image/**", "/fonts/**",
+                        "/favicon.ico", "/static/**", "/**/*.json", "/**/*.html", "/**/*.js")
+                        .permitAll()
+//                    .antMatchers(HttpMethod.OPTIONS, "/api/login/**", "/api/logout/**")
+//                        .permitAll()
+                    .mvcMatchers(HttpMethod.GET, "/api/order*/**", "/api/project/**")
+                        .permitAll()
+                    .antMatchers(HttpMethod.OPTIONS, "/**")
+                        .permitAll()
+                    .anyRequest()
+                        .authenticated()
+                        .and().cors()
+                    .and().exceptionHandling()
 //                    .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/api/_hcheck"))
-                .and().headers().frameOptions().sameOrigin()
-                .and().csrf().disable()
-                .addFilterBefore(ssoFilter, BasicAuthenticationFilter.class)
+                    .and().headers().frameOptions().disable()
+                    .and().csrf().disable()
+//                        .authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/oauth/token")
+//                            .permitAll().and()
+                    .addFilterBefore(ssoFilter, BasicAuthenticationFilter.class)
         ;
         http.logout()
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
                 .logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
-                .logoutSuccessUrl("/auth")
+                .logoutSuccessUrl("/")
                 .permitAll()
         ;
     }
@@ -93,4 +108,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
     }
 
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOrigin("*");
+        configuration.addAllowedMethod("*");
+        configuration.addAllowedHeader("*");
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 }

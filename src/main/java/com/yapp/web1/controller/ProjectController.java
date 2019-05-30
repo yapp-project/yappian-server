@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -65,8 +66,9 @@ public class ProjectController {
      */
     @PostMapping("/project")
     @ApiOperation(value = "프로젝트 생성(인증 필요)")
-    public ResponseEntity<?> createProject(@Valid @RequestBody final ProjectRequestDto project) {
+    public ResponseEntity<?> createProject(@Valid @RequestBody final ProjectRequestDto project, HttpSession httpSession) {
         try {
+//            ProjectResponseDto createProjectDto = projectService.createProject(project, AuthUtils.getCurrentAccount(httpSession).getIdx());
             ProjectResponseDto createProjectDto = projectService.createProject(project, AuthUtils.getCurrentAccount().getIdx());
             return new ResponseEntity<>(createProjectDto, HttpStatus.CREATED);
         } catch (NoPermissionException e) {
@@ -88,9 +90,11 @@ public class ProjectController {
      */
     @PutMapping("/project/{projectIdx}")
     @ApiOperation(value = "프로젝트 수정(참여 유저)")
-    public ResponseEntity<?> updateProject(@PathVariable @ApiParam(value = "수정할 Project idx", example = "1") final Long projectIdx,
-                                           @Valid @RequestBody final ProjectRequestDto project) {
+    public ResponseEntity<?> updateProject(@PathVariable  @ApiParam(value = "수정할 Project idx", example = "1")  final Long projectIdx,
+                                           @Valid @RequestBody final ProjectRequestDto project,
+                                           HttpSession session) {
         try {
+//            projectService.updateProject(projectIdx, project, AuthUtils.getCurrentAccount(session).getIdx());
             projectService.updateProject(projectIdx, project, AuthUtils.getCurrentAccount().getIdx());
             return new ResponseEntity<>("프로젝트 수정 성공", HttpStatus.OK);
         } catch (NoPermissionException e) {
@@ -110,8 +114,10 @@ public class ProjectController {
      */
     @DeleteMapping("/project/{projectIdx}")
     @ApiOperation(value = "프로젝트 삭제(참여 유저)")
-    public ResponseEntity<?> deleteProject(@PathVariable @ApiParam(value = "삭제할 Project idx", example = "1") final Long projectIdx) {
+    public ResponseEntity<?> deleteProject(@PathVariable @ApiParam(value = "삭제할 Project idx", example = "1") final Long projectIdx,
+                                           HttpSession session) {
         try {
+//            projectService.deleteProject(projectIdx, AuthUtils.getCurrentAccount(session).getIdx());
             projectService.deleteProject(projectIdx, AuthUtils.getCurrentAccount().getIdx());
             return new ResponseEntity<>("Project 삭제 성공", HttpStatus.NO_CONTENT);
         } catch (NoPermissionException e) {
@@ -150,8 +156,10 @@ public class ProjectController {
      */
     @PostMapping("/project/{projectIdx}")
     @ApiOperation(value = "프로젝트 조인하기(인증 필요)")
-    public ResponseEntity<?> joinProject(@PathVariable @ApiParam(value = "조인할 projectIdx", example = "1") final Long projectIdx, String password) {
+    public ResponseEntity<?> joinProject(@PathVariable @ApiParam(value = "조인할 projectIdx", example = "1") final Long projectIdx, String password,
+                                         HttpSession session) {
         try {
+//            projectService.joinProject(projectIdx, password, AuthUtils.getCurrentAccount(session).getIdx());
             projectService.joinProject(projectIdx, password, AuthUtils.getCurrentAccount().getIdx());
             return new ResponseEntity<>("해당 프로젝트에 조인 성공", HttpStatus.OK);
         } catch (NotFoundException e) {
@@ -188,9 +196,11 @@ public class ProjectController {
     @PutMapping("/project/{projectIdx}/finish")
     @ApiOperation(value = "프로젝트 완료 설정(참여 유저)")
     public ResponseEntity<?> setFinishedProject(@PathVariable @ApiParam(value = "완료할 projectIdx", example = "1") final Long projectIdx,
-                                                @RequestParam("files") MultipartFile[] multipartFiles,
-                                                @Valid FinishProjectRequestDto project) {
+                                                @RequestParam("files") @ApiParam(value="files", required=true)  MultipartFile[] multipartFiles,
+                                                @Valid FinishProjectRequestDto project,
+                                                HttpSession session) {
         try {
+//            FinishProjectResponseDto finishProjectResponseDto = projectService.setFinishedProject(projectIdx, multipartFiles, project, AuthUtils.getCurrentAccount(session).getIdx());
             FinishProjectResponseDto finishProjectResponseDto = projectService.setFinishedProject(projectIdx, multipartFiles, project, AuthUtils.getCurrentAccount().getIdx());
             return new ResponseEntity<>(finishProjectResponseDto, HttpStatus.OK);
         } catch (NoPermissionException e) {
