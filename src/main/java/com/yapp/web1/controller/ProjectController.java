@@ -196,7 +196,7 @@ public class ProjectController {
     @PutMapping("/project/{projectIdx}/finish")
     @ApiOperation(value = "프로젝트 완료 설정(참여 유저)")
     public ResponseEntity<?> setFinishedProject(@PathVariable @ApiParam(value = "완료할 projectIdx", example = "1") final Long projectIdx,
-                                                @RequestParam("files") @ApiParam(value="files", required=true)  MultipartFile[] multipartFiles,
+                                                @RequestParam("files")  MultipartFile[] multipartFiles,
                                                 @Valid FinishProjectRequestDto project,
                                                 HttpSession session) {
         try {
