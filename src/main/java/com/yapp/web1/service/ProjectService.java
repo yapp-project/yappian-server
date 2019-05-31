@@ -10,6 +10,7 @@ import com.yapp.web1.exception.NoPermissionException;
 import com.yapp.web1.exception.NotFoundException;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -89,7 +90,7 @@ public interface ProjectService {
      *
      * @exception Exception noPermission, notFound
      */
-    FinishProjectResponseDto setFinishedProject(Long projectIdx, MultipartFile[] multipartFiles, FinishProjectRequestDto dto, Long accountIdx);
+    FinishProjectResponseDto setFinishedProject(Long projectIdx, MultipartFile[] multipartFiles, FinishProjectRequestDto dto, Long accountIdx) throws IOException;
 
     /**
      * 프로젝트 완료 조회

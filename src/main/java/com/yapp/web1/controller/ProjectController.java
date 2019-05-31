@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -192,19 +193,19 @@ public class ProjectController {
      * @see /api/project/{projectIdx}/finish
      */
     @PutMapping("/project/{projectIdx}/finish")
-    @ApiOperation(value = "프로젝트 완료 설정(참여 유저)")
+    @ApiOperation(value = "프로젝트 완료 설정(참여 유저)", produces = "multipart/form-data")
     public ResponseEntity<?> setFinishedProject(@PathVariable @ApiParam(value = "완료할 projectIdx", example = "1") final Long projectIdx,
                                                 @RequestParam("files") MultipartFile[] multipartFiles,
-                                                @Valid FinishProjectRequestDto project,
-                                                HttpSession session) {
+                                                @Valid FinishProjectRequestDto project) {
         try {
-//            FinishProjectResponseDto finishProjectResponseDto = projectService.setFinishedProject(projectIdx, multipartFiles, project, AuthUtils.getCurrentAccount(session).getIdx());
             FinishProjectResponseDto finishProjectResponseDto = projectService.setFinishedProject(projectIdx, multipartFiles, project, AuthUtils.getCurrentAccount().getIdx());
             return new ResponseEntity<>(finishProjectResponseDto, HttpStatus.OK);
         } catch (NoPermissionException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
         } catch (NotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (IOException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 

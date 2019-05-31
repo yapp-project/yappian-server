@@ -4,6 +4,7 @@ import com.yapp.web1.domain.File;
 import com.yapp.web1.dto.res.FileUploadResponseDto;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface FileService {
@@ -30,5 +31,5 @@ public interface FileService {
      * @param projectIdx
      * @return
      */
-    List<FileUploadResponseDto> fileUpload(MultipartFile[] multipartFiles, Long projectIdx);
+    List<FileUploadResponseDto> fileUpload(MultipartFile[] multipartFiles, Long projectIdx) throws IOException;
 }
