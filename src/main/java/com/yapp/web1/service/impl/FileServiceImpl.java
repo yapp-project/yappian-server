@@ -13,24 +13,25 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 
 @Service
 public class FileServiceImpl implements FileService {
 
     @Autowired
-    FileRepository fileRepository;
+    private FileRepository fileRepository;
     @Autowired
     private CommonService commonService;
     @Autowired
-    S3Service s3Service;
+    private S3Service s3Service;
 
-    String uploadPath = "Files";// s3 폴더명
+    private final String uploadPath = "Files";// s3 폴더명
+    private final byte[] IMAGE_MAGIC = new byte[] {(byte)0xFF, (byte)0xD8, (byte)0xFF}; // jpeg, jpg
+    private final byte[] PDF_MAGIC = new byte[] {(byte)0x25, (byte)0x50, (byte)0x44};
 
     // 파일 경로명 월별 설정 메소드
     private static String calcPath(String uploadePath) {
@@ -106,32 +107,24 @@ public class FileServiceImpl implements FileService {
 
     // fileUpload
     @Override
-    public List<FileUploadResponseDto> fileUpload(MultipartFile[] multipartFiles, Long projectIdx) {
+    public List<FileUploadResponseDto> fileUpload(MultipartFile[] multipartFilesList, Long projectIdx) throws IOException{
 
         Project project = commonService.findById(projectIdx);
+        List<FileUploadResponseDto> fileDtoList = new ArrayList<>();
 
-        int sw = 1;
-        FileType type = null;
-        List<FileUploadResponseDto> fileUploadResponseDtos = new ArrayList<>();
+        for(MultipartFile multipartFile : multipartFilesList) {
+            FileType type = this.fileTypeCheck(multipartFile);
 
-        for (MultipartFile files : multipartFiles) {
-            if (sw == 1) {
-                type = FileType.IMAGE;
-            } else if (sw == -1) {
-                type = FileType.PDF;
-            }
+            String originalFilename = multipartFile.getOriginalFilename();
+            String createdUrl = createUrlName(multipartFile);
 
-            String originName = files.getOriginalFilename();
+            s3Service.upload(multipartFile, uploadPath + createdUrl); // 실제 파일 업로드
 
-            String createdUrl = createUrlName(files);
-
-            s3Service.upload(files, uploadPath + createdUrl); // 실제 파일 업로드
-
-            String downUrl = "https://s3.ap-northeast-2.amazonaws.com/yappian/"+uploadPath+createdUrl;
+            String downUrl = "https://s3.ap-northeast-2.amazonaws.com/yappian/" + uploadPath + createdUrl;
             downUrl = (downUrl).replace(java.io.File.separatorChar, '/');
 
             File file = File.builder()
-                    .name(originName)
+                    .name(originalFilename)
                     .fileURL(downUrl)
                     .type(type)
                     .project(project)
@@ -139,12 +132,34 @@ public class FileServiceImpl implements FileService {
 
             fileRepository.save(file);
 
-            fileUploadResponseDtos.add(new FileUploadResponseDto(file.getIdx(),file.getType(), originName,downUrl));
-
-            sw *= -1;
+            fileDtoList.add(FileUploadResponseDto.builder()
+                    .fileIdx(file.getIdx())
+                    .originName(originalFilename)
+                    .type(file.getType())
+                    .fileUrl(downUrl)
+                    .build());
         }
 
-        return fileUploadResponseDtos;
+        return fileDtoList;
+    }
+
+    private FileType fileTypeCheck(MultipartFile file) throws IOException{
+        if (file != null && file.getSize() > 0 && file.getOriginalFilename() != null) {
+            try (InputStream in = file.getInputStream()) {
+                byte[] magic = new byte[3];
+                int count = in.read(magic);
+                if (count < 3) throw new IOException();
+
+                if (Arrays.equals(magic, IMAGE_MAGIC)) {
+                    return FileType.IMAGE;
+                } else if (Arrays.equals(magic, PDF_MAGIC)) {
+                    return FileType.PDF;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        throw new IOException();
     }
 
     // deleteAllFile
