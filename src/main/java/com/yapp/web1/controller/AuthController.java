@@ -20,6 +20,7 @@ import java.security.Principal;
  * @since 0.0.4
  * @version 1.0
  */
+@CrossOrigin("*")
 @Api(tags = "인증체크 API")
 @RestController
 public class AuthController {
