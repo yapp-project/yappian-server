@@ -45,6 +45,6 @@ public class AuthController {
         if(findSession != null)
             return findSession.getId();
 
-        return "invalid";
+        return "INVALID";
     }
 }
