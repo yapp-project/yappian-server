@@ -19,7 +19,7 @@ import javax.servlet.Filter;
  * @author Dakyung Ko
  */
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity//(debug = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final Filter ssoFilter;
@@ -55,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private void setTestMode(HttpSecurity http) throws Exception {
         http.antMatcher("/**")
                 .authorizeRequests()
-                .antMatchers("/", "/me", "/h2/**", "/h2-console/**", "/api/login*/**", "/api/logout*/**", "/api/_hcheck", "/auth",
+                    .antMatchers("/", "/me", "/h2/**", "/h2-console/**", "/api/login*/**", "/api/logout*/**", "/api/_hcheck", "/auth", "/session",
                         "/js/**", "/css/**", "/image/**", "/fonts/**",
                         "/favicon.ico", "/static/**", "/**/*.json", "/**/*.html", "/**/*.js")
                 .permitAll()
@@ -76,6 +76,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .clearAuthentication(true)
                 .logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
                 .logoutSuccessUrl("/")
+                .deleteCookies("JSESSIONID")
+                .deleteCookies("SESSION")
                 .permitAll()
         ;
     }
