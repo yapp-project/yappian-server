@@ -22,6 +22,9 @@ spring:
     cache: false
   jpa:
     open-in-view: false
+  servlet:
+    multipart.max-file-size: -1
+    multipart.max-request-size: -1
 # local 환경
 ---
 spring:
