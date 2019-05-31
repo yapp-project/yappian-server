@@ -19,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -32,7 +31,6 @@ import java.util.List;
  * @version 1.6
  * @since 0.0.4
  */
-@CrossOrigin("*")
 @AllArgsConstructor
 @RequestMapping("/api")
 @RestController
@@ -67,9 +65,8 @@ public class ProjectController {
      */
     @PostMapping("/project")
     @ApiOperation(value = "프로젝트 생성(인증 필요)")
-    public ResponseEntity<?> createProject(@Valid @RequestBody final ProjectRequestDto project, HttpSession httpSession) {
+    public ResponseEntity<?> createProject(@Valid @RequestBody final ProjectRequestDto project) {
         try {
-//            ProjectResponseDto createProjectDto = projectService.createProject(project, AuthUtils.getCurrentAccount(httpSession).getIdx());
             ProjectResponseDto createProjectDto = projectService.createProject(project, AuthUtils.getCurrentAccount().getIdx());
             return new ResponseEntity<>(createProjectDto, HttpStatus.CREATED);
         } catch (NoPermissionException e) {
@@ -113,10 +110,8 @@ public class ProjectController {
      */
     @DeleteMapping("/project/{projectIdx}")
     @ApiOperation(value = "프로젝트 삭제(참여 유저)")
-    public ResponseEntity<?> deleteProject(@PathVariable @ApiParam(value = "삭제할 Project idx", example = "1") final Long projectIdx,
-                                           HttpSession session) {
+    public ResponseEntity<?> deleteProject(@PathVariable @ApiParam(value = "삭제할 Project idx", example = "1") final Long projectIdx) {
         try {
-//            projectService.deleteProject(projectIdx, AuthUtils.getCurrentAccount(session).getIdx());
             projectService.deleteProject(projectIdx, AuthUtils.getCurrentAccount().getIdx());
             return new ResponseEntity<>("Project 삭제 성공", HttpStatus.NO_CONTENT);
         } catch (NoPermissionException e) {
@@ -155,10 +150,8 @@ public class ProjectController {
      */
     @PostMapping("/project/{projectIdx}")
     @ApiOperation(value = "프로젝트 조인하기(인증 필요)")
-    public ResponseEntity<?> joinProject(@PathVariable @ApiParam(value = "조인할 projectIdx", example = "1") final Long projectIdx, String password,
-                                         HttpSession session) {
+    public ResponseEntity<?> joinProject(@PathVariable @ApiParam(value = "조인할 projectIdx", example = "1") final Long projectIdx, String password) {
         try {
-//            projectService.joinProject(projectIdx, password, AuthUtils.getCurrentAccount(session).getIdx());
             projectService.joinProject(projectIdx, password, AuthUtils.getCurrentAccount().getIdx());
             return new ResponseEntity<>("해당 프로젝트에 조인 성공", HttpStatus.OK);
         } catch (NotFoundException e) {
