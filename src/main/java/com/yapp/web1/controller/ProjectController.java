@@ -31,6 +31,7 @@ import java.util.List;
  * @version 1.6
  * @since 0.0.4
  */
+@CrossOrigin("*")
 @AllArgsConstructor
 @RequestMapping("/api")
 @RestController
