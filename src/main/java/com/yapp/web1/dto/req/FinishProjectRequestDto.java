@@ -24,7 +24,7 @@ public class FinishProjectRequestDto {
 
     @NotBlank(message = "프로젝트 설명을 입력하세요.")
     @ApiModelProperty(notes = "프로젝트 상세 설명. 최소 30자")
-    @Size(min = 30)
+    @Size(min = 10)
     private String description; // 프로젝트 소개
 
     @NotBlank(message = "프로젝트 URL을 입력하세요.")
