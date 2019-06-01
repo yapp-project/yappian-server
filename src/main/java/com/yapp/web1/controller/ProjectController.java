@@ -186,7 +186,7 @@ public class ProjectController {
      * @throws Exception join한 유저가 아닌 경우
      * @see /api/project/{projectIdx}/finish
      */
-    @PatchMapping("/project/{projectIdx}/finish")
+    @PutMapping("/project/{projectIdx}/finish")
     @ApiOperation(value = "프로젝트 완료 설정(참여 유저)", produces = "multipart/form-data")
     public ResponseEntity<?> setFinishedProject(@PathVariable @ApiParam(value = "완료할 projectIdx", example = "1") final Long projectIdx,
                                                 @RequestParam("files") MultipartFile[] multipartFiles,
