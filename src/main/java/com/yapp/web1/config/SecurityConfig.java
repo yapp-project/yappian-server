@@ -84,11 +84,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private void setRealMode(HttpSecurity http) throws Exception {
         http.antMatcher("/**")
-                .authorizeRequests().antMatchers("/", "/api/login**", "/api/_hcheck").permitAll()
-                .mvcMatchers(HttpMethod.GET, "/api/order*/**", "/api/project/**").permitAll()
-                .anyRequest().authenticated()
-                .and().exceptionHandling()
-                .and().headers().frameOptions().sameOrigin() //
+                .authorizeRequests()
+                    .antMatchers("/", "/api/login*/**", "/api/logout*/**",
+                        "/favicon.ico", "/static/**", "/**/*.json", "/**/*.html", "/**/*.js")
+                        .permitAll()
+                    .mvcMatchers(HttpMethod.GET, "/api/order*/**", "/api/project/**")
+                        .permitAll()
+                    .antMatchers(HttpMethod.OPTIONS, "/**")
+                        .permitAll()
+                    .anyRequest()
+                        .authenticated()
+                    .and().exceptionHandling()
+                        .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/api/login"))
+                .and().headers().frameOptions().sameOrigin()
                 .and().csrf().disable() // TODO CSRF 설정
                 .addFilterBefore(ssoFilter, BasicAuthenticationFilter.class);
         http.logout()
@@ -96,6 +104,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .clearAuthentication(true)
                 .logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
                 .logoutSuccessUrl("/")
+                .deleteCookies("JSESSIONID")
+                .deleteCookies("SESSION")
                 .permitAll();
     }
 
