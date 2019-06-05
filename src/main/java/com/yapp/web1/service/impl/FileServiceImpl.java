@@ -30,18 +30,19 @@ public class FileServiceImpl implements FileService {
     private S3Service s3Service;
 
     private final String uploadPath = "Files";// s3 폴더명
-    private final byte[] IMAGE_MAGIC = new byte[] {(byte)0xFF, (byte)0xD8, (byte)0xFF}; // jpeg, jpg
+    private final byte[] JPG_MAGIC = new byte[] {(byte)0xFF, (byte)0xD8, (byte)0xFF}; // jpeg, jpg
+    private final byte[] PNG_MAGIC = new byte[] {(byte)0x89, (byte)0x50, (byte)0x4E};
     private final byte[] PDF_MAGIC = new byte[] {(byte)0x25, (byte)0x50, (byte)0x44};
 
     // 파일 경로명 월별 설정 메소드
-    private static String calcPath(String uploadePath) {
+    private static String calcPath(String uploadPath) {
         Calendar cal = Calendar.getInstance();
 
         String yearPath = java.io.File.separator + cal.get(Calendar.YEAR);
 
         String monthPath = yearPath + java.io.File.separator + new DecimalFormat("00").format(cal.get(Calendar.MONTH) + 1);
 
-        makeDir(uploadePath, yearPath, monthPath);
+        makeDir(uploadPath, yearPath, monthPath);
 
         return monthPath;
     }
@@ -150,7 +151,7 @@ public class FileServiceImpl implements FileService {
                 int count = in.read(magic);
                 if (count < 3) throw new IOException();
 
-                if (Arrays.equals(magic, IMAGE_MAGIC)) {
+                if (Arrays.equals(magic, JPG_MAGIC) || Arrays.equals(magic, PNG_MAGIC)) {
                     return FileType.IMAGE;
                 } else if (Arrays.equals(magic, PDF_MAGIC)) {
                     return FileType.PDF;
