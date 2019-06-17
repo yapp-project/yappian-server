@@ -7,6 +7,14 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * FileService Interface
+ *
+ * @author Jihye Kim
+ * @author Dakyung Ko
+ * @since 0.0.3
+ * @version 1.1
+ */
 public interface FileService {
 
     /**
@@ -27,9 +35,18 @@ public interface FileService {
     /**
      * 파일 업로드 후, 업로드 한 파일의 정보 목록
      *
-     * @param multipartFiles
+     * @param file
      * @param projectIdx
+     * @param accountIdx 권한 체크용 유저 idx
      * @return
      */
-    List<FileUploadResponseDto> fileUpload(MultipartFile[] multipartFiles, Long projectIdx) throws IOException;
+    FileUploadResponseDto fileUpload(MultipartFile file, Long projectIdx, Long accountIdx) throws IOException;
+
+    /**
+     * File 객체를 FileUploadResponseDto 객체로 변환
+     *
+     * @param file
+     * @return
+     */
+    FileUploadResponseDto convertToDto(File file);
 }

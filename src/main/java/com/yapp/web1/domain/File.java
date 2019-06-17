@@ -33,7 +33,7 @@ public class File extends BaseEntity {
     private FileType type;
 
     /** Relation Mapping **/
-    /** File - Project 단방향 매핑 **/
+    /** File - Project 양방향 매핑 **/
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name="project_idx",
             foreignKey = @ForeignKey(name="fk_file_project"),

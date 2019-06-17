@@ -14,8 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-//import org.codehaus.jackson.map.ObjectMapper;
-
 @Component
 public class GoogleAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
@@ -35,7 +33,6 @@ public class GoogleAuthenticationSuccessHandler implements AuthenticationSuccess
 
     private Account getGoogleUser(Authentication authentication) {
         OAuth2Authentication oAuth2Authentication = (OAuth2Authentication) authentication;
-//        return (Account) authentication.getPrincipal();
         return objectMapper.convertValue(oAuth2Authentication.getUserAuthentication().getDetails(), Account.class);
     }
 }

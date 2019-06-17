@@ -7,6 +7,7 @@ import com.yapp.web1.dto.res.FileUploadResponseDto;
 import com.yapp.web1.repository.FileRepository;
 import com.yapp.web1.service.CommonService;
 import com.yapp.web1.service.FileService;
+import com.yapp.web1.service.ProjectService;
 import com.yapp.web1.service.S3Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,20 +29,23 @@ public class FileServiceImpl implements FileService {
     private CommonService commonService;
     @Autowired
     private S3Service s3Service;
+    @Autowired
+    private ProjectService projectService;
 
     private final String uploadPath = "Files";// s3 폴더명
-    private final byte[] IMAGE_MAGIC = new byte[] {(byte)0xFF, (byte)0xD8, (byte)0xFF}; // jpeg, jpg
+    private final byte[] JPG_MAGIC = new byte[] {(byte)0xFF, (byte)0xD8, (byte)0xFF}; // jpeg, jpg
+    private final byte[] PNG_MAGIC = new byte[] {(byte)0x89, (byte)0x50, (byte)0x4E};
     private final byte[] PDF_MAGIC = new byte[] {(byte)0x25, (byte)0x50, (byte)0x44};
 
     // 파일 경로명 월별 설정 메소드
-    private static String calcPath(String uploadePath) {
+    private static String calcPath(String uploadPath) {
         Calendar cal = Calendar.getInstance();
 
         String yearPath = java.io.File.separator + cal.get(Calendar.YEAR);
 
         String monthPath = yearPath + java.io.File.separator + new DecimalFormat("00").format(cal.get(Calendar.MONTH) + 1);
 
-        makeDir(uploadePath, yearPath, monthPath);
+        makeDir(uploadPath, yearPath, monthPath);
 
         return monthPath;
     }
@@ -107,40 +111,40 @@ public class FileServiceImpl implements FileService {
 
     // fileUpload
     @Override
-    public List<FileUploadResponseDto> fileUpload(MultipartFile[] multipartFilesList, Long projectIdx) throws IOException{
+    public FileUploadResponseDto fileUpload(MultipartFile multipartFile, Long projectIdx, Long accountIdx) throws IOException{
 
         Project project = commonService.findById(projectIdx);
-        List<FileUploadResponseDto> fileDtoList = new ArrayList<>();
 
-        for(MultipartFile multipartFile : multipartFilesList) {
-            FileType type = this.fileTypeCheck(multipartFile);
+        commonService.checkAccountPermission(projectService.getAccountListInProject(projectIdx), accountIdx);
 
-            String originalFilename = multipartFile.getOriginalFilename();
-            String createdUrl = createUrlName(multipartFile);
+        FileType type = this.fileTypeCheck(multipartFile);
 
-            s3Service.upload(multipartFile, uploadPath + createdUrl); // 실제 파일 업로드
+        String originalFilename = multipartFile.getOriginalFilename();
+        String createdUrl = createUrlName(multipartFile);
 
-            String downUrl = "https://s3.ap-northeast-2.amazonaws.com/yappian/" + uploadPath + createdUrl;
-            downUrl = (downUrl).replace(java.io.File.separatorChar, '/');
+        s3Service.upload(multipartFile, uploadPath + createdUrl); // 실제 파일 업로드
 
-            File file = File.builder()
-                    .name(originalFilename)
-                    .fileURL(downUrl)
-                    .type(type)
-                    .project(project)
-                    .build();
+        String downUrl = "https://s3.ap-northeast-2.amazonaws.com/yappian/" + uploadPath + createdUrl;
+        downUrl = (downUrl).replace(java.io.File.separatorChar, '/');
 
-            fileRepository.save(file);
+        File file = File.builder()
+                .name(originalFilename)
+                .fileURL(downUrl)
+                .type(type)
+                .project(project)
+                .build();
 
-            fileDtoList.add(FileUploadResponseDto.builder()
+        return this.convertToDto(fileRepository.save(file));
+    }
+
+    @Override
+    public FileUploadResponseDto convertToDto(File file) {
+        return FileUploadResponseDto.builder()
                     .fileIdx(file.getIdx())
-                    .originName(originalFilename)
+                    .originName(file.getName())
                     .type(file.getType())
-                    .fileUrl(downUrl)
-                    .build());
-        }
-
-        return fileDtoList;
+                    .fileUrl(file.getFileURL())
+                    .build();
     }
 
     private FileType fileTypeCheck(MultipartFile file) throws IOException{
@@ -150,7 +154,7 @@ public class FileServiceImpl implements FileService {
                 int count = in.read(magic);
                 if (count < 3) throw new IOException();
 
-                if (Arrays.equals(magic, IMAGE_MAGIC)) {
+                if (Arrays.equals(magic, JPG_MAGIC) || Arrays.equals(magic, PNG_MAGIC)) {
                     return FileType.IMAGE;
                 } else if (Arrays.equals(magic, PDF_MAGIC)) {
                     return FileType.PDF;

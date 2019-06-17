@@ -11,6 +11,8 @@ import lombok.Setter;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
+
 /**
  * 프로젝트 완료 페이지 작성 Dto
  * @author JiHye Kim
@@ -35,10 +37,15 @@ public class FinishProjectRequestDto {
     @ApiModelProperty(notes = "런칭 유무 (N,Y) (순서대로 0,1도 가능)")
     private Mark releaseCheck = Mark.N;
 
+    @NotNull(message = "업로드한 파일 Idx 리스트를 입력하세요.")
+    @ApiModelProperty(notes = "업로드한 파일 Idx 리스트")
+    private List<Long> fileIdxList;
+
     @Builder
-    public FinishProjectRequestDto(String description, String productURL, Mark releaseCheck){
+    public FinishProjectRequestDto(String description, String productURL, Mark releaseCheck, List<Long> fileIdxList){
         this.description = description;
         this.productURL = productURL;
         this.releaseCheck = releaseCheck;
+        this.fileIdxList = fileIdxList;
     }
 }

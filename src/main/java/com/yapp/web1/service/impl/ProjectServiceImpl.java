@@ -8,6 +8,7 @@ import com.yapp.web1.dto.req.FinishProjectRequestDto;
 import com.yapp.web1.dto.req.ProjectRequestDto;
 import com.yapp.web1.dto.res.*;
 import com.yapp.web1.exception.NoPermissionException;
+import com.yapp.web1.exception.NotFoundException;
 import com.yapp.web1.repository.ProjectRepository;
 import com.yapp.web1.service.CommonService;
 import com.yapp.web1.service.FileService;
@@ -16,9 +17,7 @@ import com.yapp.web1.service.UrlService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -215,26 +214,43 @@ public class ProjectServiceImpl implements ProjectService {
 
     // setFinishedProject
     @Override
-    public FinishProjectResponseDto setFinishedProject(Long projectIdx, MultipartFile[] multipartFiles, FinishProjectRequestDto dto, Long accountIdx) throws IOException {
+    public FinishProjectResponseDto setFinishedProject(Long projectIdx, FinishProjectRequestDto dto, Long accountIdx) {
 
         Project project = commonService.findById(projectIdx);
 
         commonService.checkAccountPermission(getAccountListInProject(projectIdx), accountIdx);
 
-        // 파일 업로드
-        List<FileUploadResponseDto> fileUploadResponseDtos = fileService.fileUpload(multipartFiles, projectIdx);
+        if(!this.checkFileInProject(dto.getFileIdxList(), fileService.getFileList(projectIdx))) {
+            throw new NotFoundException("파일이 일치하지 않습니다.");
+        }
 
-        List<File> file = fileService.getFiles(projectIdx);
+        List<File> fileList = fileService.getFiles(projectIdx);
 
         // set finishedProject
         project.setDescription(dto.getDescription());
         project.setProductURL(dto.getProductURL());
         project.setReleaseCheck(dto.getReleaseCheck());
         project.setFinalCheck(Mark.Y);
-        project.setFileList(file);
+        project.setFileList(fileList);
         projectRepository.save(project);
 
-        return finishDto(project, fileUploadResponseDtos);
+        List<FileUploadResponseDto> fileDtoList = new ArrayList<>();
+        for (File file : fileList) {
+            fileDtoList.add(fileService.convertToDto(file));
+        }
+        return this.finishDto(project, fileDtoList);
+    }
+
+    private boolean checkFileInProject(List<Long> inputFileIdxList, List<FileUploadResponseDto> findFileDtoList) {
+        if (inputFileIdxList.size() != findFileDtoList.size())
+            return false;
+
+        for(FileUploadResponseDto resDto : findFileDtoList) {
+            if(!inputFileIdxList.contains(resDto.getFileIdx()))
+                return false;
+        }
+
+        return true;
     }
 
     // get finishedProject
@@ -244,7 +260,7 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = commonService.findById(projectIdx);
         List<FileUploadResponseDto> fileUploadResponseDtos = fileService.getFileList(projectIdx);
 
-        return finishDto(project, fileUploadResponseDtos);
+        return this.finishDto(project, fileUploadResponseDtos);
     }
 
     // leave project
