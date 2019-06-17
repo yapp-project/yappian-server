@@ -2,15 +2,13 @@ package com.yapp.web1.service;
 
 import com.yapp.web1.dto.req.FinishProjectRequestDto;
 import com.yapp.web1.dto.req.ProjectRequestDto;
+import com.yapp.web1.dto.res.AccountResponseDto;
 import com.yapp.web1.dto.res.FinishProjectResponseDto;
 import com.yapp.web1.dto.res.ProjectResponseDto;
-import com.yapp.web1.dto.res.AccountResponseDto;
 import com.yapp.web1.dto.res.ProjectsResDto;
 import com.yapp.web1.exception.NoPermissionException;
 import com.yapp.web1.exception.NotFoundException;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -87,10 +85,11 @@ public interface ProjectService {
      *
      * @param projectIdx 완료할 Project idx
      * @param dto 프로젝트 완료 정보
+     * @param accountIdx 권한 확인용 유저 idx
      *
      * @exception Exception noPermission, notFound
      */
-    FinishProjectResponseDto setFinishedProject(Long projectIdx, MultipartFile[] multipartFiles, FinishProjectRequestDto dto, Long accountIdx) throws IOException;
+    FinishProjectResponseDto setFinishedProject(Long projectIdx, FinishProjectRequestDto dto, Long accountIdx);
 
     /**
      * 프로젝트 완료 조회

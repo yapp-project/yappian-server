@@ -71,6 +71,15 @@ public class Project extends BaseEntity {
             orphanRemoval = true)
     private List<Url> urlList = new ArrayList<>();
 
+    /**
+     * Project - File 양방향 매핑
+     **/
+    @JsonIgnore
+    @OneToMany(mappedBy = "project",
+            cascade = CascadeType.PERSIST,
+            fetch = FetchType.LAZY)
+    private List<File> fileList = new ArrayList<>();
+
     /** Relation Mapping - Join Table **/
     /**
      * Project - Account 양방향 매핑
@@ -79,14 +88,6 @@ public class Project extends BaseEntity {
             cascade = CascadeType.PERSIST,
             fetch = FetchType.LAZY)
     private Set<Account> accountList = new HashSet<>();
-
-    /**
-     * Project - File 단방향 매핑
-     **/
-    @JsonIgnore
-    @OneToMany(mappedBy = "project",
-            fetch = FetchType.LAZY)
-    private List<File> fileList = new ArrayList<>();
 
     /**
      * Method
