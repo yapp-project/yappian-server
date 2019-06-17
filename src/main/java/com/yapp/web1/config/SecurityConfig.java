@@ -19,7 +19,7 @@ import javax.servlet.Filter;
  * @author Dakyung Ko
  */
 @Configuration
-@EnableWebSecurity//(debug = true)
+@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final Filter ssoFilter;

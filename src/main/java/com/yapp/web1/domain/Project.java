@@ -5,7 +5,10 @@ import com.yapp.web1.converter.MarkAttributeConverter;
 import com.yapp.web1.converter.ProjectTypeAttributeConverter;
 import com.yapp.web1.domain.VO.Mark;
 import com.yapp.web1.domain.VO.ProjectType;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.*;
