@@ -20,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 /**
  * ProjectService 구현 클래스
  *
@@ -189,15 +191,16 @@ public class ProjectServiceImpl implements ProjectService {
 
     // join project
     @Override
-    public void joinProject(Long projectIdx, String password, Long randomAccount) {
-
+    public void joinProject(Long projectIdx, String password, Long accountIdx) {
+        checkArgument(password.length() == 4, "비밀번호는 반드시 4자리여야 합니다.");
         Project project = commonService.findById(projectIdx);
 
+        // TODO 이미 join 한 유저에 대한 exception 처리 (안해도 동작엔 문제없음)
         if (!project.getPassword().equals(password)) {
-            throw new NoPermissionException("프로젝트 비밀번호 다릅니다.");
+            throw new NoPermissionException("프로젝트 비밀번호가 다릅니다.");
         }
 
-        Account account = commonService.findAccountById(randomAccount);
+        Account account = commonService.findAccountById(accountIdx);
         joinedProject(project, account.getIdx());
 
     }
