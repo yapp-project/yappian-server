@@ -149,7 +149,8 @@ public class ProjectController {
      */
     @PostMapping("/project/{projectIdx}")
     @ApiOperation(value = "프로젝트 조인하기(인증 필요)")
-    public ResponseEntity<?> joinProject(@PathVariable @ApiParam(value = "조인할 projectIdx", example = "1") final Long projectIdx, String password) {
+    public ResponseEntity<?> joinProject(@PathVariable @ApiParam(value = "조인할 projectIdx", example = "1") final Long projectIdx,
+                                         @RequestBody String password) {
         try {
             projectService.joinProject(projectIdx, password, AuthUtils.getCurrentAccount().getIdx());
             return new ResponseEntity<>("해당 프로젝트에 조인 성공", HttpStatus.OK);
@@ -184,7 +185,7 @@ public class ProjectController {
      * @throws Exception join한 유저가 아닌 경우
      * @see /api/project/{projectIdx}/finish
      */
-    @PutMapping("/project/{projectIdx}/finish")
+    @PostMapping("/project/{projectIdx}/finish")
     @ApiOperation(value = "프로젝트 완료 설정(참여 유저)")
     public ResponseEntity<?> setFinishedProject(@PathVariable @ApiParam(value = "완료할 projectIdx", example = "1") final Long projectIdx,
                                                 @Valid @RequestBody FinishProjectRequestDto project) {
