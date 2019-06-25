@@ -10,6 +10,7 @@ import com.yapp.web1.exception.NoPermissionException;
 import com.yapp.web1.exception.NotFoundException;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * ProjectService Interface
@@ -70,7 +71,7 @@ public interface ProjectService {
      * @param projectIdx 참여할 Project idx
      * @see /v1/api/project/{projectIdx}
      */
-    void joinProject(Long projectIdx, String password, Long randomAccount);
+    void joinProject(Long projectIdx, Map<String, String> password, Long randomAccount);
 
     /**
      * 프로젝트에 속한 유저 목록 조회

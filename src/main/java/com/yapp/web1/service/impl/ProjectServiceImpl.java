@@ -191,12 +191,13 @@ public class ProjectServiceImpl implements ProjectService {
 
     // join project
     @Override
-    public void joinProject(Long projectIdx, String password, Long accountIdx) {
-        checkArgument(password.length() == 4, "비밀번호는 반드시 4자리여야 합니다.");
+    public void joinProject(Long projectIdx, Map<String, String> password, Long accountIdx) {
+        String pw = password.get("password");
+        checkArgument(pw.length() == 4, "비밀번호는 반드시 4자리여야 합니다.");
         Project project = commonService.findById(projectIdx);
 
         // TODO 이미 join 한 유저에 대한 exception 처리 (안해도 동작엔 문제없음)
-        if (!project.getPassword().equals(password)) {
+        if (!project.getPassword().equals(pw)) {
             throw new NoPermissionException("프로젝트 비밀번호가 다릅니다.");
         }
 
