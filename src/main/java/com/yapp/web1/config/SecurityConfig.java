@@ -59,7 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/js/**", "/css/**", "/image/**", "/fonts/**",
                         "/favicon.ico", "/static/**", "/**/*.json", "/**/*.html", "/**/*.js")
                         .permitAll()
-                    .mvcMatchers(HttpMethod.GET, "/api/order*/**", "/api/project/**")
+                    .mvcMatchers(HttpMethod.GET, "/api/order*/**", "/api/project/**", "/api/projects")
                         .permitAll()
                     .antMatchers(HttpMethod.OPTIONS, "/**")
                         .permitAll()
