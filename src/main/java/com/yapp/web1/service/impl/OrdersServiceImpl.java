@@ -1,7 +1,9 @@
 package com.yapp.web1.service.impl;
 
+import com.yapp.web1.domain.File;
 import com.yapp.web1.domain.Orders;
 import com.yapp.web1.domain.Project;
+import com.yapp.web1.domain.VO.FileType;
 import com.yapp.web1.domain.VO.Mark;
 import com.yapp.web1.dto.res.OrdersResponseDto;
 import com.yapp.web1.dto.res.ProjectListResponseDto;
@@ -71,10 +73,19 @@ public class OrdersServiceImpl implements OrdersService {
                     .type(project.getType())
                     .name(project.getName())
                     .releaseCheck(project.getReleaseCheck())
-                    .imgUrl(project.getFileList().get(0).getFileURL())
+                    .imgUrl(findImageUrl(project))
                     .build();
             projectList.add(projectDto);
         }
         return projectList;
+    }
+
+    private static String findImageUrl(Project project) {
+        String imgUrl = "";
+        List<File> fileList = project.getFileList();
+        for(File file : fileList) {
+            if (file.getType().equals(FileType.IMAGE)) imgUrl = file.getFileURL();
+        }
+        return imgUrl;
     }
 }
