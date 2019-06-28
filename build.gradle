@@ -15,7 +15,7 @@ plugins {
 apply plugin: 'io.spring.dependency-management'
 
 group = 'com.yapp'
-version = '0.20.33'
+version = '0.20.34'
 sourceCompatibility = '1.8'
 
 repositories {
