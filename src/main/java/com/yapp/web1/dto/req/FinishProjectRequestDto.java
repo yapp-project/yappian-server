@@ -29,7 +29,6 @@ public class FinishProjectRequestDto {
     @Size(min = 10)
     private String description; // 프로젝트 소개
 
-    @NotBlank(message = "프로젝트 URL을 입력하세요.")
     @ApiModelProperty(notes = "프로젝트 대표 URL")
     private String productURL; // 프로젝트 URL
 
