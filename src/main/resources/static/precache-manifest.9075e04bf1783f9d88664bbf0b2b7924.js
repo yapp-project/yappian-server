@@ -1,10 +1,10 @@
 self.__precacheManifest = [
   {
-    "revision": "76ec8e7401ba2511e6f8",
-    "url": "/static/css/main.4fe10307.chunk.css"
+    "revision": "645ab193da721b405867",
+    "url": "/static/css/main.e755d759.chunk.css"
   },
   {
-    "revision": "76ec8e7401ba2511e6f8",
+    "revision": "645ab193da721b405867",
     "url": "/static/js/main.9513d63e.chunk.js"
   },
   {
@@ -40,24 +40,20 @@ self.__precacheManifest = [
     "url": "/static/media/flags.9c74e172.png"
   },
   {
-    "revision": "8e3c7f5520f5ae906c6cf6d7f3ddcd19",
-    "url": "/static/media/icons.8e3c7f55.eot"
+    "revision": "faff92145777a3cbaf8e7367b4807987",
+    "url": "/static/media/icons.faff9214.woff"
   },
   {
-    "revision": "b87b9ba532ace76ae9f6edfe9f72ded2",
-    "url": "/static/media/icons.b87b9ba5.ttf"
+    "revision": "8e3c7f5520f5ae906c6cf6d7f3ddcd19",
+    "url": "/static/media/icons.8e3c7f55.eot"
   },
   {
     "revision": "701ae6abd4719e9c2ada3535a497b341",
     "url": "/static/media/outline-icons.701ae6ab.eot"
   },
   {
-    "revision": "faff92145777a3cbaf8e7367b4807987",
-    "url": "/static/media/icons.faff9214.woff"
-  },
-  {
-    "revision": "ad97afd3337e8cda302d10ff5a4026b8",
-    "url": "/static/media/outline-icons.ad97afd3.ttf"
+    "revision": "b87b9ba532ace76ae9f6edfe9f72ded2",
+    "url": "/static/media/icons.b87b9ba5.ttf"
   },
   {
     "revision": "cd6c777f1945164224dee082abaea03a",
@@ -66,6 +62,10 @@ self.__precacheManifest = [
   {
     "revision": "ef60a4f6c25ef7f39f2d25a748dbecfe",
     "url": "/static/media/outline-icons.ef60a4f6.woff"
+  },
+  {
+    "revision": "ad97afd3337e8cda302d10ff5a4026b8",
+    "url": "/static/media/outline-icons.ad97afd3.ttf"
   },
   {
     "revision": "962a1bf31c081691065fe333d9fa8105",
@@ -84,19 +84,19 @@ self.__precacheManifest = [
     "url": "/static/media/brand-icons.e8c322de.woff2"
   },
   {
-    "revision": "a046592bac8f2fd96e994733faf3858c",
-    "url": "/static/media/brand-icons.a046592b.woff"
-  },
-  {
     "revision": "c5ebe0b32dc1b5cc449a76c4204d13bb",
     "url": "/static/media/brand-icons.c5ebe0b3.ttf"
+  },
+  {
+    "revision": "a046592bac8f2fd96e994733faf3858c",
+    "url": "/static/media/brand-icons.a046592b.woff"
   },
   {
     "revision": "a1a749e89f578a49306ec2b055c073da",
     "url": "/static/media/brand-icons.a1a749e8.svg"
   },
   {
-    "revision": "be529820fa9430441e154e1b2fbe0595",
+    "revision": "54e4dc53c480463b464d02c9e6a2c4a0",
     "url": "/index.html"
   }
 ];
