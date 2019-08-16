@@ -23,8 +23,8 @@ spring:
   jpa:
     open-in-view: false
   servlet:
-    multipart.max-file-size: -1
-    multipart.max-request-size: -1
+    multipart.max-file-size: 5MB
+    multipart.max-request-size: 5MB
 # local 환경
 ---
 spring:
