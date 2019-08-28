@@ -56,3 +56,12 @@ dependencyManagement {
         mavenBom 'com.amazonaws:aws-java-sdk-bom:1.11.228'
     }
 }
+
+def gitBranch() {
+    def branch = "";
+    def proc = "git rev-parse --abbrev-ref HEAD".execute()
+    proc.in.eachLine { line -> branch = line }
+    proc.err.eachLine { line -> println line }
+    proc.waitFor()
+    branch
+}
