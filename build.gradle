@@ -25,7 +25,7 @@ repositories {
 ext['hibernate.version'] = '5.2.11.Final'
 
 dependencies {
-    implementation ('org.springframework.boot:spring-boot-starter-actuator')
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-web'
