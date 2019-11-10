@@ -14,6 +14,7 @@ public class UrlTypeAttributeConverter implements AttributeConverter<UrlType, In
             case FIRST: return 1;
             case SECOND: return 2;
             case HOME: return 3;
+            case THIRD: return 4;
         }
         return -1;
     }
@@ -25,6 +26,7 @@ public class UrlTypeAttributeConverter implements AttributeConverter<UrlType, In
             case 1: return UrlType.FIRST;
             case 2: return UrlType.SECOND;
             case 3: return UrlType.HOME;
+            case 4: return UrlType.THIRD;
         }
         return null;
     }

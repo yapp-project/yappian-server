@@ -9,7 +9,7 @@ import com.yapp.web1.service.CommonService;
 import com.yapp.web1.service.FileService;
 import com.yapp.web1.service.ProjectService;
 import com.yapp.web1.service.S3Service;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,17 +19,14 @@ import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.*;
 
-
 @Service
+@Transactional
+@AllArgsConstructor
 public class FileServiceImpl implements FileService {
 
-    @Autowired
     private FileRepository fileRepository;
-    @Autowired
     private CommonService commonService;
-    @Autowired
     private S3Service s3Service;
-    @Autowired
     private ProjectService projectService;
 
     private final String uploadPath = "Files";// s3 폴더명

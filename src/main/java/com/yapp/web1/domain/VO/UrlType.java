@@ -8,5 +8,5 @@ package com.yapp.web1.domain.VO;
  */
 
 public enum UrlType {
-    FIRST, SECOND, HOME, TOOL
+    FIRST, SECOND, HOME, TOOL, THIRD
 }
