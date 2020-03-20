@@ -49,7 +49,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title(applicationName)
-                .contact(new Contact("Dakyung Ko", null, "kdkyung57@gmail.com"))
+                .contact(new Contact("Dakyung Ko", null, "j2de.dev@gmail.com"))
                 .version("0.4")
                 .build();
     }
